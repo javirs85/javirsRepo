@@ -22,9 +22,32 @@ namespace gameBrain
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        int basePort = 60100;
+
         public MainPage()
         {
             this.InitializeComponent();
+            StartUDPListener();
+        }
+
+        public async void StartUDPListener()
+        {
+            var UDPListener = new Windows.Networking.Sockets.DatagramSocket();
+            UDPListener.JoinMulticastGroup()
+            await UDPListener.BindServiceNameAsync(basePort.ToString());
+            UDPListener.MessageReceived += UDPListener_MessageReceived;
+        }
+
+        private async void UDPListener_MessageReceived(Windows.Networking.Sockets.DatagramSocket sender, Windows.Networking.Sockets.DatagramSocketMessageReceivedEventArgs args)
+        {
+            string request = "";
+
+            using (var streamReader = new StreamReader(args.GetDataStream().AsStreamForRead()))
+            {
+                request = await streamReader.ReadLineAsync();
+            }
+
+            Debug(string.Format("UDP: \"{0}\"", request));
         }
 
 
@@ -38,7 +61,7 @@ namespace gameBrain
                 streamSocketListener.ConnectionReceived += this.StreamSocketListener_ConnectionReceived;
 
                 // Start listening for incoming TCP connections on the specified port. You can specify any port that's not currently in use.
-                await streamSocketListener.BindServiceNameAsync("60100");
+                await streamSocketListener.BindServiceNameAsync(basePort.ToString());
 
                 Debug("server is listening...");
             }
@@ -66,8 +89,8 @@ namespace gameBrain
             }
 
             Debug(string.Format("server received the request: \"{0}\"", request));
-
-            // Echo the request back as the response.
+            /*
+                       // Echo the request back as the response.
             using (Stream outputStream = args.Socket.OutputStream.AsStreamForWrite())
             {
                 using (var streamWriter = new StreamWriter(outputStream))
@@ -80,7 +103,7 @@ namespace gameBrain
             Debug(string.Format("server sent back the response: \"{0}\"", request));
 
             sender.Dispose();
-
+            */
             Debug("server closed its socket");
         }
 

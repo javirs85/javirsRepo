@@ -259,3 +259,5 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+deviceSimulator/.vs/deviceSimulator/v15/.suo
+deviceSimulator/.vs/deviceSimulator/v15/.suo
