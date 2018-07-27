@@ -102,6 +102,7 @@
     <Compile Include="TCPController.cs" />
     <Compile Include="UDPController.cs" />
     <Compile Include="WebServer.cs" />
+    <Compile Include="WebSocketController.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
