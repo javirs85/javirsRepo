@@ -24,6 +24,22 @@ namespace gameBrain
         public WebServer(int port)
         {
             WebServerPort = port;
+
+        }
+
+        public async Task<string> ReadFile(string fileName)
+        {
+            string fname = @"Assets\web\"+fileName;
+            StorageFolder InstallationFolder = Windows.ApplicationModel.Package.Current.InstalledLocation;
+            StorageFile file = await InstallationFolder.GetFileAsync(fname);
+            if (File.Exists(file.Path))
+            {
+                return File.ReadAllText(file.Path);
+            }
+            else
+            {
+                return "Cannot find file: "+fileName;
+            }
         }
 
         public async void Start()
@@ -60,23 +76,42 @@ namespace gameBrain
             }
 
             string query = GetQuery(request);
-
-            using (var output = args.Socket.OutputStream)
+            if (query != "favicon.ico")
             {
-                using (var response = output.AsStreamForWrite())
+                using (var output = args.Socket.OutputStream)
                 {
-                    var fileName = "file:\\"+Windows.ApplicationModel.Package.Current.InstalledLocation.Path + @"\Assets\web\index.html";
-                    var file = await ApplicationData.Current.LocalFolder.GetFileAsync(fileName);
-                    var data = await FileIO.ReadTextAsync(file);
-                    var html = Encoding.UTF8.GetBytes(data);
-                    using (var bodyStream = new MemoryStream(html))
+                    using (var response = output.AsStreamForWrite())
                     {
-                        var header = $"HTTP/1.1 200 OK\r\nContent-Length: {bodyStream.Length}\r\nConnection: close\r\n\r\n";
-                        var headerArray = Encoding.UTF8.GetBytes(header);
-                        await response.WriteAsync(headerArray,
-                                                  0, headerArray.Length);
-                        await bodyStream.CopyToAsync(response);
-                        await response.FlushAsync();
+                        var data = await ReadFile(query);
+                        var html = Encoding.UTF8.GetBytes(data);
+                        using (var bodyStream = new MemoryStream(html))
+                        {
+                            var header = $"HTTP/1.1 200 OK\r\nContent-Length: {bodyStream.Length}\r\nConnection: close\r\n\r\n";
+                            var headerArray = Encoding.UTF8.GetBytes(header);
+                            await response.WriteAsync(headerArray, 0, headerArray.Length);
+                            await bodyStream.CopyToAsync(response);
+                            await response.FlushAsync();
+                        }
+                    }
+                }
+            }
+            else
+            {
+                using (var output = args.Socket.OutputStream)
+                {
+                    using (var response = output.AsStreamForWrite())
+                    {
+                        var data = await ReadFile("index.html");
+                        var html = Encoding.UTF8.GetBytes(data);
+                        using (var bodyStream = new MemoryStream(html))
+                        {
+                            var header = $"HTTP/1.1 200 OK\r\nContent-Length: {bodyStream.Length}\r\nConnection: close\r\n\r\n";
+                            var headerArray = Encoding.UTF8.GetBytes(header);
+                            await response.WriteAsync(headerArray,
+                                                      0, headerArray.Length);
+                            await bodyStream.CopyToAsync(response);
+                            await response.FlushAsync();
+                        }
                     }
                 }
             }
@@ -97,7 +132,8 @@ namespace gameBrain
                               ? requestLines[1] : string.Empty;
 
             var uri = new Uri("http://localhost" + url);
-            var query = uri.Query;
+            var query = uri.LocalPath.Substring(1);
+            if (query == "") query = "index.html";
             return query;
         }
 
