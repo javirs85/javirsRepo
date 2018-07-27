@@ -13,6 +13,8 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
+using gameBrain;
+
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
 namespace WebServerApp
@@ -22,9 +24,27 @@ namespace WebServerApp
     /// </summary>
     public sealed partial class MainPage : Page
     {
+
+        WebServer server = null;
+
         public MainPage()
         {
             this.InitializeComponent();
+
+            server = new WebServer(8080);
+            server.newDebugMessage += async (o, msg) => 
+            {
+                await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () => {
+                    debug.Text += Environment.NewLine + msg;
+                });
+            };
+
+            server.Start();
+        }
+
+        private void Stop_Click(object sender, RoutedEventArgs e)
+        {
+            server.Stop();
         }
     }
 }
