@@ -261,3 +261,5 @@ __pycache__/
 *.pyc
 deviceSimulator/.vs/deviceSimulator/v15/.suo
 deviceSimulator/.vs/deviceSimulator/v15/.suo
+ServerSimulator/.vs/ServerSimulator/v15/.suo
+ServerSimulator/.vs/ServerSimulator/v15/.suo

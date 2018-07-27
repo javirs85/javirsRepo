@@ -4,6 +4,7 @@
     "UAP,Version=v10.0.15063": {},
     "UAP,Version=v10.0.15063/win10-arm": {},
     "UAP,Version=v10.0.15063/win10-arm-aot": {},
+    "UAP,Version=v10.0.15063/win10-arm64-aot": {},
     "UAP,Version=v10.0.15063/win10-x64": {},
     "UAP,Version=v10.0.15063/win10-x64-aot": {},
     "UAP,Version=v10.0.15063/win10-x86": {},
@@ -14,26 +15,25 @@
     "UAP,Version=v10.0.15063": []
   },
   "packageFolders": {
-    "C:\\Users\\Javi\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackagesFallback\\": {}
+    "C:\\Users\\rodriguez\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft SDKs\\UWPNuGetPackages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Javi\\Documents\\GitHub\\javirsRepo\\ServerSimulator\\ServerSimulator\\ServerSimulator.csproj",
+      "projectUniqueName": "C:\\Users\\rodriguez\\Documents\\GitHub\\javirsRepo\\ServerSimulator\\ServerSimulator\\ServerSimulator.csproj",
       "projectName": "ServerSimulator",
-      "projectPath": "C:\\Users\\Javi\\Documents\\GitHub\\javirsRepo\\ServerSimulator\\ServerSimulator\\ServerSimulator.csproj",
-      "packagesPath": "C:\\Users\\Javi\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Javi\\Documents\\GitHub\\javirsRepo\\ServerSimulator\\ServerSimulator\\obj\\",
+      "projectPath": "C:\\Users\\rodriguez\\Documents\\GitHub\\javirsRepo\\ServerSimulator\\ServerSimulator\\ServerSimulator.csproj",
+      "packagesPath": "C:\\Users\\rodriguez\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\rodriguez\\Documents\\GitHub\\javirsRepo\\ServerSimulator\\ServerSimulator\\obj\\",
       "projectStyle": "PackageReference",
       "skipContentFileWrite": true,
       "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackagesFallback\\"
+        "C:\\Program Files (x86)\\Microsoft SDKs\\UWPNuGetPackages\\"
       ],
       "configFilePaths": [
-        "C:\\Users\\Javi\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.Fallback.config"
+        "C:\\Users\\rodriguez\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "uap10.0.15063"
@@ -56,6 +56,9 @@
         "#import": []
       },
       "win10-arm-aot": {
+        "#import": []
+      },
+      "win10-arm64-aot": {
         "#import": []
       },
       "win10-x64": {
