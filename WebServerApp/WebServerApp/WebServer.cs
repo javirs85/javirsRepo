@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Windows.Networking;
 using Windows.Networking.Connectivity;
 using Windows.Networking.Sockets;
+using Windows.Storage;
 using Windows.Storage.Streams;
 
 namespace gameBrain
@@ -64,8 +65,10 @@ namespace gameBrain
             {
                 using (var response = output.AsStreamForWrite())
                 {
-                    var html = Encoding.UTF8.GetBytes(
-                    $"<html><head><title>Background Message</title></head><body>Hello from the background process!<br/>{query}</body></html>");
+                    var fileName = "file:\\"+Windows.ApplicationModel.Package.Current.InstalledLocation.Path + @"\Assets\web\index.html";
+                    var file = await ApplicationData.Current.LocalFolder.GetFileAsync(fileName);
+                    var data = await FileIO.ReadTextAsync(file);
+                    var html = Encoding.UTF8.GetBytes(data);
                     using (var bodyStream = new MemoryStream(html))
                     {
                         var header = $"HTTP/1.1 200 OK\r\nContent-Length: {bodyStream.Length}\r\nConnection: close\r\n\r\n";
