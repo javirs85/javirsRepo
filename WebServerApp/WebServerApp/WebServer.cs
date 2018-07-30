@@ -36,11 +36,12 @@ namespace gameBrain
             //await listener.BindServiceNameAsync(WebServerPort.ToString());
             
             Debug("server open, listening at "+ host.CanonicalName + ":" + WebServerPort.ToString());
+
         }
 
         private async void Listener_ConnectionReceived(StreamSocketListener sender, StreamSocketListenerConnectionReceivedEventArgs args)
         {
-            Debug("incomming connection");
+            string debug = "Inconmming connection ... ";
             var request = new StringBuilder();
 
             using (var input = args.Socket.InputStream)
@@ -61,10 +62,15 @@ namespace gameBrain
 
             string query = GetQuery(request);
 
+            debug += "requested " + query + " ... ";
+
             if (query != "favicon.ico")
             {
                 await ServeFile(args.Socket.OutputStream, query);
+                debug += "file served !";
             }
+
+            Debug(debug);
         }
 
         private async Task ServeFile(IOutputStream stream, string fileName)

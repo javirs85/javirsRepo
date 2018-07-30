@@ -13,7 +13,6 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
-using gameBrain;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -25,26 +24,32 @@ namespace WebServerApp
     public sealed partial class MainPage : Page
     {
 
-        WebServer server = null;
+        WebSocketNuget superSocket;
 
         public MainPage()
         {
             this.InitializeComponent();
+            superSocket = new WebSocketNuget();
+            superSocket.StartAll();
+            WebSocketNuget.newDebugMessageFromSuperServer += Debug;
+            WebSocketNuget.newMessageFromSocket += Debug;
+        }
 
-            server = new WebServer(8080);
-            server.newDebugMessage += async (o, msg) => 
-            {
-                await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () => {
-                    debug.Text += Environment.NewLine + msg;
-                });
-            };
-
-            server.Start();
+        private async void Debug(object o,  string msg)
+        {
+            await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () => {
+                debug.Text += Environment.NewLine + msg;
+            });
         }
 
         private void Stop_Click(object sender, RoutedEventArgs e)
         {
-            server.Stop();
+            superSocket.Stop();
+        }
+
+        private void Start_Click(object sender, RoutedEventArgs e)
+        {
+            superSocket.Send("testikitest");
         }
     }
 }
