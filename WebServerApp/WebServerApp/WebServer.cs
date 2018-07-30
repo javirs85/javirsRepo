@@ -61,14 +61,27 @@ namespace gameBrain
 
             string query = GetQuery(request);
 
-            using (var output = args.Socket.OutputStream)
+            if (query != "favicon.ico")
+            {
+                await ServeFile(args.Socket.OutputStream, query);
+            }
+        }
+
+        private async Task ServeFile(IOutputStream stream, string fileName)
+        {
+            using (var output = stream)
             {
                 using (var response = output.AsStreamForWrite())
                 {
-                    var fileName = "file:\\"+Windows.ApplicationModel.Package.Current.InstalledLocation.Path + @"\Assets\web\index.html";
-                    var file = await ApplicationData.Current.LocalFolder.GetFileAsync(fileName);
-                    var data = await FileIO.ReadTextAsync(file);
-                    var html = Encoding.UTF8.GetBytes(data);
+                    StorageFile f = await StorageFile.GetFileFromApplicationUriAsync(new Uri(@"ms-appx:///" + @"Assets/web/" + fileName));
+
+                    string content = "";
+                    using (var reader = new StreamReader(await f.OpenStreamForReadAsync()))
+                    {
+                        content = await reader.ReadToEndAsync();
+                    }
+
+                    var html = Encoding.UTF8.GetBytes(content);
                     using (var bodyStream = new MemoryStream(html))
                     {
                         var header = $"HTTP/1.1 200 OK\r\nContent-Length: {bodyStream.Length}\r\nConnection: close\r\n\r\n";
@@ -97,8 +110,10 @@ namespace gameBrain
                               ? requestLines[1] : string.Empty;
 
             var uri = new Uri("http://localhost" + url);
-            var query = uri.Query;
-            return query;
+            var item = uri.LocalPath.Substring(1);
+            if (item == "") item = "index.html";
+
+            return item;
         }
 
         private void Debug(string msg)
