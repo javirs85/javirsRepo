@@ -106,7 +106,9 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Message.cs" />
     <Compile Include="UDPController.cs" />
+    <Compile Include="Utils.cs" />
     <Compile Include="WebController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\Connectivity.rd.xml" />
@@ -118,12 +120,18 @@
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.1.7</Version>
     </PackageReference>
+    <PackageReference Include="Newtonsoft.Json">
+      <Version>11.0.2</Version>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\Site\index.html" />
     <EmbeddedResource Include="Resources\Site\js\gameBrain.js" />
     <EmbeddedResource Include="Resources\Site\js\jquery-3.3.1.js" />
     <EmbeddedResource Include="Resources\Site\myStyle.css" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\python\DeviceSim.py" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

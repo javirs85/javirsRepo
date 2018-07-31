@@ -39,7 +39,9 @@ namespace gameBrain
 
         public void Test()
         {
-            webServer.SendBroadcastMessage("This is a test");
+            Message msg = new Message() {MessageType= Utils.MessageTypes.showup };
+            string str = msg.Serialize();
+            UDPController.SendBroadcast(str);
         }
 
         private void ProccessNewFrame(object sender, string e)

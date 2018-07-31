@@ -39,7 +39,7 @@ namespace gameBrain
             connectedSockets = new List<WebSocket>();
             m_server.Start();
             
-            Debug("Started at "+GetLocalIp() + ":" +port);
+            Debug("Started at "+ Utils.GetLocalIp() + ":" +port);
         }
 
         public void Stop()
@@ -59,21 +59,7 @@ namespace gameBrain
                 socket.Send(str);
         }
 
-        private string GetLocalIp()
-        {
-            var icp = NetworkInformation.GetInternetConnectionProfile();
-
-            if (icp?.NetworkAdapter == null) return null;
-            var hostname =
-                NetworkInformation.GetHostNames()
-                    .SingleOrDefault(
-                        hn =>
-                            hn.IPInformation?.NetworkAdapter != null && hn.IPInformation.NetworkAdapter.NetworkAdapterId
-                            == icp.NetworkAdapter.NetworkAdapterId);
-
-            // the ip address
-            return hostname?.CanonicalName;
-        }
+       
 
         class WebSocketHandler : IWebSocketRequestHandler
         {
