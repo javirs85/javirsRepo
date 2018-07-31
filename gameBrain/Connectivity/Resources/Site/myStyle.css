@@ -1,0 +1,9 @@
+#mainContent
+{
+    background : red;
+}
+
+#sendButton{
+    padding: 20px;
+    background: #cacaca;
+}

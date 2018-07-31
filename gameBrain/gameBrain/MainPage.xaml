@@ -8,6 +8,10 @@
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <TextBlock x:Name="debugTB" FontSize="38">debug messages here:</TextBlock>
+        <StackPanel Background="#FFDADADA" Width="600" HorizontalAlignment="Left" Margin="30,0,0,0">
+            <TextBlock>debug messages here:</TextBlock>
+            <TextBlock x:Name="debugTB"></TextBlock>
+        </StackPanel>
+        <Button Width="300" Height="150" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="20" x:Name="TestButton" Click="TestButton_Click">Test</Button>
     </Grid>
 </Page>

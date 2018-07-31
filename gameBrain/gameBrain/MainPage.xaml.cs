@@ -22,28 +22,35 @@ namespace gameBrain
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        WebServer webServer = null;
+        WebController webServer = null;
 
         public MainPage()
         {
             this.InitializeComponent();
 
-            webServer = new WebServer(8080);
-            webServer.newDebugMessage += (o, e) => { Debug(e); };
-            webServer.Start();
+            webServer = new WebController();
+            WebController.NewDebugMessage += Debug;
+            WebController.NewFrameToProcess += ProcessNewFrame;
+            webServer.StartAll();
         }
 
-        
-
-        public void Debug(string msg)
+        private void ProcessNewFrame(object sender, string e)
         {
-            Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () => {
+            Debug(sender,"socket said: "+e);
+            webServer.SendBroadcastMessage("received!");
+        }
+
+        public async void Debug(object sender, string msg)
+        {
+            await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () => {
                 debugTB.Text += msg + Environment.NewLine;
             });
 
         }
 
-        
-
+        private void TestButton_Click(object sender, RoutedEventArgs e)
+        {
+            webServer.SendBroadcastMessage("This is a test");
+        }
     }
 }
