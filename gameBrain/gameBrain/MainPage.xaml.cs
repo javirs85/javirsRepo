@@ -22,23 +22,17 @@ namespace gameBrain
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        WebController webServer = null;
+        BrainController Brain;
 
         public MainPage()
         {
             this.InitializeComponent();
 
-            webServer = new WebController();
-            WebController.NewDebugMessage += Debug;
-            WebController.NewFrameToProcess += ProcessNewFrame;
-            webServer.StartAll();
+            Brain = new BrainController();
+            Brain.newDebugMessage += Debug;
+            Brain.StartAllConnnectivity();
         }
-
-        private void ProcessNewFrame(object sender, string e)
-        {
-            Debug(sender,"socket said: "+e);
-            webServer.SendBroadcastMessage("received!");
-        }
+        
 
         public async void Debug(object sender, string msg)
         {
@@ -50,7 +44,7 @@ namespace gameBrain
 
         private void TestButton_Click(object sender, RoutedEventArgs e)
         {
-            webServer.SendBroadcastMessage("This is a test");
+            Brain.Test();
         }
     }
 }
