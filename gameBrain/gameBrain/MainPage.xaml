@@ -9,5 +9,6 @@
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <TextBlock x:Name="debugTB" FontSize="38">debug messages here:</TextBlock>
+        <Button x:Name="broadcast" Width="250" Height="100" VerticalAlignment="Top" HorizontalAlignment="Right" Content="Find devices" Click="broadcast_Click"></Button>
     </Grid>
 </Page>

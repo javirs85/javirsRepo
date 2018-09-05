@@ -8,9 +8,9 @@ using IotWeb.Server;
 using IotWeb.Common.Http;
 using IotWeb.Common.Util;
 
-namespace WebServerApp
+namespace gameBrain
 {
-    class WebController
+    public class WebController
     {
         HttpServer webServer;
         public static List<WebSocket> Sockets;
@@ -20,7 +20,8 @@ namespace WebServerApp
         public void StartAll()
         {
             Sockets = new List<WebSocket>();
-            webServer = new HttpServer(8000);
+
+            webServer = new HttpServer(8006);
             webServer.AddHttpRequestHandler(
                 "/",
                 new HttpResourceHandler(
@@ -35,6 +36,8 @@ namespace WebServerApp
             );
 
             webServer.Start();
+            var Ip = Utils.GetLocalIp();
+            OnDebugMessage(null, "Web server oppened at " + Ip + ":8006");
         }
 
         public void Send(string msg)
@@ -57,11 +60,16 @@ namespace WebServerApp
 
     class WebSocketHandler : IWebSocketRequestHandler
     {
-        public void Connected(WebSocket socket)
+        public async void Connected(WebSocket socket)
         {
             WebController.Sockets.Add(socket);
             socket.DataReceived += Socket_DataReceived;
-            WebController.OnDebugMessage(socket, "Socket connected");
+
+            var storageFolder = Windows.Storage.ApplicationData.Current.LocalFolder;
+            var file = await storageFolder.CreateFileAsync("debug.txt", Windows.Storage.CreationCollisionOption.OpenIfExists);
+            var content = await Windows.Storage.FileIO.ReadTextAsync(file);
+            
+            WebController.OnDebugMessage(socket, "debug info: <br/>"+content);
         }
 
         private void Socket_DataReceived(WebSocket socket, string frame)

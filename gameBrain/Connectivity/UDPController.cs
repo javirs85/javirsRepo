@@ -25,8 +25,25 @@ namespace gameBrain
 
         public async void StartListening()
         {
-            await UDPListener.BindServiceNameAsync(baseUDPPort.ToString());
-            UDPListener.MessageReceived += UDPListener_MessageReceived;
+            try
+            {
+                await UDPListener.BindServiceNameAsync(baseUDPPort.ToString());
+                UDPListener.MessageReceived += UDPListener_MessageReceived;
+            }catch(Exception e)
+            {
+                Debug(e.Message);
+            }
+        }
+        private async void UDPListener_MessageReceived(Windows.Networking.Sockets.DatagramSocket sender, Windows.Networking.Sockets.DatagramSocketMessageReceivedEventArgs args)
+        {
+            string request = "";
+
+            using (var streamReader = new StreamReader(args.GetDataStream().AsStreamForRead()))
+            {
+                request = await streamReader.ReadLineAsync();
+            }
+
+            Debug(string.Format("UDP: " + request + "from:" + args.RemoteAddress.CanonicalName));
         }
 
         public static async void Send(string str, string ip = "192.168.1.40", bool isBroadcast = false)
@@ -63,17 +80,7 @@ namespace gameBrain
             Send(str, "255.255.255.255", true);
         }
 
-        private async void UDPListener_MessageReceived(Windows.Networking.Sockets.DatagramSocket sender, Windows.Networking.Sockets.DatagramSocketMessageReceivedEventArgs args)
-        {
-            string request = "";
-
-            using (var streamReader = new StreamReader(args.GetDataStream().AsStreamForRead()))
-            {
-                request = await streamReader.ReadLineAsync();
-            }
-
-            Debug(string.Format("UDP: "+ request + "from:" + args.RemoteAddress.CanonicalName));
-        }
+        
 
         public static event EventHandler<string> newUDPmessage;
 

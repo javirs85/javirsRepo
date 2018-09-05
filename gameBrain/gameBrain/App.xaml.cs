@@ -30,6 +30,11 @@ namespace gameBrain
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
+            this.UnhandledException += async (sender, e) => {
+                var storageFolder = Windows.Storage.ApplicationData.Current.LocalFolder;
+                var file = await storageFolder.CreateFileAsync("debug.txt", Windows.Storage.CreationCollisionOption.OpenIfExists);
+                await Windows.Storage.FileIO.WriteTextAsync(file, e.Message + Environment.NewLine + e.Exception.StackTrace + "---------------" + Environment.NewLine);
+            };
         }
 
         /// <summary>

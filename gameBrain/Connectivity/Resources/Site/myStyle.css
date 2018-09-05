@@ -1,0 +1,54 @@
+#mainContent
+{
+    background : red;
+}
+
+#sendButton{
+    padding: 20px;
+    background: gray;
+}
+
+#Puzzles {
+    
+}
+.puzzle {
+    padding: 10px;
+    margin: 10px;
+    background-color: #f9f9f9;
+    display: inline-block;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    width: 80%;
+    height: 106px;
+}
+.Name {
+    float: left;
+    font-size: 2em;
+}
+.Status {
+    position: absolute;
+    bottom: 40px;
+    left: 40px;
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #c31919;
+}
+.button {
+    position: absolute;
+    background-color: red;
+    width: 20%;
+    text-align: center;
+    margin: 5px;
+    padding: 5px;
+    width: 30%;
+    right: 40px;
+    padding: 5px;
+    height: 30px;
+    line-height: 30px;
+}
+.reset {
+    background-color: #f1c4c4;
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,0.1);
+}
+.open {
+    bottom: 20px;
+}

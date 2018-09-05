@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Sockets;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -22,28 +25,51 @@ namespace gameBrain
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        WebServer webServer = null;
+        WebController webServer = null;
 
         public MainPage()
         {
             this.InitializeComponent();
+            Debug(null," ");
+            webServer = new WebController();
+            WebController.newDebugMessageFromSuperServer += Debug;
+            WebController.newMessageFromSocket += ProcessNewMessageFromDevice;
+            webServer.StartAll();
 
-            webServer = new WebServer(8080);
-            webServer.newDebugMessage += (o, e) => { Debug(e); };
-            webServer.Start();
+
+            UDPController Udp = new UDPController();
+            UDPController.newUDPmessage += Debug;
+            Udp.StartListening();
+
+            UDPController.SendBroadcast("SHOWUP");
+
+            /*Puzzle local = new Puzzle("127.0.0.1", Utils.PuzzleKinds.button);
+            local.Reset();
+            */
         }
 
-        
 
-        public void Debug(string msg)
+        private void ProcessNewMessageFromDevice(object sender, string e)
         {
-            Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () => {
+            if (e == "discoveryRequest")
+                UDPController.SendBroadcast("ShowUp");
+            Debug(null, "Device said:" + e);
+        }
+
+        public void Debug(string str) { Debug(null, str); }
+
+        public async void Debug(object o, string msg)
+        {
+            await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () => {
                 debugTB.Text += msg + Environment.NewLine;
+                webServer.Send(msg);
             });
 
         }
 
-        
-
+        private void broadcast_Click(object sender, RoutedEventArgs e)
+        {
+            UDPController.SendBroadcast("SHOWUP");
+        }
     }
 }
