@@ -5,9 +5,30 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.Networking.Sockets;
+using Windows.Storage.Streams;
 
 namespace gameBrain
 {
+    class TCPConnexion
+    {
+        private StreamSocket TCPSocket;
+        private DataWriter TCPWriter;
+        private DataReader TCPReader;
+
+        public async void Connect(string ip)
+        {
+            TCPSocket = new StreamSocket();
+            await TCPSocket.ConnectAsync(new Windows.Networking.HostName(ip), Utils.devicesTCPPort.ToString());
+            TCPWriter = new DataWriter(TCPSocket.OutputStream);
+            TCPReader = new DataReader(TCPSocket.InputStream);
+        }
+
+        public async string Read()
+        {
+            await TCPSocket.
+        }
+    }
+
     class TCPController
     {
         int baseTCPPort = 50100;

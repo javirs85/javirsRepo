@@ -6,12 +6,11 @@ using System.Threading.Tasks;
 
 namespace gameBrain
 {
-    
-
     public class Puzzle
     {
         Utils.PuzzleKinds kind;
         string IP;
+        public bool IsOnline = false;
 
         public Puzzle(string _ip, Utils.PuzzleKinds _kind)
         {
