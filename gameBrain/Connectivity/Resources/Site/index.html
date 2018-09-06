@@ -1,6 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
     <title>My First HTML Page</title>
     <link rel="stylesheet" type="text/css" href="myStyle.css">
     <script type="text/JavaScript" src="js/jquery-3.3.1.js"></script>
@@ -9,17 +10,41 @@
     <body>
         <div id="Puzzles">
             <div id="P1" class="puzzle">
-                <div class="Name">Tester 1</div>
+                <div class="Name">Mapa iman</div>
                 <div class="Status">Cerrado</div>
-                <div class="reset button">RESET</div>
-                <div class="open button">OPEN</div>
+				<div class="buttonBox">
+					<button class="button disabled">RESET</button>
+					<button class="button active">OPEN</button>
+				</div>
             </div>
+     
+            <div id="P2" class="puzzle">
+                <div class="Name">Sonar</div>
+                <div class="Status">Cerrado</div>
+				<div class="buttonBox">
+					<button class="button disabled">RESET</button>
+					<button class="button active">OPEN</button>
+				</div>
+            </div>
+     
+            <div id="P3" class="puzzle">
+                <div class="Name">Relojes</div>
+                <div class="Status">Cerrado</div>
+				<div class="buttonBox">
+					<button class="button disabled">RESET</button>
+					<button class="button active">OPEN</button>
+				</div>
+            </div>
+			<button id="sendButton" class="blueButton">
+				DISCOVER
+			</button>
+		    <div id="mainContent">
+				<ul id="messages">
+					
+				</ul>
+			</div>
         </div>
-        <div id="mainContent">
-            <ul id="messages"></ul>
-        </div>
-        <div id="sendButton">
-            Discover
-        </div>
+ 
+        
     </body>
 </html>
