@@ -11,6 +11,10 @@ namespace gameBrain
     {
         public Utils.MessageTypes msgType;
         public Dictionary<string, string> data;
+        public Utils.PuzzleStatus Status;
+        public Utils.PuzzleKinds PuzleKind;
+
+        public string IPSender;
 
         public string Serialize()
         {

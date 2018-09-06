@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 namespace gameBrain
 {
+    
+
     public class Puzzle
     {
         Utils.PuzzleKinds kind;

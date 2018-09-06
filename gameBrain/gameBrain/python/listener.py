@@ -11,8 +11,7 @@ msgKinds = ["showup", "present", "reset", "forceSolve"]
 class Payload(object):
      def __init__(self, j):
          self.__dict__ = json.loads(j)
+     
+     def Print(self):
+         return self.__dict__[]
 
-	 def Print(self):
-		return self.__dict__[]
-
-print("{} from {}:{}".format(data, addr[0], addr[1]))

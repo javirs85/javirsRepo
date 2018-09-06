@@ -39,6 +39,7 @@ namespace gameBrain
 
             UDPController Udp = new UDPController();
             UDPController.newUDPmessage += Debug;
+            UDPController.newDeviceAppeared += UDPController_newDeviceAppeared;
             Udp.StartListening();
 
             UDPController.SendBroadcast("SHOWUP");
@@ -48,12 +49,16 @@ namespace gameBrain
             */
         }
 
+        private void UDPController_newDeviceAppeared(object sender, Message e)
+        {
+            Puzzle p = new Puzzle(e.IPSender, e.PuzleKind);
+        }
 
         private void ProcessNewMessageFromDevice(object sender, string e)
         {
             if (e == "discoveryRequest")
                 UDPController.SendBroadcast("ShowUp");
-            Debug(null, "Device said:" + e);
+            Debug(null, "Website requested:" + e);
         }
 
         public void Debug(string str) { Debug(null, str); }

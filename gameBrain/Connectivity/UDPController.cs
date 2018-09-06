@@ -11,9 +11,12 @@ namespace gameBrain
 {
     public class UDPController
     {
-        static int baseUDPPort = 60100;
-        static int devicesPort = 60101;
+        
         private DatagramSocket UDPListener = null;
+
+
+        public static event EventHandler<string> newUDPmessage;
+        public static event EventHandler<Message> newDeviceAppeared;
 
         public UDPController()
         {
@@ -27,7 +30,7 @@ namespace gameBrain
         {
             try
             {
-                await UDPListener.BindServiceNameAsync(baseUDPPort.ToString());
+                await UDPListener.BindServiceNameAsync(Utils.baseUDPPort.ToString());
                 UDPListener.MessageReceived += UDPListener_MessageReceived;
             }catch(Exception e)
             {
@@ -43,6 +46,29 @@ namespace gameBrain
                 request = await streamReader.ReadLineAsync();
             }
 
+            Message m = Message.Deserialize(request);
+
+            /*
+            Message m = new Message
+            {
+                msgType = Utils.MessageTypes.present,
+                Status = Utils.PuzzleStatus.unsolved,
+                data = new Dictionary<string, string>(),                
+            };
+            m.IPSender = args.RemoteAddress.CanonicalName;
+            m.data.Add("Name", "testName");
+            m.data.Add("Id", "123");
+
+            try
+            {
+                string str = m.Serialize();
+            }catch(Exception e)
+            {
+                ;
+            }
+            */
+            newDeviceAppeared?.Invoke(this, m);
+
             Debug(string.Format("UDP: " + request + "from:" + args.RemoteAddress.CanonicalName));
         }
 
@@ -56,7 +82,7 @@ namespace gameBrain
                         socket.Control.MulticastOnly = false;
 
                     var hn = new Windows.Networking.HostName(ip);
-                    using (Stream outStream = (await socket.GetOutputStreamAsync(hn, devicesPort.ToString())).AsStreamForWrite())
+                    using (Stream outStream = (await socket.GetOutputStreamAsync(hn, Utils.devicesUDPPort.ToString())).AsStreamForWrite())
                     {
                         using (var streamWriter = new StreamWriter(outStream))
                         {
@@ -65,7 +91,7 @@ namespace gameBrain
                         }
                     }
                 }
-                Debug("message sent via UDP: " + str + " @" + ip + ":" + devicesPort + "Broadcast: "+ isBroadcast);
+                Debug("message sent via UDP: " + str + " @" + ip + ":" + Utils.devicesUDPPort + "Broadcast: "+ isBroadcast);
             }
             catch(Exception e)
             {
@@ -82,7 +108,6 @@ namespace gameBrain
 
         
 
-        public static event EventHandler<string> newUDPmessage;
 
         private static void Debug(string msg)
         {

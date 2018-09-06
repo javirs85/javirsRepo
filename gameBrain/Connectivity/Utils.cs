@@ -9,11 +9,13 @@ namespace gameBrain
 {
     public class Utils
     {
-        public static string ServerIP = "192.168.43.1";
-        public static int UDPPort = 60101;
+        public static int baseUDPPort = 60100;
+        public static int devicesUDPPort = 60101;
+        public static int devicesTCPPort = 60201;
 
         public enum PuzzleKinds { sensor, motor, temperature, button }
         public enum MessageTypes { showup, present, reset, forceSolve };
+        public enum PuzzleStatus { unsolved, solved };
 
         public static string GetLocalIp()
         {
