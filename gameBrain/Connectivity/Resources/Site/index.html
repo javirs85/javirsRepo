@@ -5,45 +5,28 @@
     <title>My First HTML Page</title>
     <link rel="stylesheet" type="text/css" href="myStyle.css">
     <script type="text/JavaScript" src="js/jquery-3.3.1.js"></script>
+	<script type="text/javascript" src="js/puzzle.js"></script>
+	<script type="text/javascript" src="js/WebComm.js"></script>	
     <script type="text/javascript" src="js/gameBrain.js"></script>
+	<script type="text/javascript" src="js/UI.js"></script>
 </head>
     <body>
         <div id="Puzzles">
-            <div id="P1" class="puzzle">
-                <div class="Name">Mapa iman</div>
-                <div class="Status">Cerrado</div>
-				<div class="buttonBox">
-					<button class="button disabled">RESET</button>
-					<button class="button active">OPEN</button>
-				</div>
-            </div>
-     
-            <div id="P2" class="puzzle">
-                <div class="Name">Sonar</div>
-                <div class="Status">Cerrado</div>
-				<div class="buttonBox">
-					<button class="button disabled">RESET</button>
-					<button class="button active">OPEN</button>
-				</div>
-            </div>
-     
-            <div id="P3" class="puzzle">
-                <div class="Name">Relojes</div>
-                <div class="Status">Cerrado</div>
-				<div class="buttonBox">
-					<button class="button disabled">RESET</button>
-					<button class="button active">OPEN</button>
-				</div>
-            </div>
-			<button id="sendButton" class="blueButton">
-				DISCOVER
-			</button>
-		    <div id="mainContent">
-				<ul id="messages">
-					
-				</ul>
-			</div>
+            
         </div>
+		<button id="sendButton" class="blueButton">
+			DISCOVER
+		</button>
+		<div id="testingButtons">
+			<button id="test1" class="button testButton">test1</button>
+			<button id="test2" class="button testButton">test1</button>
+			<button id="test3" class="button testButton">test1</button>
+		</div>
+		<div id="mainContent">
+			<ul id="messages">
+				
+			</ul>
+		</div>
  
         
     </body>

@@ -37,6 +37,12 @@ body{
     
 }
 
+.labelsBox {
+	display: flex;
+    flex-flow: row;
+    align-items: baseline;
+}
+
 #Puzzles > div {
 	margin-bottom: 10px;
 }
@@ -49,14 +55,12 @@ body{
     height: 160px;
 }
 .Name {
-    position: absolute;
-    margin: 10px;
-    font-size: 2em;
+    font-size: 1.2em;
+	font-family: Lucida Console;
+	color: #cfcfd8;
+	margin: 10px;
 }
 .Status {
-    position: absolute;
-    top: 52px;
-    left: 55px;
     font-size: 1.5em;
     font-weight: bold;
     color: #c31919;
@@ -75,6 +79,7 @@ body{
     flex: 1;
     border: none;
 	outline: none;
+	cursor: pointer;
 	transition: all 0.2s;
 }
 .active {
@@ -108,4 +113,23 @@ body{
 	background-color: #eaeaea;
 	color: #aba9a9;
 	z-index:1;
+	cursor: default;
+}
+
+.green
+{
+	color:green;
+}
+
+#testingButtons{
+	display:flex;
+}
+#testingButtons > button {
+	background: #9a9090;
+	flex-grow:1;
+	margin: 5px 2px;
+}
+
+#testingButtons > button:active{
+	background: #847070;
 }
