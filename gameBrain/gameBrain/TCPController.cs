@@ -22,11 +22,12 @@ namespace gameBrain
             TCPWriter = new DataWriter(TCPSocket.OutputStream);
             TCPReader = new DataReader(TCPSocket.InputStream);
         }
-
+/*
         public async string Read()
         {
             await TCPSocket.
         }
+        */
     }
 
     class TCPController

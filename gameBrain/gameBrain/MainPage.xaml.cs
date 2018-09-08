@@ -52,6 +52,7 @@ namespace gameBrain
         private void UDPController_newDeviceAppeared(object sender, Message e)
         {
             Puzzle p = new Puzzle(e.IPSender, e.PuzleKind);
+            webServer.Send(e.Serialize());
         }
 
         private void ProcessNewMessageFromDevice(object sender, string e)

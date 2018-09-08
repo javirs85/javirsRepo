@@ -44,6 +44,8 @@ namespace gameBrain
         {
             foreach (var socket in Sockets)
                 socket.Send(msg);
+            //why not this one?? 
+            //WebController.OnDebugMessage(socket, "debug info: <br/>" + content);
         }
 
         public static void OnDebugMessage(WebSocket sender, string str)
@@ -60,16 +62,10 @@ namespace gameBrain
 
     class WebSocketHandler : IWebSocketRequestHandler
     {
-        public async void Connected(WebSocket socket)
+        public void Connected(WebSocket socket)
         {
             WebController.Sockets.Add(socket);
             socket.DataReceived += Socket_DataReceived;
-
-            var storageFolder = Windows.Storage.ApplicationData.Current.LocalFolder;
-            var file = await storageFolder.CreateFileAsync("debug.txt", Windows.Storage.CreationCollisionOption.OpenIfExists);
-            var content = await Windows.Storage.FileIO.ReadTextAsync(file);
-            
-            WebController.OnDebugMessage(socket, "debug info: <br/>"+content);
         }
 
         private void Socket_DataReceived(WebSocket socket, string frame)

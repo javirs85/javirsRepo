@@ -56,7 +56,11 @@ class Puzzle
 		this.MainDiv = $('<div id="'+this.ID+'"/>').addClass("puzzle");
 		var LabelsBox = $('<div class="labelsBox"/>');
 		LabelsBox.append("<div class='Name'>"+this.Name.toUpperCase()+"</div>");
-		this.StatusDiv = $("<div>"+this.Status+"</div>");
+		var textStatus = this.Status;
+		if(textStatus == 0)
+			textStatus = "Not started";
+		
+		this.StatusDiv = $("<div>"+textStatus+"</div>");
 		this.StatusDiv.addClass("Status");		
 		LabelsBox.append(this.StatusDiv);
 		this.MainDiv.append(LabelsBox);
