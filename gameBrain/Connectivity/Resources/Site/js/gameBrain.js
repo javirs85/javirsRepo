@@ -19,16 +19,30 @@ class gameBrain
 		//this.CreatePuzzle(1, "Sonar", "Fase 0");
 	}
 	
-	CreatePuzzle(ID, name, currentStatus)
+	CreatePuzzle(ID, name, currentStatus, Details)
 	{
 		if(puzzles.some( e => e.ID === "main"+ID))
 			appendError("tried to add puzzle ["+ID+", "+name+"]. But the ID already exists.");
 		else
 		{
-			var puzzle = new Puzzle(ID, name, currentStatus);
+			var puzzle = new Puzzle(ID, name, currentStatus, Details);
 			puzzles.push(puzzle);
 			AddNewPuzzletoUI(puzzle);
 			
 		}	
 	}
+	
+	UpdatePuzzle(message)
+	{
+		appendError("UpdatePuzzle not implemented yet");
+		var puzzle = puzzles.find(x => x.ID == message.Id);
+		appendError(puzzle);
+		if(puzzle.Status != message.Status)
+			puzzle.UpdateStatus(message.Status);
+		if(puzzle.Details != message.Details)
+			puzzle.UpdateDetails(message.Details);
+		//
+		//TODO find the puzzle by ID and update it ussing arr_from_json.Id, arr_from_json.Name, arr_from_json.Status, arr_from_json.Details
+	}
+	
 }

@@ -31,7 +31,12 @@ class WebComm
 	{
 		appendMsg(msg);
 		var arr_from_json = JSON.parse( msg );
-		Brain.CreatePuzzle(arr_from_json.data["Id"], arr_from_json.data["Name"], arr_from_json.Status);
+		if(arr_from_json.msgType == 1) //append new puzzle
+			Brain.CreatePuzzle(arr_from_json.Id, arr_from_json.Name, arr_from_json.Status, arr_from_json.Details);
+		else if(arr_from_json.msgType == 6) //Update existing puzzle
+			Brain.UpdatePuzzle(arr_from_json);
+		else
+			appendError("Unexpected message: " + arr_from_json.msgType);
 	}
 	
 	setSocketCallbacks()

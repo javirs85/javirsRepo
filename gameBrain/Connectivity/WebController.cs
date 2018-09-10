@@ -8,14 +8,13 @@ using IotWeb.Server;
 using IotWeb.Common.Http;
 using IotWeb.Common.Util;
 
-namespace gameBrain
+namespace gameSystem
 {
     public class WebController
     {
         HttpServer webServer;
         public static List<WebSocket> Sockets;
-        public static event EventHandler<string> newDebugMessageFromSuperServer;
-        public static event EventHandler<string> newMessageFromSocket;
+        public static event EventHandler<string> NewMessageFromSocket;
 
         public void StartAll()
         {
@@ -37,24 +36,19 @@ namespace gameBrain
 
             webServer.Start();
             var Ip = Utils.GetLocalIp();
-            OnDebugMessage(null, "Web server oppened at " + Ip + ":8006");
+
+            gameBrain.Debug("Web server oppened at " + Ip + ":8006", true);
         }
 
         public void Send(string msg)
         {
             foreach (var socket in Sockets)
                 socket.Send(msg);
-            //why not this one?? 
-            //WebController.OnDebugMessage(socket, "debug info: <br/>" + content);
         }
-
-        public static void OnDebugMessage(WebSocket sender, string str)
-        {
-            newDebugMessageFromSuperServer?.Invoke(sender, str);
-        }
+        
         public static void OnMessageFromSocket(WebSocket sender, string str)
         {
-            newMessageFromSocket?.Invoke(sender, str);
+            NewMessageFromSocket?.Invoke(sender, str);
         }
 
         public void Stop() { webServer.Stop(); }

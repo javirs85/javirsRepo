@@ -7,16 +7,46 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.Networking.Sockets;
 
-namespace gameBrain
+namespace gameSystem
 {
     public class UDPController
     {
-        
+
+        public static void Debug1()
+        {
+            Message m = new Message();
+            m.Id = 1;
+            m.Name = "Imanes";
+            m.Status = Utils.PuzzleStatus.unsolved;
+            m.PuzleKind = Utils.PuzzleKinds.button;
+            m.IPSender = "192.168.137.2";
+            m.Details = "This is a fake puzzle from memory";
+            m.data = null;
+            m.msgType = Utils.MessageTypes.present;
+
+            NewUDPmessageFromDevice?.Invoke(null, m);
+        }
+
+
+        public static void Debug2()
+        {
+            Message m = new Message();
+            m.Id = 1;
+            m.Name = "Imanes";
+            m.Status = Utils.PuzzleStatus.unsolved;
+            m.PuzleKind = Utils.PuzzleKinds.button;
+            m.IPSender = "192.168.137.2";
+            m.Details = "They moved some magnets!";
+            m.data = null;
+            m.msgType = Utils.MessageTypes.update;
+
+            NewUDPmessageFromDevice?.Invoke(null, m);
+        }
+
         private DatagramSocket UDPListener = null;
 
 
-        public static event EventHandler<string> newUDPmessage;
-        public static event EventHandler<Message> newDeviceAppeared;
+        public static event EventHandler<Message> NewUDPmessageFromDevice;
 
         public UDPController()
         {
@@ -25,6 +55,7 @@ namespace gameBrain
             //TODO: Add to the broadcast team
             //UDPListener.JoinMulticastGroup()
         }
+        
 
         public async void StartListening()
         {
@@ -34,7 +65,7 @@ namespace gameBrain
                 UDPListener.MessageReceived += UDPListener_MessageReceived;
             }catch(Exception e)
             {
-                Debug(e.Message);
+                gameBrain.Debug(e.Message);
             }
         }
         private async void UDPListener_MessageReceived(Windows.Networking.Sockets.DatagramSocket sender, Windows.Networking.Sockets.DatagramSocketMessageReceivedEventArgs args)
@@ -50,35 +81,15 @@ namespace gameBrain
 
                 Message m = Message.Deserialize(request);
 
-                newDeviceAppeared?.Invoke(this, m);
+                NewUDPmessageFromDevice?.Invoke(this, m);
 
-                /*
-                Message debugm = new Message
-                {
-                    msgType = Utils.MessageTypes.present,
-                    Status = Utils.PuzzleStatus.unsolved,
-                    data = new Dictionary<string, string>(),                
-                };
-                m.IPSender = args.RemoteAddress.CanonicalName;
-                m.data.Add("Name", "testName");
-                m.data.Add("Id", "123");
-
-                try
-                {
-                    string str = m.Serialize();
-                }catch(Exception e)
-                {
-                    ;
-                }
-
-                Debug("UDP: " + request + "from:" + args.RemoteAddress.CanonicalName);
-                */
             }
             catch (Exception e)
             {
                 ;
             }
         }
+
 
         public static async void Send(string str, string ip = "192.168.1.40", bool isBroadcast = false)
         {
@@ -99,11 +110,11 @@ namespace gameBrain
                         }
                     }
                 }
-                Debug("message sent via UDP: " + str + " @" + ip + ":" + Utils.devicesUDPPort + "Broadcast: "+ isBroadcast);
+                 gameBrain.Debug("message sent via UDP: " + str + " @" + ip + ":" + Utils.devicesUDPPort + "Broadcast: "+ isBroadcast);
             }
             catch(Exception e)
             {
-                Debug(e.Message);
+                gameBrain.Debug(e.Message);
             }
 
         }
@@ -114,13 +125,6 @@ namespace gameBrain
             Send(str, "255.255.255.255", true);
         }
 
-        
-
-
-        private static void Debug(string msg)
-        {
-            newUDPmessage?.Invoke(null, msg);
-        }
 
         /// <summary>
         /// this method helps with getting the subnet mask for the network from the device IP address:

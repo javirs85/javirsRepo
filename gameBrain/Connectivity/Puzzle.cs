@@ -4,13 +4,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace gameBrain
+namespace gameSystem
 {
     public class Puzzle
     {
-        Utils.PuzzleKinds kind;
-        string IP;
+        public int ID;
+        public string Name;
+        public Utils.PuzzleStatus Status;
+        public string Details;
+        public Utils.PuzzleKinds kind;
+        public string IP;
         public bool IsOnline = false;
+
 
         public Puzzle(string _ip, Utils.PuzzleKinds _kind)
         {

@@ -1,10 +1,11 @@
 class Puzzle
 {	
-	constructor(ID,Name, Status)
+	constructor(ID,Name, Status, newDetails)
 	{
 		this.ID = "main"+ID;
 		this.Name = Name;
 		this.Status = Status;
+		this.Details = newDetails;
 		this.MainDiv = "";
 		this.StatusDiv = "";
 		this.ResetButton = "";
@@ -14,6 +15,12 @@ class Puzzle
 		this.onResetClick = new CustomEvent('onResetClick');
 		this.onOpenClick = new CustomEvent('onOpenClick');
 		*/
+	}
+	
+	UpdateDetails(newDetails)
+	{
+		this.Details = newDetails;
+		this.DetailsDiv.html(newDetails);
 	}
 	
 	UpdateStatus(newStatus)
@@ -90,7 +97,7 @@ class Puzzle
 		
 		this.DetailsDiv = $("<div class='Details'/>");
 		var container = $("<div class='DetailsContainer'></div>");
-		this.DetailsDiv.html("detailsDetailsD etailsdetailsD etailsDetailsd etailsDetailsDetail sdetailsDe tailsDet ailsdetailsDeta ilsDetails")
+		this.DetailsDiv.html(this.Details)
 		container.append(this.DetailsDiv);
 		this.MainDiv.append(container); 
 		this.MainDiv.append(buttonBox);            

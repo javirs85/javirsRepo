@@ -52,7 +52,7 @@ namespace gameBrain
             }
             catch(Exception e)
             {
-                Debug(e.Message);
+                Debug("** ERROR"+e.Message);
             }
 
         }
@@ -72,14 +72,14 @@ namespace gameBrain
                 request = await streamReader.ReadLineAsync();
             }
 
-            Debug(string.Format("UDP: "+ request + "from:" + args.RemoteAddress.CanonicalName));
+            Debug(string.Format("recieved: "+ request + "from:" + args.RemoteAddress.CanonicalName));
         }
 
         public static event EventHandler<string> newUDPmessage;
 
         private static void Debug(string msg)
         {
-            newUDPmessage?.Invoke(null, msg);
+            gameBrain.De
         }
 
         /// <summary>
