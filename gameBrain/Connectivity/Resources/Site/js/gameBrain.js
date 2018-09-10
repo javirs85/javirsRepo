@@ -15,13 +15,13 @@ class gameBrain
 	{		
 		WebServer.Start();
 		
-		this.CreatePuzzle(0, "mapa imanes", "sin tocar");
-		this.CreatePuzzle(1, "Sonar", "Fase 0");
+		//this.CreatePuzzle(0, "mapa imanes", "sin tocar");
+		//this.CreatePuzzle(1, "Sonar", "Fase 0");
 	}
 	
 	CreatePuzzle(ID, name, currentStatus)
 	{
-		if(puzzles.some( e => e.ID == "main"+ID))
+		if(puzzles.some( e => e.ID === "main"+ID))
 			appendError("tried to add puzzle ["+ID+", "+name+"]. But the ID already exists.");
 		else
 		{

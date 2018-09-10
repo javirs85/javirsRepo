@@ -39,37 +39,45 @@ namespace gameBrain
         }
         private async void UDPListener_MessageReceived(Windows.Networking.Sockets.DatagramSocket sender, Windows.Networking.Sockets.DatagramSocketMessageReceivedEventArgs args)
         {
-            string request = "";
-
-            using (var streamReader = new StreamReader(args.GetDataStream().AsStreamForRead()))
-            {
-                request = await streamReader.ReadLineAsync();
-            }
-
-            Message m = Message.Deserialize(request);
-
-            /*
-            Message m = new Message
-            {
-                msgType = Utils.MessageTypes.present,
-                Status = Utils.PuzzleStatus.unsolved,
-                data = new Dictionary<string, string>(),                
-            };
-            m.IPSender = args.RemoteAddress.CanonicalName;
-            m.data.Add("Name", "testName");
-            m.data.Add("Id", "123");
-
             try
             {
-                string str = m.Serialize();
-            }catch(Exception e)
+                string request = "";
+
+                using (var streamReader = new StreamReader(args.GetDataStream().AsStreamForRead()))
+                {
+                    request = await streamReader.ReadLineAsync();
+                }
+
+                Message m = Message.Deserialize(request);
+
+                newDeviceAppeared?.Invoke(this, m);
+
+                /*
+                Message debugm = new Message
+                {
+                    msgType = Utils.MessageTypes.present,
+                    Status = Utils.PuzzleStatus.unsolved,
+                    data = new Dictionary<string, string>(),                
+                };
+                m.IPSender = args.RemoteAddress.CanonicalName;
+                m.data.Add("Name", "testName");
+                m.data.Add("Id", "123");
+
+                try
+                {
+                    string str = m.Serialize();
+                }catch(Exception e)
+                {
+                    ;
+                }
+
+                Debug("UDP: " + request + "from:" + args.RemoteAddress.CanonicalName);
+                */
+            }
+            catch (Exception e)
             {
                 ;
             }
-            */
-            newDeviceAppeared?.Invoke(this, m);
-
-            Debug(string.Format("UDP: " + request + "from:" + args.RemoteAddress.CanonicalName));
         }
 
         public static async void Send(string str, string ip = "192.168.1.40", bool isBroadcast = false)

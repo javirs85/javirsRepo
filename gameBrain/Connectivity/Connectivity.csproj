@@ -125,7 +125,11 @@
       <Version>11.0.2</Version>
     </PackageReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Site\js\puzzle.js" />
+    <EmbeddedResource Include="Resources\Site\js\UI.js" />
+    <EmbeddedResource Include="Resources\Site\js\WebComm.js" />
+  </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\Site\index.html" />
     <EmbeddedResource Include="Resources\Site\js\gameBrain.js" />
