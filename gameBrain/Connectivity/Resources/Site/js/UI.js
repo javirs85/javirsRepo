@@ -19,8 +19,6 @@
 	puzzles = [];
 	
 $(document).ready(function () {
-	
-	//var Brain = new gameBrain();
 	Brain.Start();
 	
     $("#sendButton").click(function () {
@@ -32,7 +30,7 @@ $(document).ready(function () {
 		p.WentSolved();
 	});
 	$("#test2").click(function () {
-		var p = puzzles.find(x=>x.ID == "main0");
+		var p = puzzles.find(x=>x.ID == "main1");
 		p.WentOnline("up and running");
 	});
 });

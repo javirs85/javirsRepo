@@ -65,6 +65,18 @@ body{
     font-weight: bold;
     color: #c31919;
 }
+.DetailsContainer{
+	display: flex;
+    width: 70%;
+	height:70%;
+    align-items: center;
+    align-content: center;
+    text-align: center;
+}
+.Details{
+	color: #4e4e4e;
+
+}
 .buttonBox {
 	display: flex;
     position: absolute;
@@ -119,6 +131,10 @@ body{
 .green
 {
 	color:green;
+}
+.gray
+{
+	color: #a9a9a9;
 }
 
 #testingButtons{

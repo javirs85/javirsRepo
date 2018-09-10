@@ -2,6 +2,13 @@ class gameBrain
 {	
 	constructor()
 	{
+		addEventListener('onOpenClick', function(elem){			
+			appendMsg("GB: user requested force-opening "+elem.detail.Name);
+			}, false);
+			
+		addEventListener('onResetClick', function(elem){
+			appendMsg("GB: user requested reseting "+elem.detail.Name);
+			}, false);
 	}
 	
 	Start()
@@ -21,6 +28,7 @@ class gameBrain
 			var puzzle = new Puzzle(ID, name, currentStatus);
 			puzzles.push(puzzle);
 			AddNewPuzzletoUI(puzzle);
+			
 		}	
 	}
 }

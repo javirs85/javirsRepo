@@ -9,6 +9,11 @@ class Puzzle
 		this.StatusDiv = "";
 		this.ResetButton = "";
 		this.OpenButton = "";
+		this.DetailsDiv = "";
+		/*
+		this.onResetClick = new CustomEvent('onResetClick');
+		this.onOpenClick = new CustomEvent('onOpenClick');
+		*/
 	}
 	
 	UpdateStatus(newStatus)
@@ -20,7 +25,8 @@ class Puzzle
 	WentOffline(){
 		this.MainDiv.fadeTo("slow", 0.5);
 		this.Status = "Offline";
-		this.StatusDiv.html(this.Status);
+		this.StatusDiv.html(this.Status);		
+		this.DetailsDiv.addClass("gray");
 		this.ResetButton.removeClass("active");
 		this.ResetButton.addClass("disabled");
 		this.OpenButton.removeClass("active");
@@ -31,7 +37,8 @@ class Puzzle
 	{
 		this.MainDiv.fadeTo("slow", 1);
 		this.Status = newStatus;
-		this.StatusDiv.html(this.Status);
+		this.StatusDiv.html(this.Status);		
+		this.DetailsDiv.removeClass("gray");
 		this.StatusDiv.removeClass("green");
 		this.ResetButton.addClass("active");
 		this.ResetButton.removeClass("disabled");
@@ -44,6 +51,7 @@ class Puzzle
 		this.MainDiv.fadeTo("slow", 0.5);
 		this.Status = "SOLVED";
 		this.StatusDiv.addClass("green");
+		this.DetailsDiv.addClass("gray");
 		this.StatusDiv.html(this.Status);
 		this.ResetButton.removeClass("active");
 		this.ResetButton.addClass("disabled");
@@ -75,17 +83,23 @@ class Puzzle
 		});
 		buttonBox.append(this.ResetButton);
 		buttonBox.append(this.OpenButton);
+		
+		this.DetailsDiv = $("<div class='Details'/>");
+		var container = $("<div class='DetailsContainer'></div>");
+		this.DetailsDiv.html("detailsDetailsD etailsdetailsD etailsDetailsd etailsDetailsDetail sdetailsDe tailsDet ailsdetailsDeta ilsDetails")
+		container.append(this.DetailsDiv);
+		this.MainDiv.append(container); 
 		this.MainDiv.append(buttonBox);            
 	}
 	
 	OpenClicked()
 	{
-		appendMsg("user requested force-opening "+this.Name);
+		dispatchEvent(new CustomEvent('onOpenClick', {'detail':this}));
 	}
 	
 	ResetClicked()
 	{
-		appendMsg("user requested reseting "+this.Name);
+		dispatchEvent(new CustomEvent('onResetClick', {'detail':this}));
 	}
 	
 	static fromIDToPuzzle(id)
