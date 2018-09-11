@@ -35,6 +35,10 @@ class WebComm
 			Brain.CreatePuzzle(arr_from_json.Id, arr_from_json.Name, arr_from_json.Status, arr_from_json.Details);
 		else if(arr_from_json.msgType == 6) //Update existing puzzle
 			Brain.UpdatePuzzle(arr_from_json);
+		else if(arr_from_json.msgType == 4) //debug
+			appendMsg(arr_from_json.data["debugInfo"]+"<br/>"+arr_from_json.data["callStack"]);
+		else if(arr_from_json.msgType == 5) //error
+			appendError(arr_from_json.data["errorInfo"]+"<br/>"+arr_from_json.data["callStack"]);
 		else
 			appendError("Unexpected message: " + arr_from_json.msgType);
 	}

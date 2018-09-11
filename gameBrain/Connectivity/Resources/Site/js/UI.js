@@ -22,7 +22,7 @@ $(document).ready(function () {
 	Brain.Start();
 	
     $("#sendButton").click(function () {
-		Server.SendDiscoveryMessage();		
+		WebServer.SendDiscoveryMessage();		
     });	
 	
 	$("#test1").click(function () {

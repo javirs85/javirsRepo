@@ -21,7 +21,7 @@ class gameBrain
 	
 	CreatePuzzle(ID, name, currentStatus, Details)
 	{
-		if(puzzles.some( e => e.ID === "main"+ID))
+		if(puzzles.some( e => e.ID === ID))
 			appendError("tried to add puzzle ["+ID+", "+name+"]. But the ID already exists.");
 		else
 		{
@@ -34,9 +34,7 @@ class gameBrain
 	
 	UpdatePuzzle(message)
 	{
-		appendError("UpdatePuzzle not implemented yet");
 		var puzzle = puzzles.find(x => x.ID == message.Id);
-		appendError(puzzle);
 		if(puzzle.Status != message.Status)
 			puzzle.UpdateStatus(message.Status);
 		if(puzzle.Details != message.Details)
