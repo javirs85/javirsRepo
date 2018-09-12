@@ -141,6 +141,7 @@
     <EmbeddedResource Include="Resources\Site\Drawer\drawer.min.css" />
     <EmbeddedResource Include="Resources\Site\Drawer\drawer.min.js" />
     <EmbeddedResource Include="Resources\Site\Drawer\iscroll.min.js" />
+    <Content Include="Resources\Site\favicon.ico" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

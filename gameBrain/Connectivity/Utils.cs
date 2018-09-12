@@ -38,7 +38,7 @@ namespace gameSystem
                         "PuzleKind":0,
                         "IPSender":"192.168.137.7"}'
 
-            present:    '{"msgType":2,
+            reset:     '{ "msgType":2,
                         "Name":"laptop",
                         "Id":"0",
                         "Status":0,
@@ -46,7 +46,7 @@ namespace gameSystem
                         "PuzleKind":0,
                         "IPSender":"192.168.137.7"}'
 
-            reset:     '{ "msgType":3,
+            forceSolve: '{"msgType":3,
                         "Name":"laptop",
                         "Id":"0",
                         "Status":0,
@@ -54,15 +54,7 @@ namespace gameSystem
                         "PuzleKind":0,
                         "IPSender":"192.168.137.7"}'
 
-            forceSolve: '{"msgType":4,
-                        "Name":"laptop",
-                        "Id":"0",
-                        "Status":0,
-                        "Details":"repeated same old details",
-                        "PuzleKind":0,
-                        "IPSender":"192.168.137.7"}'
-
-            debug:     '{ "msgType":5,
+            debug:     '{ "msgType":4,
                         "Name":"laptop",
                         "Id":"0",
                         "data":{
@@ -86,7 +78,7 @@ namespace gameSystem
                         "PuzleKind":0,
                         "IPSender":"192.168.137.7"}
 
-            update:     '{"msgType":4,
+            update:     '{"msgType":6,
                         "Name":"laptop",
                         "Id":"0",
                         "Status":0,

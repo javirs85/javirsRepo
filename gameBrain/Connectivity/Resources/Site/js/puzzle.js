@@ -2,7 +2,7 @@ class Puzzle
 {	
 	constructor(ID,Name, Status, newDetails)
 	{
-		this.ID = "main"+ID;
+		this.ID = ID;
 		this.Name = Name;
 		this.Status = Status;
 		this.Details = newDetails;
@@ -68,7 +68,7 @@ class Puzzle
 	
 	generateDiv()
 	{
-		this.MainDiv = $('<div id="'+this.ID+'"/>').addClass("puzzle");
+		this.MainDiv = $('<div id="'+"main"+this.ID+'"/>').addClass("puzzle");
 		var LabelsBox = $('<div class="labelsBox"/>');
 		LabelsBox.append("<div class='Name'>"+this.Name.toUpperCase()+"</div>");
 		var textStatus = this.Status;
@@ -115,13 +115,18 @@ class Puzzle
 	
 	static fromIDToPuzzle(id)
 	{
+		return puzzles.find(x=> x.ID == "main"+id);
+	}
+	
+	static fromMAINIDEToPuzzle(mainID)
+	{
 		return puzzles.find(x=> x.ID == id);
 	}
 	
 	static fromButtonToPuzzle(item)
 	{
 		var id = $(item).parent().parent().attr('id');
-		return Puzzle.fromIDToPuzzle(id);
+		return Puzzle.fromMAINIDEToPuzzle(id);
 	}
 
 }
