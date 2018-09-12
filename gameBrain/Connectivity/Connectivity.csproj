@@ -137,6 +137,11 @@
     <EmbeddedResource Include="Resources\Site\js\jquery-3.3.1.js" />
     <EmbeddedResource Include="Resources\Site\myStyle.css" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Site\Drawer\drawer.min.css" />
+    <EmbeddedResource Include="Resources\Site\Drawer\drawer.min.js" />
+    <EmbeddedResource Include="Resources\Site\Drawer\iscroll.min.js" />
+  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

@@ -21,8 +21,13 @@
 $(document).ready(function () {
 	Brain.Start();
 	
+	$('.drawer').drawer();
+	
     $("#sendButton").click(function () {
-		Server.SendDiscoveryMessage();		
+		if(typeof Server !== 'undefined')
+			Server.SendDiscoveryMessage();		
+		else
+			appendError("Server not connected");
     });	
 	
 	$("#test1").click(function () {

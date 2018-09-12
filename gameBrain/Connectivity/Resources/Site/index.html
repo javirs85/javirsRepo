@@ -4,30 +4,49 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
     <title>My First HTML Page</title>
     <link rel="stylesheet" type="text/css" href="myStyle.css">
+	<link rel="stylesheet" href="Drawer/drawer.min.css">
+	
     <script type="text/JavaScript" src="js/jquery-3.3.1.js"></script>
+	
+	<script src="Drawer/iscroll.min.js"></script>
+	<script src="Drawer/drawer.min.js"></script>
+	
 	<script type="text/javascript" src="js/puzzle.js"></script>
 	<script type="text/javascript" src="js/WebComm.js"></script>	
     <script type="text/javascript" src="js/gameBrain.js"></script>
 	<script type="text/javascript" src="js/UI.js"></script>
 </head>
-    <body>
-        <div id="Puzzles">
-            
-        </div>
-		<button id="sendButton" class="blueButton">
-			DISCOVER
-		</button>
-		<div id="testingButtons">
-			<button id="test1" class="button testButton">test1</button>
-			<button id="test2" class="button testButton">test1</button>
-			<button id="test3" class="button testButton">test1</button>
-		</div>
-		<div id="mainContent">
-			<ul id="messages">
+    <body class="drawer drawer--left">
+		<header role="banner">
+			<button type="button" class="drawer-toggle drawer-hamburger">
+			  <span class="sr-only">toggle navigation</span>
+			  <span class="drawer-hamburger-icon"></span>
+			</button>
+			<nav class="drawer-nav" role="navigation">
+			  
+			  <div id="mainContent">
+				<ul id="messages">
+					
+				</ul>
+			</div>
+			</nav>
+		</head>
+	
+		<div roler="main">
+			
+			<button id="sendButton" class="blueButton">
+				DISCOVER
+			</button>
+			<div id="Puzzles">
 				
-			</ul>
-		</div>
+			</div>
+			<div id="testingButtons">
+				<button id="test1" class="button testButton">test1</button>
+				<button id="test2" class="button testButton">test1</button>
+				<button id="test3" class="button testButton">test1</button>
+			</div>
+			
  
-        
+        </div>
     </body>
 </html>
