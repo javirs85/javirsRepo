@@ -60,6 +60,18 @@ namespace gameSystem
         {
             WebController.Sockets.Add(socket);
             socket.DataReceived += Socket_DataReceived;
+
+            Message m = new Message
+            {
+                msgType = Utils.MessageTypes.overwrite,
+                data = new Dictionary<string, string>()
+            };
+            foreach (var p in gameBrain.Puzzles) {
+                m.data.Add(p.ID.ToString(), (new Message(p).Serialize()));
+            }
+
+            socket.Send(m.Serialize());
+            
         }
 
         private void Socket_DataReceived(WebSocket socket, string frame)

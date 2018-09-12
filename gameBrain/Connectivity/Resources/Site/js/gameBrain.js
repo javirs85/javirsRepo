@@ -16,6 +16,7 @@ class gameBrain
 		WebServer.Start();
 		
 		this.CreatePuzzle(0, "mapa imanes", "sin tocar");
+		//this.CreatePuzzle(0, "mapa imanes", "sin tocar");
 		//this.CreatePuzzle(1, "Sonar", "Fase 0");
 	}
 	

@@ -18,7 +18,7 @@ namespace gameSystem
         public enum PuzzleKinds { sensor, motor, temperature, button, server }
         public enum PuzzleStatus { unsolved, solved, unset };
 
-        public enum MessageTypes { showup, present, reset, forceSolve, debug, error, update };
+        public enum MessageTypes { showup, present, reset, forceSolve, debug, error, update, overwrite };
 
         /*
          Message structure:
@@ -83,6 +83,14 @@ namespace gameSystem
                         "Id":"0",
                         "Status":0,
                         "Details":"new details",
+                        "PuzleKind":0,
+                        "IPSender":"192.168.137.7"}'
+
+            overwrite:  '{"msgType":7,
+                        "Name":"laptop",
+                        "Id":"0",
+                        "Status":0,
+                        "data":Array,
                         "PuzleKind":0,
                         "IPSender":"192.168.137.7"}'
              
