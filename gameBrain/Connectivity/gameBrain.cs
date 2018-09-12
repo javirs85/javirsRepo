@@ -14,7 +14,6 @@ namespace gameSystem
         static WebController webServer = null;
         static UDPController Udp = null;
 
-        static List<Puzzle> Puzzles;
         public static List<Puzzle> Puzzles;
 
         public static void Start()
