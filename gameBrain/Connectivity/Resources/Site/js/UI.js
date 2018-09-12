@@ -2,12 +2,12 @@
     function appendMsg(msg) {
         $("#messages").append("<li>" + msg + "</li>");
     }
-	
+
 	function appendError(msg){
 		$("#messages").append("<li class='error'>" + msg + "</li>");
 	}
-	
-	
+
+
 	function AddNewPuzzletoUI(puzzle)
 	{
 		puzzle.generateDiv();
@@ -17,19 +17,21 @@
 	Brain = new gameBrain();
 	WebServer = new WebComm();
 	puzzles = [];
-	
+
 $(document).ready(function () {
 	Brain.Start();
-	
+
 	$('.drawer').drawer();
-	
+
     $("#sendButton").click(function () {
-		if(typeof Server !== 'undefined')
-			Server.SendDiscoveryMessage();		
+
+		if(typeof WebServer !== 'undefined')
+			WebServer.SendDiscoveryMessage();		
 		else
 			appendError("Server not connected");
-    });	
-	
+
+    });
+
 	$("#test1").click(function () {
 		var p = puzzles.find(x=>x.ID == "main0");
 		p.WentSolved();
