@@ -1,4 +1,3 @@
-
 from machine import Pin
 from time import sleep
 import os
@@ -23,10 +22,10 @@ print(sta_if.ifconfig())
 
 import UDPController
 UDP = UDPController.UDPController()
-UDP.localIp = sta_if.ifconfig()[0]
+UDP.init(sta_if.ifconfig()[0])
 
 
-button = Pin(12, Pin.IN, Pin.PULL_UP)
+button = Pin(14, Pin.IN, Pin.PULL_UP)
 led = Pin(0,Pin.OUT)
 led.value(0)
 currentValue = button.value()
@@ -36,6 +35,11 @@ while True:
   if msg == "ShowUp":
     print("Showup from server")
     UDP.SendPresent()
+  elif msg is None:
+    pass
+  else:
+    print("received unexpected msg from server:")
+    print(msg)
     
   newValue = button.value()
   if newValue != currentValue:
@@ -50,6 +54,7 @@ while True:
     
   time.sleep(0.1)
   
+
 
 
 

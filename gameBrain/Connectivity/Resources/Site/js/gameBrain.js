@@ -22,14 +22,35 @@ class gameBrain
 	CreatePuzzle(ID, name, currentStatus, Details)
 	{
 		if(puzzles.some( e => e.ID === ID))
+		{
 			appendError("tried to add puzzle ["+ID+", "+name+"]. But the ID already exists.");
+			return false;
+		}
 		else
 		{
 			var puzzle = new Puzzle(ID, name, currentStatus, Details);
 			puzzles.push(puzzle);
-			AddNewPuzzletoUI(puzzle);
-			
+			AddNewPuzzletoUI(puzzle);		
 		}	
+	}
+	
+	UpgradeList(msg)
+	{
+		Object.values(msg.data).forEach( function(item){
+			var itemToAdd = JSON.parse(item);
+			var puzzleToEdit = puzzles.find(x => x.ID == itemToAdd.ID);
+			
+			if(puzzleToEdit == null)
+			{
+				var puzzle = new Puzzle(itemToAdd.Id, itemToAdd.Name, itemToAdd.Status, itemToAdd.Details);
+				puzzles.push(puzzle);
+				AddNewPuzzletoUI(puzzle);
+			}
+			else
+			{
+				UpdatePuzzle(puzzleToEdit);
+			}	
+		});	
 	}
 	
 	UpdatePuzzle(message)

@@ -41,7 +41,7 @@ class WebComm
 			appendError(arr_from_json.data["errorInfo"]+"<br/>"+arr_from_json.data["callStack"]);
 		else if(arr_from_json.msgType == 7) //overwrite
 		{
-			appendMsg("updating database");
+			Brain.UpgradeList(arr_from_json);
 		}
 		else
 			appendError("Unexpected message: " + arr_from_json.msgType);
