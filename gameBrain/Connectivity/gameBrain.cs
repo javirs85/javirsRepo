@@ -25,6 +25,7 @@ namespace gameSystem
             Udp = new UDPController();
             UDPController.NewUDPmessageFromDevice += UDPController_NewUDPmessageFromDevice;
             Udp.StartListening();
+            
 
             Puzzles = new List<Puzzle>();
 
@@ -41,7 +42,16 @@ namespace gameSystem
                 {
                     case Utils.MessageTypes.present:
                         if (Puzzles.Any(x => x.ID == m.Id))
+                        {
+                            var p = Puzzles.Find(x => x.ID == m.Id);
+                            if (p.TCP.IsConnected)
+                                p.TCP.Send("HEllo");
+                            else
+                            {
+                                p.TCP.Connect(p.IP);
+                            }
                             DebugErrorMsg("Tried to add a puzzle with ID: " + m.Id + " but it already esists.");
+                        }
                         else
                         {
                             Puzzles.Add(m.getPuzzle());
