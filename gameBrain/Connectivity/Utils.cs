@@ -13,7 +13,7 @@ namespace gameSystem
 
         public static int baseUDPPort = 60100;
         public static int devicesUDPPort = 60101;
-        public static int devicesTCPPort = 60201;
+        public static int devicesTCPPort = 50100;
 
         public enum PuzzleKinds { sensor, motor, temperature, button, server }
         public enum PuzzleStatus { unsolved, solved, unset };
