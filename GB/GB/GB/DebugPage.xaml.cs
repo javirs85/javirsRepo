@@ -55,7 +55,14 @@ namespace GB
 
         private void Button_Clicked_2(object sender, EventArgs e)
         {
-
+            GameBrain.puzzles[0]?.Send(
+                new gameTools.Message()
+                {
+                    msgType = gameTools.Utils.MessageTypes.debug,
+                    Data = new Dictionary<string, string>() {
+                        { "msg", "testing" }
+                    }
+                });
         }
     }
 }
