@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<TabbedPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            xmlns:GB="clr-namespace:GB"
+             x:Class="GB.MainTabbedPage">
+  <!--Pages can be added as references or inline-->
+  <GB:DebugPage Title="Debug" />
+  <GB:PuzzlesPage Title="Puzzles" />
+  <ContentPage Title="Actions" />
+</TabbedPage>

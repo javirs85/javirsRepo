@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+    
+    
+    
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:GBControlStation"
+             x:Class="GB.DebugPage">
+    <ContentPage.Resources>
+        <Color x:Key="dark-primary-color">#303F9F"</Color>
+        <Color x:Key="default-primary-color">#3F51B5</Color>
+        <Color x:Key="light-primary-color">#C5CAE9</Color>
+        <Color x:Key="text-primary-color">#FFFFFF</Color>
+        <Color x:Key="accent-color">#448AFF</Color>
+        <Color x:Key="primary-text-color">#212121</Color>
+        <Color x:Key="secondary-text-color">#757575</Color>
+        <Color x:Key="divider-color">#BDBDBD</Color>
+
+    </ContentPage.Resources>
+    
+    
+
+    <FlexLayout Direction="Column">
+
+        <!--footer buttons-->
+
+
+        <!-- main content-->
+        <StackLayout BackgroundColor="White" FlexLayout.Grow="1" x:Name="debugContainer">
+            <StackLayout.Resources>
+                <Style TargetType="Label">
+                    <Setter Property="TextColor" Value="{StaticResource primary-text-color}"/>
+                </Style>
+            </StackLayout.Resources>
+            <Label x:Name="myLabel" Text="Welcome to Xamarin.Forms!"/>
+        </StackLayout>
+        <StackLayout 
+            Orientation="Horizontal"  
+            BackgroundColor="{StaticResource light-primary-color}" 
+            Spacing="0"
+            HeightRequest="70">
+            <StackLayout.Resources>
+                <Style TargetType="Button">
+                    <Setter Property="BackgroundColor" Value="{StaticResource dark-primary-color}"/>
+                </Style>
+            </StackLayout.Resources>
+            <Button Text="Test1" x:Name="test1" HorizontalOptions="FillAndExpand" Clicked="Button_Clicked"/>
+            <Button Text="Test2" x:Name="test2" HorizontalOptions="FillAndExpand" Clicked="Button_Clicked_1"/>
+            <Button Text="Test3" x:Name="test3"  HorizontalOptions="FillAndExpand" Clicked="Button_Clicked_2"/>
+        </StackLayout>
+    </FlexLayout>
+</ContentPage>
