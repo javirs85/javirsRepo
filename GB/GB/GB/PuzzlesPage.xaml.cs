@@ -18,48 +18,40 @@ namespace GB
             InitializeComponent();
             AddPuzzleContainer();
             AddPuzzleContainer();
+            AddPuzzleContainer();
         }
 
         public void AddPuzzleContainer()
         {
 
-            Grid g = new Grid() { BackgroundColor = Color.White, Margin = new Thickness(0,10,10,0), ColumnSpacing = 0};
-            g.ColumnDefinitions = new ColumnDefinitionCollection();
-            g.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
-            g.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(80, GridUnitType.Absolute) });
-            g.RowDefinitions = new RowDefinitionCollection();
-            g.RowDefinitions.Add(new RowDefinition() { Height = 80 });
-            g.RowDefinitions.Add(new RowDefinition() { Height = 80 });
+            Grid g = new Grid() { BackgroundColor = Color.White, Margin = new Thickness(10), ColumnSpacing = 0 };
+            g.ColumnDefinitions = new ColumnDefinitionCollection
+            {
+                new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) },
+                new ColumnDefinition() { Width = new GridLength(80, GridUnitType.Absolute) }
+            };
 
             MainContainer.Children.Add(g);
 
-
-            
+            StackLayout buttonsContainer = new StackLayout();
+            g.Children.Add(buttonsContainer);
+            Grid.SetColumn(buttonsContainer, 1);
 
             Button OpenButton = new Button() { Text = "OPEN" };
-            g.Children.Add(OpenButton);
-            Grid.SetColumn(OpenButton, 1);
+            buttonsContainer.Children.Add(OpenButton);
             Button resetButton = new Button() { Text = "RESET"};
-            g.Children.Add(resetButton);
-            Grid.SetColumn(resetButton, 1);
-            Grid.SetRow(resetButton, 1);
-
+            buttonsContainer.Children.Add(resetButton);
+            
             Grid inner = new Grid();
-            inner.RowSpacing = 0;
-            inner.Padding = 10;
-            inner.RowDefinitions = new RowDefinitionCollection();
-            inner.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(20, GridUnitType.Absolute) });
-            inner.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Star) });
             g.Children.Add(inner);
-            Grid.SetRowSpan(inner, 2);
 
-            Label tittle = new Label() { TextColor = Color.Black };
+            Label tittle = new Label();
             inner.Children.Add(tittle);
-            Label status = new Label() { TextColor = Color.Black, HorizontalTextAlignment = TextAlignment.End };
+            Label status = new Label() { HorizontalTextAlignment = TextAlignment.End };
             inner.Children.Add(status);
 
             Grid yourContent = new Grid();
-            Label details = new Label { Text = "details go here", TextColor = Color.Black };
+            Label details = new Label { Text = "details go here", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center};
             yourContent.Children.Add(details);
             inner.Children.Add(yourContent);
             
