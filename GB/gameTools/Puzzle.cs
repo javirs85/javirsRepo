@@ -11,17 +11,28 @@ namespace gameTools
 
         public event EventHandler StatusChanged;
         public event EventHandler DetailsChanged;
+        public event EventHandler PuzzleSolved;
 
 
         public int ID;
-        public string Name;
-        public Utils.PuzzleStatus Status;
-        public string Details;
+        public string Name { get; set; }
+        public Utils.PuzzleStatus Status { get; set; }
+        public string Details { get; set; }
         public Utils.PuzzleKinds Kind;
         public string IP;
         public bool IsOnline = false;
 
         public TCPController TCP;
+
+        public void ForceOpen()
+        {
+
+        }
+
+        public void ForceReset()
+        {
+
+        }
         
         public void Connect(System.Net.Sockets.TcpClient client)
         {
@@ -41,8 +52,7 @@ namespace gameTools
         {
             Message m = Message.Deserialize(e);
             newMessageFromPuzzle?.Invoke(this, m);
-        }
-        
+        }        
 
         private void Debug(object sender, string e)
         {

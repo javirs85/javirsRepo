@@ -5,6 +5,6 @@
              x:Class="GB.MainTabbedPage">
   <!--Pages can be added as references or inline-->
   <GB:DebugPage Title="Debug" />
-  <GB:PuzzlesPage Title="Puzzles" />
+  <GB:AutoPuzzlesPage Title="Puzzles" />
   <ContentPage Title="Actions" />
 </TabbedPage>

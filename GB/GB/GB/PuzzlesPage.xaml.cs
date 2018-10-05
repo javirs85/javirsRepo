@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 
 using GameBrainControl;
+using gameTools;
 
 namespace GB
 {
@@ -16,15 +17,14 @@ namespace GB
         public PuzzlesPage()
         {
             InitializeComponent();
-            AddPuzzleContainer();
-            AddPuzzleContainer();
-            AddPuzzleContainer();
+            foreach (var puzzle in GameBrain.Puzzles)
+                AddPuzzleContainer(puzzle);
         }
 
-        public void AddPuzzleContainer()
+        public void AddPuzzleContainer(Puzzle p)
         {
 
-            Grid g = new Grid() { BackgroundColor = Color.White, Margin = new Thickness(10), ColumnSpacing = 0 };
+            Grid g = new Grid() { BackgroundColor = Color.White, Margin = new Thickness(10,10,10,0), ColumnSpacing = 0 };
             g.ColumnDefinitions = new ColumnDefinitionCollection
             {
                 new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) },
@@ -45,9 +45,9 @@ namespace GB
             Grid inner = new Grid();
             g.Children.Add(inner);
 
-            Label tittle = new Label();
+            Label tittle = new Label() { Text = "Puzzle name"};
             inner.Children.Add(tittle);
-            Label status = new Label() { HorizontalTextAlignment = TextAlignment.End };
+            Label status = new Label() { HorizontalTextAlignment = TextAlignment.End , Text = "CURRENT STATUS"};
             inner.Children.Add(status);
 
             Grid yourContent = new Grid();

@@ -18,36 +18,41 @@ namespace GameBrainControl
         public static CancellationTokenSource TCPTokenSource;
         public static CancellationToken TCPcancelToken;
 
-        public static List<Puzzle> puzzles;
+        public static List<Puzzle> Puzzles { private set; get; }
+        public static int PuzzlesCount { get { return Puzzles.Count; } }
 
 
         public void Init()
         {
             DebugMessage("initializing gameBrain");
 
-            puzzles = new List<Puzzle>();
+            Puzzles = new List<Puzzle>();
 
+            Puzzles.Add(new Puzzle() { Name = "Sonar", Status = Utils.PuzzleStatus.unsolved, Details = "Test sonar puzzle" });
+            Puzzles.Add(new Puzzle() { Name = "Mapa", Status = Utils.PuzzleStatus.solved, Details = "magned based map" });
+            /*
             Server = new ServerController();
             Server.newDebugMessage += Debug;
             Server.newDeviceConnected += Server_newDeviceConnected;
             Server.Start();
+            */
         }
 
         private void Server_newDeviceConnected(object sender, System.Net.Sockets.TcpClient client)
         {
             Puzzle puzzle = new Puzzle();
             puzzle.Connect(client);
-            puzzle.ID = puzzles.Count;
+            puzzle.ID = Puzzles.Count;
             puzzle.newDebugMessage += Debug;
             puzzle.newMessageFromPuzzle += ProcessNewMessageFromPuzzle;
             puzzle.PuzzleDisconnected += (o, e) => {
                 var p = o as Puzzle;
-                if(puzzles.Contains(p)) puzzles.Remove(p);
-                Debug($"puzzle with ID: {p.ID} disconnected (connected:{puzzles.Count})");
+                if(Puzzles.Contains(p)) Puzzles.Remove(p);
+                Debug($"puzzle with ID: {p.ID} disconnected (connected:{Puzzles.Count})");
             };
             //puzzles.Add(puzzle);            
 
-            Debug(null, "TCP Client connected (" + puzzles.Count + ")");
+            Debug(null, "TCP Client connected (" + Puzzles.Count + ")");
 
         }
 
@@ -58,7 +63,7 @@ namespace GameBrainControl
             {
                 var newID = int.Parse(e.Data["myID"]);
 
-                if (puzzles.Exists(x => x.ID == newID))
+                if (Puzzles.Exists(x => x.ID == newID))
                 {
                     Debug($"Tried to set a device with ID: {puzzle.ID}, but it already exists");
                 }
@@ -66,11 +71,14 @@ namespace GameBrainControl
                 {
                     puzzle.ID = newID;
                     puzzle.Name = e.Data["myName"];
-                    Enum.TryParse<Utils.PuzzleStatus>(e.Data["myStatus"], out puzzle.Status);
+                    Utils.PuzzleStatus tempStatus;
+                    Enum.TryParse<Utils.PuzzleStatus>(e.Data["myStatus"], out tempStatus);
+                    puzzle.Status = tempStatus;
+                    Utils.PuzzleKinds tempKind;
                     Enum.TryParse<Utils.PuzzleKinds>(e.Data["myKind"], out puzzle.Kind);
                     puzzle.Details = e.Data["myDetails"];
 
-                    puzzles.Add(puzzle);
+                    Puzzles.Add(puzzle);
                     Debug($"Puzzle with ID:{puzzle.ID} succesfully connected");
                 }
             }else if(e.msgType == Utils.MessageTypes.update)

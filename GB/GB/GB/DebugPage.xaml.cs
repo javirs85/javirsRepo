@@ -46,6 +46,9 @@ namespace GB
         private void Button_Clicked(object sender, EventArgs e)
         {
             DisplayAlert("Message", "someone touched Test1", "Ok");
+            GameBrain.Puzzles.Add(new gameTools.Puzzle() { Name="Dynamic", Status = gameTools.Utils.PuzzleStatus.solved, Details = "This has been dynamically generated" });
+            GameBrain.Puzzles[0].Name = "edited Name";
+
         }
 
         private void Button_Clicked_1(object sender, EventArgs e)
@@ -55,7 +58,7 @@ namespace GB
 
         private void Button_Clicked_2(object sender, EventArgs e)
         {
-            GameBrain.puzzles[0]?.Send(
+            GameBrain.Puzzles[0]?.Send(
                 new gameTools.Message()
                 {
                     msgType = gameTools.Utils.MessageTypes.debug,
