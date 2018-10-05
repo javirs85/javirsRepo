@@ -9,6 +9,10 @@ namespace gameTools
         public event EventHandler<Message> newMessageFromPuzzle;
         public event EventHandler PuzzleDisconnected;
 
+        public event EventHandler StatusChanged;
+        public event EventHandler DetailsChanged;
+
+
         public int ID;
         public string Name;
         public Utils.PuzzleStatus Status;
@@ -38,6 +42,7 @@ namespace gameTools
             Message m = Message.Deserialize(e);
             newMessageFromPuzzle?.Invoke(this, m);
         }
+        
 
         private void Debug(object sender, string e)
         {

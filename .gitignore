@@ -20,3 +20,6 @@
 /GBControlStation/Communication/obj
 /GBControlStation/GBControlStation/GBControlStation/obj
 /GBControlStation/GBControlStation/GBControlStation.Android/obj
+GB/.vs/GB/v15/.suo
+GB/.vs/GB/v15/Server/sqlite3/storage.ide-shm
+*.ide-wal
