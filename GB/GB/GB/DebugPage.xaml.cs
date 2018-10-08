@@ -11,29 +11,16 @@ namespace GB
 {
     public partial class DebugPage : ContentPage
     {
-        public GameBrain Brain;
-
         public DebugPage()
         {
             InitializeComponent();
-
-            Brain = new GameBrain();
-            Brain.newMessageToUI += NewMessageFromBrain;
-            Brain.Init();
+            
+            GameItems.Brain.newMessageToUI += NewMessageFromBrain;
 
             test1.Text = "Test";
             test2.Text = "Stop TCP";
         }
-
-        public DebugPage(GameBrain _brain)
-        {
-            InitializeComponent();
-            Brain = _brain;
-            Brain.newMessageToUI += NewMessageFromBrain;
-            Brain.Init();
-            int a = 2;
-            a++;
-        }
+        
 
         private void NewMessageFromBrain(object sender, string e)
         {
@@ -46,19 +33,19 @@ namespace GB
         private void Button_Clicked(object sender, EventArgs e)
         {
             DisplayAlert("Message", "someone touched Test1", "Ok");
-            GameBrain.Puzzles.Add(new gameTools.Puzzle() { Name="Dynamic", Status = gameTools.Utils.PuzzleStatus.solved, Details = "This has been dynamically generated" });
-            GameBrain.Puzzles[0].Name = "edited Name";
+            GameItems.Brain.AddPuzzle(new gameTools.Puzzle() { Name="Dynamic", Status = gameTools.Utils.PuzzleStatus.solved, Details = "This has been dynamically generated" });
+            GameItems.Puzzles[0].Name = "edited Name";
 
         }
 
         private void Button_Clicked_1(object sender, EventArgs e)
         {
-            Brain.StopConnectivity();
+            GameItems.Brain.StopConnectivity();
         }
 
         private void Button_Clicked_2(object sender, EventArgs e)
         {
-            GameBrain.Puzzles[0]?.Send(
+            GameItems.Puzzles[0]?.Send(
                 new gameTools.Message()
                 {
                     msgType = gameTools.Utils.MessageTypes.debug,

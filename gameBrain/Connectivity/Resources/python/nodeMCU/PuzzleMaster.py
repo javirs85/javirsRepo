@@ -41,9 +41,26 @@ class PuzzleMaster:
 		Data["myDetails"] = self.Details
 		self.SendMessage("present", Data)
 		
+	def UpdateName(self, newName):
+		self.Name = newName
+		Data = {}
+		Data["myName"] = self.Name
+		self.SendMessage("update", Data)
+		
+	def UpdateStatus(self, newStatus):
+		self.Status = newStatus
+		Data = {}
+		Data["myStatus"] = self.Status
+		self.SendMessage("update", Data)
+		
+	def UpdateDetails(self, newDetails):
+		self.Details = newDetails
+		Data = {}
+		Data["myDetails"] = self.Details
+		self.SendMessage("update", Data)
+		
 	def SendUpdate(self):
 		Data = {}
-		Data["myID"] = self.Id
 		Data["myName"] = self.Name
 		Data["myStatus"] = self.Status
 		Data["myKind"] = self.PuzleKind
@@ -82,17 +99,14 @@ class PuzzleMaster:
 			
 			for chunk in chunks :
 				msg = json.loads(chunk)
-				command = msg["Data"]["msg"]
-				if command == "testing":
-					self.DoTesting()
-				elif command == "update":
-					self.SendUpdate()
-				elif command == "forecesolve":
+				#4 = forceOpen
+				if msg['msgType'] == 4:
 					self.DoForceSolve()
-				elif command == "reset":
+				#3 = reset
+				elif msg['msgType'] == 3:
 					self.DoReset()
 				else:
-					print("** PuzzleMaster : Unexpected message: "+command)
+					print("** PuzzleMaster : Unexpected message: " + msg['msgType'])
 			
 
 	def SplitStringIntoJSONS(self, str):
@@ -113,11 +127,10 @@ class PuzzleMaster:
 		else:
 			return None
 
+	#def ReadSettingsFromFile(self):
+		
 		
 	def DoTesting(self):
-		print("Not implemented")
-	
-	def SendUpdate(self):
 		print("Not implemented")
 	
 	def DoForceSolve(self):

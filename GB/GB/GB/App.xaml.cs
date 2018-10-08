@@ -11,6 +11,10 @@ namespace GB
         public App()
         {
             InitializeComponent();
+
+            GameBrainControl.GameItems.StartServer();
+            GameBrainControl.GameItems.Init();
+                        
             MainPage = new MainTabbedPage();           
         }
 

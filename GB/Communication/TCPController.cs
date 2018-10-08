@@ -65,6 +65,7 @@ namespace Communication
             var array = Encoding.UTF8.GetBytes(s);
             client.GetStream().WriteAsync(array, 0, array.Length);
         }
+        
 
         private void Debug(string message) => newDebugMessage?.Invoke(this, message);
 

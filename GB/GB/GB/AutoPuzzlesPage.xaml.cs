@@ -17,14 +17,7 @@ namespace GB
         public AutoPuzzlesPage()
         {
             InitializeComponent();
-
-            PuzzlesContainer.ItemsSource = GameBrain.Puzzles;
-            ListSize.Text = GameBrainControl.GameBrain.Puzzles.Count.ToString();
         }
-
-        private void ContentPage_Focused(object sender, FocusEventArgs e)
-        {
-            
-        }
+        
     }
 }

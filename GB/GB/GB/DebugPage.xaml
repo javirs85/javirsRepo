@@ -17,11 +17,10 @@
         <Color x:Key="divider-color">#BDBDBD</Color>
 
     </ContentPage.Resources>
-    
-    
+
+
 
     <FlexLayout Direction="Column">
-
         <!--footer buttons-->
 
 
@@ -32,7 +31,6 @@
                     <Setter Property="TextColor" Value="{StaticResource primary-text-color}"/>
                 </Style>
             </StackLayout.Resources>
-            <Label x:Name="myLabel" Text="Welcome to Xamarin.Forms!"/>
         </StackLayout>
         <StackLayout 
             Orientation="Horizontal"  
