@@ -2,8 +2,12 @@ from PuzzleMaster import PuzzleMaster
 import time
 
 class Puzzle (PuzzleMaster):
-	def __init__(self, ID):
-		PuzzleMaster.__init__(self, ID)
+	def __init__(self):
+		PuzzleMaster.__init__(self)
+		self.KeepOn = False
+	
+	def __init__(self, ID, _Name):
+		PuzzleMaster.__init__(self, ID, _Name)
 		self.KeepOn = False
 	
 	def Check():

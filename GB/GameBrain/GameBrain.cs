@@ -7,36 +7,10 @@ using System.Threading.Tasks;
 using gameTools;
 using Communication;
 using System.Collections.ObjectModel;
+using Newtonsoft.Json;
 
-namespace GameBrainControl
+namespace GBCore
 {
-    public static class GameItems
-    {
-        public static ObservableCollection<Puzzle> Puzzles { set; get; }
-        public static int PuzzlesCount { get { return GameItems.Puzzles.Count; } }
-        public static GameBrain Brain;
-        public static ServerController Server;
-
-        public static void Init()
-        {
-            Brain = new GameBrain();
-            Brain.Init();
-
-            Puzzles = new ObservableCollection<Puzzle>();
-            /*
-            Brain.AddPuzzle(new Puzzle() { Name = "Sonar", Status = Utils.PuzzleStatus.unsolved, Details = "Test sonar puzzle" });
-            Brain.AddPuzzle(new Puzzle() { Name = "Mapa", Status = Utils.PuzzleStatus.solved, Details = "magned based map" });
-            Brain.AddPuzzle(new Puzzle() { Name = "Relojes", Status = Utils.PuzzleStatus.solved, Details = "15:00 [17:00]" });
-            */
-        }
-
-        public static void StartServer()
-        {
-            Server = new ServerController();
-            Server.Start();
-        }
-    }
-
     public class GameBrain
     {
         public event EventHandler<string> MajorError;
@@ -44,27 +18,23 @@ namespace GameBrainControl
 
         public static CancellationTokenSource TCPTokenSource;
         public static CancellationToken TCPcancelToken;
-        
 
+        private List<Puzzle> Limbo = new List<Puzzle>();
+        
 
         public void Init()
         {
             DebugMessage("initializing gameBrain");
-                       
+
             GameItems.Server.newDebugMessage += Debug;
             GameItems.Server.newDeviceConnected += Server_newDeviceConnected;
+
+
         }
 
         public void AddPuzzle(Puzzle puzzle)
         {
             GameItems.Puzzles.Add(puzzle);
-            puzzle.newDebugMessage += Debug;
-            puzzle.newMessageFromPuzzle += ProcessNewMessageFromPuzzle;
-            puzzle.PuzzleDisconnected += (o, e) => {
-                var p = o as Puzzle;
-                if (GameItems.Puzzles.Contains(p)) GameItems.Puzzles.Remove(p);
-                Debug($"puzzle with ID: {p.ID} disconnected (connected now:{GameItems.Puzzles.Count})");
-            };
         }
 
 
@@ -72,7 +42,16 @@ namespace GameBrainControl
         {
             Puzzle puzzle = new Puzzle();
             puzzle.Connect(client);
-            AddPuzzle(puzzle);
+            puzzle.newDebugMessage += Debug;
+            puzzle.newMessageFromPuzzle += ProcessNewMessageFromPuzzle;
+            puzzle.PuzzleDisconnected += (o, e) => {
+                var p = o as Puzzle;
+                if (GameItems.Puzzles.Contains(p)) GameItems.Puzzles.Remove(p);
+                Debug($"puzzle with ID: {p.ID} disconnected (connected now:{GameItems.Puzzles.Count})");
+            };
+
+            Limbo.Add(puzzle);
+
 
             Debug(null, "TCP Client connected (" + GameItems.Puzzles.Count + ")");
 
@@ -81,31 +60,44 @@ namespace GameBrainControl
         private void ProcessNewMessageFromPuzzle(object sender, Message e)
         {
             var puzzle = sender as Puzzle;
+
+
             if (e.msgType == Utils.MessageTypes.present)
             {
                 var newID = int.Parse(e.Data["myID"]);
 
-                if (GameItems.Puzzles.AsQueryable().FirstOrDefault(x => x.ID == newID) != null)
+                if (GameItems.Puzzles.Any(x => x.ID == newID))
                 {
                     Debug($"Tried to set a device with ID: {puzzle.ID}, but it already exists");
                 }
                 else
                 {
-                    puzzle.ID = newID;
-                    puzzle.Name = e.Data["myName"];
-                    Utils.PuzzleStatus tempStatus;
-                    if (Enum.TryParse<Utils.PuzzleStatus>(e.Data["myStatus"], out tempStatus))
-                        puzzle.Status = tempStatus;
-                    else
-                        throw new Exception($"Unexpected status {e.Data["myStatus"]}");
-                    
-                    Utils.PuzzleKinds tempKind;
-                    if (Enum.TryParse<Utils.PuzzleKinds>(e.Data["myKind"], out tempKind))
-                        puzzle.Kind = tempKind;
-                    else
-                        throw new Exception($"unexepcted puzzle kind {e.Data["myKind"]}");
+                    if (Limbo.Contains(puzzle))
+                    {
+                        puzzle.ID = newID;
+                        puzzle.Name = e.Data["myName"];
+                        puzzle.Details = e.Details;
+                        Utils.PuzzleStatus tempStatus;
+                        if (Enum.TryParse<Utils.PuzzleStatus>(e.Data["myStatus"], out tempStatus))
+                            puzzle.Status = tempStatus;
+                        else
+                            throw new Exception($"Unexpected status {e.Data["myStatus"]}");
 
-                    Debug($"Puzzle with ID:{puzzle.ID} succesfully connected");
+                        Utils.PuzzleKinds tempKind;
+                        if (Enum.TryParse<Utils.PuzzleKinds>(e.Data["myKind"], out tempKind))
+                            puzzle.Kind = tempKind;
+                        else
+                            throw new Exception($"unexepcted puzzle kind {e.Data["myKind"]}");
+
+                        Debug($"Puzzle with ID:{puzzle.ID} succesfully connected");
+
+                        AddPuzzle(puzzle);
+                        Limbo.Remove(puzzle);
+                    }
+                    else
+                    {
+                        Debug($"Received a present from {puzzle.Name}({puzzle.ID}) that was not in the Limbo so it won't be added");
+                    }
                 }
             }
             else if(e.msgType == Utils.MessageTypes.update)
@@ -130,10 +122,10 @@ namespace GameBrainControl
                             throw new Exception($"Unexpected kind {field.Value}");
 
                     }
-                    else if (field.Key == "myDetails") puzzle.Details = field.Value;
                     else
                         MajorError?.Invoke(this, $"Unexpected field {field.Key} when updating a puzzle");
                 }
+                puzzle.Details = e.Details;
             }
             else
                 Debug((sender as Puzzle).ID + " : send a Message");

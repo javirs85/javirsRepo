@@ -13,6 +13,7 @@ namespace gameTools
         public int Id;
         public Utils.MessageTypes msgType;
         public Dictionary<string, string> Data;
+        public Dictionary<string, string> Details;
 
         public Message() { } 
         

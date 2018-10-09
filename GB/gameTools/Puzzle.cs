@@ -1,5 +1,6 @@
 ﻿using Communication;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using Xamarin.Forms;
 
@@ -36,15 +37,14 @@ namespace gameTools
                 }
             }
         }
-        private string _details;
-        public string Details {
+
+        private Dictionary<string, string> _details;
+        public Dictionary<string, string> Details {
             get { return _details; }
-            set {
-                if (_details != value)
-                {
-                    _details = value;
-                    OnPropertyChanged("Details");
-                }
+            set
+            {
+                _details = value;
+                OnPropertyChanged("Details");
             }
         }
         public Utils.PuzzleKinds Kind { get; set; }
@@ -53,8 +53,9 @@ namespace gameTools
 
         public TCPController TCP;
 
-        public System.Windows.Input.ICommand ForceOpen { get; private set; }
-        public System.Windows.Input.ICommand ForceReset { get; private set; }
+        
+        public System.Windows.Input.ICommand ForceOpen { get; set; }
+        public System.Windows.Input.ICommand ForceReset { get; set; }
 
         public Puzzle()
         {
@@ -77,14 +78,30 @@ namespace gameTools
             TCP.newDebugMessage += Debug;
             TCP.newMessageFromServer += preprocessTCPMessage;
             TCP.clientDisconnected += (o, e) => { PuzzleDisconnected?.Invoke(this, EventArgs.Empty); };
-            TCP.ListenToClient(client);
-
-            
+            TCP.ListenToClient(client);           
         }
 
         public void Send(Message m)
         {
             TCP.Send(m.Serialize());
+        }
+
+        public static Puzzle generateDummy()
+        {
+            var p = new Puzzle()
+            {
+                Name = "TestPuzle",
+                ID = 22,
+                Status = Utils.PuzzleStatus.unset,
+                Kind = Utils.PuzzleKinds.sensor
+            };
+            p.Details = new Dictionary<string, string>();
+            p.Details.Add("r1", "10:00");
+            p.Details.Add("s1", "15:15");
+            p.Details.Add("r2", "20:00");
+            p.Details.Add("s2", "16:16");
+
+            return p;
         }
 
         private void preprocessTCPMessage(object sender, string e)

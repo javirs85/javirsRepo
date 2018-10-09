@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
+using GBCore;
 
-using GameBrainControl;
 
 namespace GB
 {
@@ -32,10 +32,7 @@ namespace GB
 
         private void Button_Clicked(object sender, EventArgs e)
         {
-            DisplayAlert("Message", "someone touched Test1", "Ok");
-            GameItems.Brain.AddPuzzle(new gameTools.Puzzle() { Name="Dynamic", Status = gameTools.Utils.PuzzleStatus.solved, Details = "This has been dynamically generated" });
-            GameItems.Puzzles[0].Name = "edited Name";
-
+            DisplayAlert("Message", "No test attached", "Ok");
         }
 
         private void Button_Clicked_1(object sender, EventArgs e)

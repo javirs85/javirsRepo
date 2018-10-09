@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GBCore;
+using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -12,10 +13,17 @@ namespace GB
         {
             InitializeComponent();
 
-            GameBrainControl.GameItems.StartServer();
-            GameBrainControl.GameItems.Init();
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+
+            GameItems.StartServer();
+            GameItems.Init();
                         
             MainPage = new MainTabbedPage();           
+        }
+
+        private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            var a = e;
         }
 
         protected override void OnStart()

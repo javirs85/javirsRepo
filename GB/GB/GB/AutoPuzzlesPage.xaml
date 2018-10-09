@@ -1,56 +1,169 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:gameBrain ="clr-namespace:GameBrainControl;assembly=GameBrain"
+             xmlns:gameBrain ="clr-namespace:GBCore;assembly=GameBrain"
+             xmlns:local ="clr-namespace:GB"
              BackgroundColor="#DDD"
              x:Class="GB.AutoPuzzlesPage" x:Name="APuzzlesPage"
              >
-<!--
-    <StackLayout>
-        <StackLayout Orientation="Horizontal">
-            <Label>Here comes the list with</Label>
-            <Label x:Name="ListSize"
-                   BindingContext="{x:Static gameBrain:GameItems.Puzzles}"
-                   Text="{Binding Value, StringFormat= '{0}'}">
-            </Label>
-            <Label>elements</Label>
-        </StackLayout>
-        -->
-        <ListView x:Name="PuzzlesContainer" ItemsSource="{x:Static gameBrain:GameItems.Puzzles}" RowHeight="167">
-          <ListView.Resources>
-            <Style TargetType="Label">
-              <Setter Property="TextColor" Value="Black"/>
-            </Style>
-            <Style TargetType="Button">
-                <Setter Property="VerticalOptions" Value="FillAndExpand"/>
-                <Setter Property="HeightRequest" Value="80"/>
-            </Style>
-          </ListView.Resources>
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <ViewCell>
-                        <Grid BackgroundColor="White" HeightRequest="160" RowSpacing="0" ColumnSpacing="0" Margin="10,10,10,0">
-                          <Grid.ColumnDefinitions>
-                              <ColumnDefinition Width="*"/>
-                              <ColumnDefinition Width="80"/>
-                          </Grid.ColumnDefinitions>
-                            <StackLayout Grid.Column="1">
-                                <Button Text="OPEN" Margin="0,0,1,-7" Command="{Binding Path=ForceOpen}"/>
-                                <Button Text="RESET" Margin="0,-3,1,5" Command="{Binding ForceReset}"/>
-                            </StackLayout>
-                            <Grid Padding="10">
-                                <Label Text="{Binding Path=Name}"/>
-                                <Label Text="{Binding Path=Status}" HorizontalOptions="End"/>
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <DataTemplate x:Key="MapTemplate">
+                <ViewCell>
+                    <Grid BackgroundColor="Red" HeightRequest="160" RowSpacing="0" ColumnSpacing="0" Margin="10,10,10,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="80"/>
+                        </Grid.ColumnDefinitions>
+                        <StackLayout Grid.Column="1">
+                            <Button Text="OPEN" Margin="0,0,1,-7" Command="{Binding Path=ForceOpen}"/>
+                            <Button Text="RESET" Margin="0,-3,1,5" Command="{Binding ForceReset}"/>
+                        </StackLayout>
+                        <Grid Padding="10">
+                            <Label Text="{Binding Path=Name}"/>
+                            <Label Text="{Binding Path=Status}" HorizontalOptions="End"/>
+                            <Grid x:Name="DetailsGrid">
                                 <Label HorizontalOptions="Center"
                                        VerticalOptions="Center"
                                        Text="{Binding Path=Details}"/>
                             </Grid>
                         </Grid>
-                    </ViewCell>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-    <!--
-    </StackLayout>
-    -->
+                    </Grid>
+                </ViewCell>
+            </DataTemplate>
+            <DataTemplate x:Key="ClockTemplate">
+                <ViewCell>
+                    <Grid BackgroundColor="White" HeightRequest="160" RowSpacing="0" ColumnSpacing="0" Margin="10,10,10,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="80"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="40"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <StackLayout Grid.Column="1" Grid.RowSpan="2">
+                            <Button Text="OPEN" Margin="0,0,1,-7" Command="{Binding Path=ForceOpen}"/>
+                            <Button Text="RESET" Margin="0,-3,1,5" Command="{Binding ForceReset}"/>
+                        </StackLayout>
+                        <Grid Padding="10">
+                            <Label Text="{Binding Path=Name}"/>
+                            <Label Text="{Binding Path=Status}" HorizontalOptions="End"/>
+                        </Grid>
+                        <Grid x:Name="DetailsGrid" Grid.Row="1" Padding="5">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <StackLayout Grid.Column="0" Grid.Row="0">
+                                <Label Text="{Binding Path=Details, Converter={StaticResource FirstClockConverter}, ConverterParameter=r1}"/>
+                                <Label Text="{Binding Path=Details, Converter={StaticResource FirstClockConverter}, ConverterParameter=s1}"/>
+                            </StackLayout>
+                            <StackLayout Grid.Column="2" Grid.Row="0">
+                                <Label Text="{Binding Path=Details, Converter={StaticResource FirstClockConverter}, ConverterParameter=s1}"/>
+                                <Label Text="{Binding Path=Details, Converter={StaticResource FirstClockConverter}, ConverterParameter=s2}"/>
+                            </StackLayout>
+                            <StackLayout Grid.Column="1" Grid.Row="1" Margin="0,-10,0,0">
+                                <Label Text="{Binding Path=Details, Converter={StaticResource FirstClockConverter}, ConverterParameter=s3}"/>
+                                <Label Text="{Binding Path=Details, Converter={StaticResource FirstClockConverter}, ConverterParameter=s3}"/>
+                            </StackLayout>
+                            <StackLayout Grid.Column="0" Grid.Row="2" Margin="0,-20,0,0">
+                                <Label Text="{Binding Path=Details, Converter={StaticResource FirstClockConverter}, ConverterParameter=s4}"/>
+                                <Label Text="{Binding Path=Details, Converter={StaticResource FirstClockConverter}, ConverterParameter=s4}"/>
+                            </StackLayout>
+                            <StackLayout Grid.Column="2" Grid.Row="2" Margin="0,-20,0,0">
+                                <Label Text="{Binding Path=Details, Converter={StaticResource FirstClockConverter}, ConverterParameter=s5}"/>
+                                <Label Text="{Binding Path=Details, Converter={StaticResource FirstClockConverter}, ConverterParameter=s5}"/>
+                            </StackLayout>
+                        </Grid>
+                    </Grid>
+                </ViewCell>
+            </DataTemplate>
+            <local:PuzzleDataTemplateSelector x:Key="PuzzleDataTemplateSelector"
+                                              ClockTemplate="{StaticResource ClockTemplate}"
+                                              MapTemplate="{StaticResource MapTemplate}" />
+            <local:FirstClockConverter x:Key="FirstClockConverter" />
+            <local:SecondClockConverter x:Key="SecondClockConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <!-- <StackLayout> -->
+    <ListView x:Name="PuzzlesContainer" ItemsSource="{x:Static gameBrain:GameItems.Puzzles}" RowHeight="167" ItemTemplate="{StaticResource PuzzleDataTemplateSelector}">
+        <ListView.Resources>
+            <Style TargetType="Label">
+                <Setter Property="TextColor" Value="Black"/>
+            </Style>
+            <Style TargetType="Button">
+                <Setter Property="VerticalOptions" Value="FillAndExpand"/>
+                <Setter Property="HeightRequest" Value="80"/>
+            </Style>
+        </ListView.Resources>
+        
+    </ListView>
+<!--
+        <Grid BackgroundColor="White" HeightRequest="160" RowSpacing="0" ColumnSpacing="0" Margin="10,10,10,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="80"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.Resources>
+                <Style TargetType="Label">
+                    <Setter Property="TextColor" Value="Black"/>
+                    <Setter Property="BackgroundColor" Value="Red"/>
+                </Style>
+            </Grid.Resources>
+            <StackLayout Grid.Column="1" Grid.RowSpan="2">
+                <Button Text="OPEN" Margin="0,0,1,-7" HeightRequest="80" Command="{Binding Path=ForceOpen}"/>
+                <Button Text="RESET" Margin="0,-3,1,5" HeightRequest="80" Command="{Binding ForceReset}"/>
+            </StackLayout>
+            <Grid Padding="10">
+                <Label Text="{Binding Path=Name}"/>
+                <Label Text="{Binding Path=Status}" HorizontalOptions="End"/>
+            </Grid>
+            <Grid x:Name="DetailsGrid" Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <StackLayout Grid.Column="0" Grid.Row="0" BackgroundColor="Red">
+                    <Label Text="10:10"/>
+                    <Label Text="10:10"/>
+                </StackLayout>
+                <StackLayout Grid.Column="2" Grid.Row="0">
+                    <Label Text="10:10"/>
+                    <Label Text="10:10"/>
+                </StackLayout>
+                <StackLayout Grid.Column="1" Grid.Row="1" Margin="0,-10,0,0">
+                    <Label Text="10:10"/>
+                    <Label Text="10:10"/>
+                </StackLayout>
+                <StackLayout Grid.Column="0" Grid.Row="2" Margin="0,-20,0,0">
+                    <Label Text="10:10"/>
+                    <Label Text="10:10"/>
+                </StackLayout>
+                <StackLayout Grid.Column="2" Grid.Row="2" Margin="0,-20,0,0">
+                    <Label Text="10:10"/>
+                    <Label Text="10:10"/>
+                </StackLayout>
+            </Grid>
+        </Grid>
+
+
+    </StackLayout> -->
 </ContentPage>

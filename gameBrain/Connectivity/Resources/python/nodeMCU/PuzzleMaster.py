@@ -3,19 +3,37 @@ import Message
 import socket
 
 class PuzzleMaster:
-	def __init__(self, ID):
-		self.Id = ID
-		self.Name = "Default name"
-		self.Status = "unsolved"
-		self.PuzleKind = "sensor"
-		self.Details = "Default values from the constructor"
+	def __init__(self):
+		try:
+			self.ReadSettingsFromFile()
+		except:
+			self.Id = 1
+			self.Name = "default Name"
+			self.Status = "unsolved"
+			self.Details = {}
+			self.PuzzleKind = "sensor"
+			self.SaveCurrentStatusAsDefault()
+			
 		self.myIP = "0.0.0.0"
 		self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-		self.ConnectToDefault()
-		Data = {}
-		Data["Name"] = "Amparo"
-		self.SendMessage("update", Data)
+		self.ConnectToDefault()		
 		
+	def __init__(self, ID, _Name):
+		try:
+			self.ReadSettingsFromFile()
+		except:
+			self.Id = 1
+			self.Name = _Name
+			self.Status = "unsolved"
+			self.Details = {}
+			self.PuzzleKind = "sensor"
+			self.SaveCurrentStatusAsDefault()
+			
+		self.myIP = "0.0.0.0"
+		self.Name = _Name
+		self.Id = ID
+		self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+		self.ConnectToDefault()		
 		
 	def ConnectToIP(self, IP):
 		self.sock.connect((IP, 50100))
@@ -23,12 +41,21 @@ class PuzzleMaster:
 		
 	def ConnectToDefault(self):
 		self.ConnectToIP("192.168.1.33")
+		
+	def UpdateProperty(self, propName, propValue):
+		if self.Details.get(propName) == None:
+			print("property does not exists")
+		else:
+			self.Details[propName] = propValue;
+		
+		self.SendMessage("update", {}, self.Details)
 	
-	def SendMessage(self, msgKind, Data):
+	def SendMessage(self, msgKind, Data, Details):
 		m = Message.Message()
 		m.Id = self.Id
 		m.msgType = msgKind
-		m.Data = Data		
+		m.Data = Data
+		m.Details = Details
 		str = m.Serialize()		
 		self.Send(str)
 		
@@ -37,9 +64,10 @@ class PuzzleMaster:
 		Data["myID"] = self.Id
 		Data["myName"] = self.Name
 		Data["myStatus"] = self.Status
-		Data["myKind"] = self.PuzleKind
-		Data["myDetails"] = self.Details
-		self.SendMessage("present", Data)
+		Data["myKind"] = self.PuzzleKind
+		Details = {}
+		Details = self.Details
+		self.SendMessage("present", Data, Details)
 		
 	def UpdateName(self, newName):
 		self.Name = newName
@@ -63,7 +91,7 @@ class PuzzleMaster:
 		Data = {}
 		Data["myName"] = self.Name
 		Data["myStatus"] = self.Status
-		Data["myKind"] = self.PuzleKind
+		Data["myKind"] = self.PuzzleKind
 		Data["myDetails"] = self.Details
 		self.SendMessage("update", Data)
 	
@@ -78,7 +106,7 @@ class PuzzleMaster:
 		m.Data["prop1"] = "val1"
 		m.Data["prop2"] = "val2"
 		m.Status = self.Status
-		m.PuzleKind = self.PuzleKind
+		m.PuzzleKind = self.PuzzleKind
 		m.Details = self.Details		
 		str = m.Serialize()		
 		self.Send(str)
@@ -127,7 +155,28 @@ class PuzzleMaster:
 		else:
 			return None
 
-	#def ReadSettingsFromFile(self):
+			
+	#{"r1": "10:10", "s1": "s1", "r2": "20:20", "s2": "s2", "s3": "s3", "r3": "30:30", "r4": "40:40", "s4": "s4", "r5": "50:50", "s5": "s5"}		
+			
+	def SaveCurrentStatusAsDefault(self):
+		Settings = {}
+		Settings["Name"] = self.Name
+		Settings["Id"] = self.Id
+		Settings["Status"] = self.Status
+		Settings["Details"] = self.Details
+		Settings["Kind"] = self.PuzzleKind
+		
+		with open('settings.json', 'w') as outfile:
+			json.dump(Settings, outfile)
+			
+	def ReadSettingsFromFile(self):
+		with open('settings.json') as infile:
+			Settings = json.load(infile)
+		self.Name = Settings["Name"]
+		self.Id = Settings["Id"]
+		self.Status = Settings["Status"]
+		self.Details = Settings["Details"]
+		self.PuzzleKind = Settings["Kind"]
 		
 		
 	def DoTesting(self):
