@@ -93,7 +93,7 @@ namespace gameTools
                 Name = "TestPuzle",
                 ID = 22,
                 Status = Utils.PuzzleStatus.unset,
-                Kind = Utils.PuzzleKinds.sensor
+                Kind = Utils.PuzzleKinds.genericSensor
             };
             p.Details = new Dictionary<string, string>();
             p.Details.Add("r1", "10:00");
@@ -103,6 +103,17 @@ namespace gameTools
 
             return p;
         }
+
+        public virtual void GetUIElements(Grid grid)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual void UpdateUI()
+        {
+            throw new NotImplementedException();
+        }
+             
 
         private void preprocessTCPMessage(object sender, string e)
         {

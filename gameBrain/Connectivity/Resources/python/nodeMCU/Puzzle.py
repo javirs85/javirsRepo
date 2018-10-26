@@ -6,8 +6,8 @@ class Puzzle (PuzzleMaster):
 		PuzzleMaster.__init__(self)
 		self.KeepOn = False
 	
-	def __init__(self, ID, _Name):
-		PuzzleMaster.__init__(self, ID, _Name)
+	def __init__(self, ID, _Name, _Kind):
+		PuzzleMaster.__init__(self, ID, _Name, _Kind)
 		self.KeepOn = False
 	
 	def Check():

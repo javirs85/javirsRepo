@@ -18,7 +18,7 @@ class PuzzleMaster:
 		self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		self.ConnectToDefault()		
 		
-	def __init__(self, ID, _Name):
+	def __init__(self, ID, _Name, _Kind):
 		try:
 			self.ReadSettingsFromFile()
 		except:
@@ -26,7 +26,7 @@ class PuzzleMaster:
 			self.Name = _Name
 			self.Status = "unsolved"
 			self.Details = {}
-			self.PuzzleKind = "sensor"
+			self.PuzzleKind = _Kind
 			self.SaveCurrentStatusAsDefault()
 			
 		self.myIP = "0.0.0.0"

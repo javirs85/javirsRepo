@@ -9,7 +9,7 @@ namespace gameTools
     {
         
 
-        public enum PuzzleKinds { sensor, motor, temperature, button, server }
+        public enum PuzzleKinds { genericSensor, motor, temperature, button, server, Clocks }
         public enum PuzzleStatus { unsolved, solved, unset };
 
         public enum MessageTypes { showup, present, welcome, reset, forceSolve, debug, error, update, overwrite };

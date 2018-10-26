@@ -63,25 +63,49 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <StackLayout Grid.Column="0" Grid.Row="0">
-                                <Label Text="{Binding Path=Details, Converter={StaticResource FirstClockConverter}, ConverterParameter=r1}"/>
-                                <Label Text="{Binding Path=Details, Converter={StaticResource FirstClockConverter}, ConverterParameter=s1}"/>
+
+                                <Label x:Name="r1"/>
+                                <Label x:Name="s1"/>
                             </StackLayout>
                             <StackLayout Grid.Column="2" Grid.Row="0">
-                                <Label Text="{Binding Path=Details, Converter={StaticResource FirstClockConverter}, ConverterParameter=s1}"/>
-                                <Label Text="{Binding Path=Details, Converter={StaticResource FirstClockConverter}, ConverterParameter=s2}"/>
+                                <Label x:Name="r2"/>
+                                <Label x:Name="s2"/>
                             </StackLayout>
                             <StackLayout Grid.Column="1" Grid.Row="1" Margin="0,-10,0,0">
-                                <Label Text="{Binding Path=Details, Converter={StaticResource FirstClockConverter}, ConverterParameter=s3}"/>
-                                <Label Text="{Binding Path=Details, Converter={StaticResource FirstClockConverter}, ConverterParameter=s3}"/>
+                                <Label x:Name="r3"/>
+                                <Label x:Name="s3"/>
                             </StackLayout>
                             <StackLayout Grid.Column="0" Grid.Row="2" Margin="0,-20,0,0">
-                                <Label Text="{Binding Path=Details, Converter={StaticResource FirstClockConverter}, ConverterParameter=s4}"/>
-                                <Label Text="{Binding Path=Details, Converter={StaticResource FirstClockConverter}, ConverterParameter=s4}"/>
+                                <Label x:Name="r4"/>
+                                <Label x:Name="s4"/>
                             </StackLayout>
                             <StackLayout Grid.Column="2" Grid.Row="2" Margin="0,-20,0,0">
-                                <Label Text="{Binding Path=Details, Converter={StaticResource FirstClockConverter}, ConverterParameter=s5}"/>
-                                <Label Text="{Binding Path=Details, Converter={StaticResource FirstClockConverter}, ConverterParameter=s5}"/>
+                                <Label x:Name="r5"/>
+                                <Label x:Name="s5"/>
                             </StackLayout>
+                            <!--
+                            <StackLayout Grid.Column="0" Grid.Row="0">
+                                
+                                <Label x:Name="r1" Text="{Binding Path=Details, Converter={StaticResource FirstClockConverter}, ConverterParameter=r1}"/>
+                                <Label x:Name="s1" Text="{Binding Path=Details, Converter={StaticResource FirstClockConverter}, ConverterParameter=s1}"/>
+                            </StackLayout>
+                            <StackLayout Grid.Column="2" Grid.Row="0">
+                                <Label x:Name="r2" Text="{Binding Path=Details, Converter={StaticResource FirstClockConverter}, ConverterParameter=s1}"/>
+                                <Label x:Name="s2" Text="{Binding Path=Details, Converter={StaticResource FirstClockConverter}, ConverterParameter=s2}"/>
+                            </StackLayout>
+                            <StackLayout Grid.Column="1" Grid.Row="1" Margin="0,-10,0,0">
+                                <Label x:Name="r3" Text="{Binding Path=Details, Converter={StaticResource FirstClockConverter}, ConverterParameter=s3}"/>
+                                <Label x:Name="s3" Text="{Binding Path=Details, Converter={StaticResource FirstClockConverter}, ConverterParameter=s3}"/>
+                            </StackLayout>
+                            <StackLayout Grid.Column="0" Grid.Row="2" Margin="0,-20,0,0">
+                                <Label x:Name="r4" Text="{Binding Path=Details, Converter={StaticResource FirstClockConverter}, ConverterParameter=s4}"/>
+                                <Label x:Name="s4" Text="{Binding Path=Details, Converter={StaticResource FirstClockConverter}, ConverterParameter=s4}"/>
+                            </StackLayout>
+                            <StackLayout Grid.Column="2" Grid.Row="2" Margin="0,-20,0,0">
+                                <Label x:Name="r5" Text="{Binding Path=Details, Converter={StaticResource FirstClockConverter}, ConverterParameter=s5}"/>
+                                <Label x:Name="s5" Text="{Binding Path=Details, Converter={StaticResource FirstClockConverter}, ConverterParameter=s5}"/>
+                            </StackLayout>
+                            -->
                         </Grid>
                     </Grid>
                 </ViewCell>
@@ -90,11 +114,19 @@
                                               ClockTemplate="{StaticResource ClockTemplate}"
                                               MapTemplate="{StaticResource MapTemplate}" />
             <local:FirstClockConverter x:Key="FirstClockConverter" />
-            <local:SecondClockConverter x:Key="SecondClockConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
-    <!-- <StackLayout> -->
-    <ListView x:Name="PuzzlesContainer" ItemsSource="{x:Static gameBrain:GameItems.Puzzles}" RowHeight="167" ItemTemplate="{StaticResource PuzzleDataTemplateSelector}">
+
+    
+    
+    
+    
+    
+    
+    <ListView x:Name="PuzzlesContainer"
+              ItemsSource="{x:Static gameBrain:GameItems.Puzzles}"
+              RowHeight="167"
+              ItemTemplate="{StaticResource PuzzleDataTemplateSelector}">
         <ListView.Resources>
             <Style TargetType="Label">
                 <Setter Property="TextColor" Value="Black"/>
@@ -106,64 +138,5 @@
         </ListView.Resources>
         
     </ListView>
-<!--
-        <Grid BackgroundColor="White" HeightRequest="160" RowSpacing="0" ColumnSpacing="0" Margin="10,10,10,0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="80"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-            <Grid.Resources>
-                <Style TargetType="Label">
-                    <Setter Property="TextColor" Value="Black"/>
-                    <Setter Property="BackgroundColor" Value="Red"/>
-                </Style>
-            </Grid.Resources>
-            <StackLayout Grid.Column="1" Grid.RowSpan="2">
-                <Button Text="OPEN" Margin="0,0,1,-7" HeightRequest="80" Command="{Binding Path=ForceOpen}"/>
-                <Button Text="RESET" Margin="0,-3,1,5" HeightRequest="80" Command="{Binding ForceReset}"/>
-            </StackLayout>
-            <Grid Padding="10">
-                <Label Text="{Binding Path=Name}"/>
-                <Label Text="{Binding Path=Status}" HorizontalOptions="End"/>
-            </Grid>
-            <Grid x:Name="DetailsGrid" Grid.Row="1">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <StackLayout Grid.Column="0" Grid.Row="0" BackgroundColor="Red">
-                    <Label Text="10:10"/>
-                    <Label Text="10:10"/>
-                </StackLayout>
-                <StackLayout Grid.Column="2" Grid.Row="0">
-                    <Label Text="10:10"/>
-                    <Label Text="10:10"/>
-                </StackLayout>
-                <StackLayout Grid.Column="1" Grid.Row="1" Margin="0,-10,0,0">
-                    <Label Text="10:10"/>
-                    <Label Text="10:10"/>
-                </StackLayout>
-                <StackLayout Grid.Column="0" Grid.Row="2" Margin="0,-20,0,0">
-                    <Label Text="10:10"/>
-                    <Label Text="10:10"/>
-                </StackLayout>
-                <StackLayout Grid.Column="2" Grid.Row="2" Margin="0,-20,0,0">
-                    <Label Text="10:10"/>
-                    <Label Text="10:10"/>
-                </StackLayout>
-            </Grid>
-        </Grid>
 
-
-    </StackLayout> -->
 </ContentPage>

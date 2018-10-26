@@ -15,6 +15,7 @@ namespace GBCore
     {
         public event EventHandler<string> MajorError;
         public event EventHandler<string> newMessageToUI;
+        public event EventHandler<Puzzle> newPuzzleAdded;
 
         public static CancellationTokenSource TCPTokenSource;
         public static CancellationToken TCPcancelToken;
@@ -28,13 +29,12 @@ namespace GBCore
 
             GameItems.Server.newDebugMessage += Debug;
             GameItems.Server.newDeviceConnected += Server_newDeviceConnected;
-
-
         }
 
         public void AddPuzzle(Puzzle puzzle)
         {
             GameItems.Puzzles.Add(puzzle);
+            newPuzzleAdded?.Invoke(this, puzzle);
         }
 
 
@@ -74,6 +74,20 @@ namespace GBCore
                 {
                     if (Limbo.Contains(puzzle))
                     {
+                        Utils.PuzzleKinds tempKind;
+                        if (Enum.TryParse<Utils.PuzzleKinds>(e.Data["myKind"], out tempKind))
+                            puzzle.Kind = tempKind;
+                        else
+                            throw new Exception($"unexepcted puzzle kind {e.Data["myKind"]}");
+                        
+                        if (tempKind == Utils.PuzzleKinds.Clocks)
+                            puzzle = new ClocksPuzzles();
+                        else
+                            puzzle = new Puzzle();
+
+                        puzzle.Kind = tempKind;
+
+
                         puzzle.ID = newID;
                         puzzle.Name = e.Data["myName"];
                         puzzle.Details = e.Details;
@@ -81,13 +95,7 @@ namespace GBCore
                         if (Enum.TryParse<Utils.PuzzleStatus>(e.Data["myStatus"], out tempStatus))
                             puzzle.Status = tempStatus;
                         else
-                            throw new Exception($"Unexpected status {e.Data["myStatus"]}");
-
-                        Utils.PuzzleKinds tempKind;
-                        if (Enum.TryParse<Utils.PuzzleKinds>(e.Data["myKind"], out tempKind))
-                            puzzle.Kind = tempKind;
-                        else
-                            throw new Exception($"unexepcted puzzle kind {e.Data["myKind"]}");
+                            throw new Exception($"Unexpected status {e.Data["myStatus"]}");                        
 
                         Debug($"Puzzle with ID:{puzzle.ID} succesfully connected");
 
@@ -120,12 +128,16 @@ namespace GBCore
                             puzzle.Kind = tempKind;
                         else
                             throw new Exception($"Unexpected kind {field.Value}");
-
                     }
                     else
                         MajorError?.Invoke(this, $"Unexpected field {field.Key} when updating a puzzle");
                 }
-                puzzle.Details = e.Details;
+                if (e.Details != puzzle.Details)
+                {
+                    puzzle.Details = e.Details;
+
+                    puzzle.UpdateUI();
+                }
             }
             else
                 Debug((sender as Puzzle).ID + " : send a Message");
