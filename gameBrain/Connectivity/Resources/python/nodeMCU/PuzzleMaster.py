@@ -18,9 +18,9 @@ class PuzzleMaster:
 		self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		self.ConnectToDefault()		
 		
-	def __init__(self, ID, _Name, _Kind):
+	def __init__(self, file):
 		try:
-			self.ReadSettingsFromFile()
+			self.ReadSettingsFromFile(file)
 		except:
 			self.Id = 1
 			self.Name = _Name
@@ -29,14 +29,11 @@ class PuzzleMaster:
 			self.PuzzleKind = _Kind
 			self.SaveCurrentStatusAsDefault()
 			
-		self.myIP = "0.0.0.0"
-		self.Name = _Name
-		self.Id = ID
 		self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		self.ConnectToDefault()		
 		
 	def ConnectToIP(self, IP):
-		self.sock.connect((IP, 50100))
+		self.sock.connect((IP, 53200))
 		self.SendPresent()
 		
 	def ConnectToDefault(self):
@@ -50,24 +47,19 @@ class PuzzleMaster:
 		
 		self.SendMessage("update", {}, self.Details)
 	
-	def SendMessage(self, msgKind, Data, Details):
+	def SendMessage(self, msgKind, Params):
 		m = Message.Message()
 		m.Id = self.Id
-		m.msgType = msgKind
-		m.Data = Data
-		m.Details = Details
+		m.Order = msgKind
+		m.Params = Params
 		str = m.Serialize()		
 		self.Send(str)
 		
 	def SendPresent(self):
-		Data = {}
-		Data["myID"] = self.Id
-		Data["myName"] = self.Name
-		Data["myStatus"] = self.Status
-		Data["myKind"] = self.PuzzleKind
-		Details = {}
-		Details = self.Details
-		self.SendMessage("present", Data, Details)
+		Params = {}
+		Params["myID"] = self.Id
+		Params["myName"] = self.Name
+		self.SendMessage("Present", Params)
 		
 	def UpdateName(self, newName):
 		self.Name = newName
@@ -169,8 +161,8 @@ class PuzzleMaster:
 		with open('settings.json', 'w') as outfile:
 			json.dump(Settings, outfile)
 			
-	def ReadSettingsFromFile(self):
-		with open('settings.json') as infile:
+	def ReadSettingsFromFile(self, fileName):
+		with open(fileName) as infile:
 			Settings = json.load(infile)
 		self.Name = Settings["Name"]
 		self.Id = Settings["Id"]

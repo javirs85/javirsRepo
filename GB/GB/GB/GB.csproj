@@ -30,6 +30,9 @@
     <Compile Update="AutoPuzzlesPage.xaml.cs">
       <DependentUpon>AutoPuzzlesPage.xaml</DependentUpon>
     </Compile>
+    <Compile Update="Controls\SimpleSensorViewer.xaml.cs">
+      <DependentUpon>SimpleSensorViewer.xaml</DependentUpon>
+    </Compile>
     <Compile Update="DebugPage.xaml.cs">
       <DependentUpon>DebugPage.xaml</DependentUpon>
     </Compile>
@@ -40,6 +43,9 @@
 
   <ItemGroup>
     <EmbeddedResource Update="AutoPuzzlesPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Controls\PuzzleViewer.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="MainTabbedPage.xaml">

@@ -2,15 +2,11 @@ from PuzzleMaster import PuzzleMaster
 import time
 
 class Puzzle (PuzzleMaster):
-	def __init__(self):
-		PuzzleMaster.__init__(self)
+	def __init__(self, fileName):
+		PuzzleMaster.__init__(self, fileName)
 		self.KeepOn = False
 	
-	def __init__(self, ID, _Name, _Kind):
-		PuzzleMaster.__init__(self, ID, _Name, _Kind)
-		self.KeepOn = False
-	
-	def Check():
+	def Check(self):
 		self.CheckMessages()
 		
 	def DoTesting(self):
@@ -29,5 +25,4 @@ class Puzzle (PuzzleMaster):
 			time.sleep(1)
 		
 	# def SendMessage(self, msgKind, Data):
-		
-		
+	

@@ -20,34 +20,59 @@ namespace GB
         public AutoPuzzlesPage()
         {
             InitializeComponent();
-            var a = this.PuzzlesContainer;
+            //var a = this.PuzzlesContainer;
 
             GameItems.Brain.newPuzzleAdded += (o, puzzle) => {
-                ConnectUIWithPuzzles();
+                if (puzzle.Kind == Utils.PuzzleKinds.Clocks)
+                {
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        GB.Controls.PuzzleViewer viewer = new Controls.PuzzleViewer
+                        {
+                            BindingContext = puzzle
+                        };
+                        PuzzlesStack.Children.Add(viewer);
+                    });
+                }
+                else
+                {
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        GB.Controls.SimpleSensorViewer viewer = new Controls.SimpleSensorViewer
+                        {
+                            BindingContext = puzzle as SimpleSensorPuzzle
+                        };
+                        PuzzlesStack.Children.Add(viewer);
+                    });
+                }
+                //old : ConnectUIWithPuzzles();
             };
         }
-        
+        /*
         public void ConnectUIWithPuzzles()
         {
-            IEnumerable<PropertyInfo> pInfos = (PuzzlesContainer as ItemsView<Cell>).GetType().GetRuntimeProperties();
-            var templatedItems = pInfos.FirstOrDefault(info => info.Name == "TemplatedItems");
-            if (templatedItems != null)
+            Device.BeginInvokeOnMainThread(() =>
             {
-                var cells = templatedItems.GetValue(PuzzlesContainer);
-                foreach (ViewCell cell in cells as Xamarin.Forms.ITemplatedItemsList<Xamarin.Forms.Cell>)
+                IEnumerable<PropertyInfo> pInfos = (PuzzlesContainer as ItemsView<Cell>).GetType().GetRuntimeProperties();
+                var templatedItems = pInfos.FirstOrDefault(info => info.Name == "TemplatedItems");
+                if (templatedItems != null)
                 {
-                    if (cell.BindingContext != null && cell.BindingContext is Puzzle)
+                    var cells = templatedItems.GetValue(PuzzlesContainer);
+                    foreach (ViewCell cell in cells as Xamarin.Forms.ITemplatedItemsList<Xamarin.Forms.Cell>)
                     {
-                        var target = (cell.View as Grid).Children.ToList()[2];
-                        if (target != null)
+                        if (cell.BindingContext != null && cell.BindingContext is Puzzle)
                         {
-                            (cell.BindingContext as Puzzle).GetUIElements(target as Grid);                            
+                            var target = (cell.View as Grid).Children.ToList()[2];
+                            if (target != null)
+                            {
+                                (cell.BindingContext as Puzzle).GetUIElements(target as Grid);
+                            }
                         }
                     }
                 }
-            }
+            });
         }
-
+        */
     }
 
     public class PuzzleDataTemplateSelector : DataTemplateSelector

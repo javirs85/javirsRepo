@@ -1,0 +1,2 @@
+C:\Users\rodriguez\Documents\GitHub\javirsRepo\gameBrain\Brain\obj\Debug\Brain.csprojAssemblyReference.cache
+C:\Users\rodriguez\Documents\GitHub\javirsRepo\gameBrain\Brain\obj\Debug\Brain.csproj.CoreCompileInputs.cache

@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:GB.Controls"
+             x:Class="GB.Controls.SimpleSensorViewer">
+    <ContentView.Resources>
+        <ResourceDictionary>
+            
+        </ResourceDictionary>
+    </ContentView.Resources>
+  <ContentView.Content>
+      <StackLayout BackgroundColor="Blue" HorizontalOptions="CenterAndExpand" Orientation="Horizontal">
+            <Label >CurrentValue:</Label>
+            <Label x:Name="SensedValue" HeightRequest="200" WidthRequest="200" BackgroundColor="Pink" Text="{Binding SensedValue, Mode=TwoWay, StringFormat= '{0:F2}' }"/>
+      </StackLayout>
+  </ContentView.Content>
+</ContentView>

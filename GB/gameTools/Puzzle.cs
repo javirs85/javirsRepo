@@ -1,4 +1,5 @@
-﻿using Communication;
+﻿using GBCore.Connectivity;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -8,12 +9,13 @@ namespace gameTools
 {
     public class Puzzle : INotifyPropertyChanged
     {
+        public enum PuzzleKinds { genericSensor, motor, temperature, button, server, Clocks }
+        public enum PuzzleStatus { unsolved, solved, offline };
+
         public event EventHandler<string> newDebugMessage;
-        public event EventHandler<Message> newMessageFromPuzzle;
         public event EventHandler PuzzleDisconnected;
 
         public event EventHandler StatusChanged;
-        public event EventHandler DetailsChanged;
         public event EventHandler PuzzleSolved;
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -26,8 +28,8 @@ namespace gameTools
                 OnPropertyChanged("Name");
             }
         }
-        private Utils.PuzzleStatus _status;
-        public Utils.PuzzleStatus Status {
+        private Puzzle.PuzzleStatus _status;
+        public Puzzle.PuzzleStatus Status {
             get { return _status; }
             set {
                 if (_status != value)
@@ -47,11 +49,11 @@ namespace gameTools
                 OnPropertyChanged("Details");
             }
         }
-        public Utils.PuzzleKinds Kind { get; set; }
+        public Puzzle.PuzzleKinds Kind { get; set; }
         public string IP;
         public bool IsOnline = false;
 
-        public TCPController TCP;
+        public BrainConnector ZCon;
 
         
         public System.Windows.Input.ICommand ForceOpen { get; set; }
@@ -62,28 +64,34 @@ namespace gameTools
             ForceOpen = new Command(() => {
                 Debug($"{Name} clicked OPEN");
 
-                var m = new Message() { msgType = Utils.MessageTypes.forceSolve };
-                TCP.Send(m.Serialize());
+                var m = new BrainMessage() { Order = messageKinds.forceSolve };
+                if (ZCon != null)
+                    ZCon.Send(m.Serialize());
+                else
+                    Debug(null, "TCP Client is disconnected)");
+
             });
             ForceReset = new Command(() => {
                 Debug($"{Name} clicked RESET");
-                var m = new Message() { msgType = Utils.MessageTypes.reset };
-                TCP.Send(m.Serialize());
+                var m = new BrainMessage() { Order = messageKinds.reset };
+                ZCon.Send(m.Serialize());
             });
         }
-        
-        public void Connect(System.Net.Sockets.TcpClient client)
+
+        public string Serialize()
         {
-            TCP = new TCPController();
-            TCP.newDebugMessage += Debug;
-            TCP.newMessageFromServer += preprocessTCPMessage;
-            TCP.clientDisconnected += (o, e) => { PuzzleDisconnected?.Invoke(this, EventArgs.Empty); };
-            TCP.ListenToClient(client);           
+            return JsonConvert.SerializeObject(this);
         }
 
-        public void Send(Message m)
+        public static Puzzle FromString(string s)
         {
-            TCP.Send(m.Serialize());
+            return JsonConvert.DeserializeObject<Puzzle>(s);
+        }
+
+
+        public void Send(BrainMessage m)
+        {
+            ZCon.Send(m.Serialize());
         }
 
         public static Puzzle generateDummy()
@@ -92,8 +100,8 @@ namespace gameTools
             {
                 Name = "TestPuzle",
                 ID = 22,
-                Status = Utils.PuzzleStatus.unset,
-                Kind = Utils.PuzzleKinds.genericSensor
+                Status = Puzzle.PuzzleStatus.offline,
+                Kind = Puzzle.PuzzleKinds.genericSensor
             };
             p.Details = new Dictionary<string, string>();
             p.Details.Add("r1", "10:00");
@@ -115,14 +123,8 @@ namespace gameTools
         }
              
 
-        private void preprocessTCPMessage(object sender, string e)
-        {
-            Message m = Message.Deserialize(e);
-            newMessageFromPuzzle?.Invoke(this, m);
-        }
-
-        private void Debug(string s) => Debug(null, s);
-
+        private void Debug(string e) => Debug(null, e);
+        private void Debug(BrainMessage s) => Debug(null, "Error in device Puzzle ln. 128");
         private void Debug(object sender, string e)
         {
             newDebugMessage?.Invoke(this, e);

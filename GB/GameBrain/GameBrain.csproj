@@ -50,10 +50,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Communication\Communication.csproj">
-      <Project>{cb3cef59-0484-4b66-be8d-970fd21d317d}</Project>
-      <Name>Communication</Name>
-    </ProjectReference>
     <ProjectReference Include="..\gameTools\gameTools.csproj">
       <Project>{2c1ed19f-da8f-4ef5-888e-bbfb5d031907}</Project>
       <Name>gameTools</Name>
@@ -62,5 +58,6 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

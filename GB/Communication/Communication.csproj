@@ -39,12 +39,14 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="TCPComm">
+      <HintPath>..\..\..\..\..\..\..\SVN\SoftwareComponenBinaries\trunk\mindBeagleFW\TCPComm.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="gameNet.cs" />
+    <Compile Include="ConnectivityCore.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ServerController.cs" />
-    <Compile Include="TCPController.cs" />
+    <Compile Include="ZeusDeviceConnector.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
