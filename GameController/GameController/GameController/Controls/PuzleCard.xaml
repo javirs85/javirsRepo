@@ -11,7 +11,7 @@
         <Color x:Key="primary-text-color">#212121</Color>
         <Color x:Key="secondary-text-color">#757575</Color>
         <Color x:Key="divider-color">#BDBDBD</Color>
-        <Style TargetType="Label">
+        <Style TargetType="Label" x:Key="baseLabel">
             <Setter Property="TextColor" Value="{StaticResource primary-text-color}"/>
         </Style>
     </ContentView.Resources>
@@ -34,8 +34,11 @@
                     />
                 </Grid>
                 
-                <StackLayout Orientation="Horizontal" Margin="5,5,45,5" HorizontalOptions="End" VerticalOptions="Start">
-                    <Label Text="MAPA"  />
+                <StackLayout Orientation="Horizontal"
+                             Margin="5,5,45,5"
+                             HorizontalOptions="End"
+                             VerticalOptions="Start">
+                    <Label Text="{Binding Name}}"  />
                 </StackLayout>
                 
                 <!-- Buttons -->

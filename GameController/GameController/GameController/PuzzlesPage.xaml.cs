@@ -25,6 +25,7 @@ namespace GameController
                     var ui = new PuzzleCard();
                     ui.BindTo(p);
                     puzlesContainer.Children.Add(ui);
+                    ui.ShowOfflineCover();
                 }
             };
         }

@@ -29,7 +29,6 @@ namespace GameController.Controls
                         {
                             ButtonsLayout.TranslateTo(0, 0, 250, Easing.CubicIn);
                             crossIcon.RotateTo(45, 250);
-                            // crossIcon.ScaleTo(270 / 40, 250, Easing.CubicIn);
                             var animate = new Animation(d => crossIcon.WidthRequest = d, 40, 270, Easing.CubicIn);
                             animate.Commit(crossIcon, "crossIcon", 16, 250);
                         }
@@ -38,9 +37,7 @@ namespace GameController.Controls
                             crossIcon.RotateTo(0, 250, Easing.Linear);
                             ButtonsLayout.TranslateTo(85, 0, 200, Easing.CubicOut);
                             var animate = new Animation(d => crossIcon.WidthRequest = d, 270, 40, Easing.CubicIn);
-                            animate.Commit(crossIcon, "crossIcon", 16, 200);
-                            // await crossIcon.ScaleTo(1, 100, Easing.CubicIn);
-                            
+                            animate.Commit(crossIcon, "crossIcon", 16, 200);                      
                         }
                     })
                 }
@@ -58,8 +55,20 @@ namespace GameController.Controls
 
         public async void HideOfflineCover()
         {
-            await OfflineCover.FadeTo(0, 250, Easing.CubicIn);
-            OfflineCover.IsVisible = false;
+            if (OfflineCover.IsVisible)
+            {
+                await OfflineCover.FadeTo(0, 250, Easing.CubicIn);
+                OfflineCover.IsVisible = false;
+            }
+        }
+
+        public async void ShowOfflineCover()
+        {
+            if (OfflineCover.IsVisible == false)
+            {
+                OfflineCover.IsVisible = true;
+                await OfflineCover.FadeTo(1, 250, Easing.CubicInOut);
+            }
         }
 
         public async void ShowSolvedCover()
@@ -70,6 +79,28 @@ namespace GameController.Controls
         public void BindTo(Puzzle p)
         {
             this.BindingContext = p;
+            p.StatusChanged += (s1, newStatus) =>
+            {
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    switch (newStatus)
+                    {
+                        case Puzzle.PuzzleStatus.unsolved:
+                            HideOfflineCover();
+                            break;
+                        case Puzzle.PuzzleStatus.solved:
+                            HideOfflineCover();
+                            ShowSolvedCover();
+                            break;
+                        case Puzzle.PuzzleStatus.offline:
+                            ShowOfflineCover();
+                            break;
+                        default:
+                            break;
+
+                    }
+                });
+            };
         }
     }
 

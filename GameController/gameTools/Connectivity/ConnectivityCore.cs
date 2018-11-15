@@ -79,7 +79,9 @@ namespace GBCore.Connectivity
                 }
                 else if((msg.Order == messageKinds.deviceClosed))
                 {
-                    ;// a device was closed before teh present message was sent. We do nothing, the TCPServer layer will remove left overs.
+                    // a device was closed before teh present message was sent. We do nothing, the TCPServer layer will remove left overs.
+                    var con = sender as TCPConnector;
+                     ;
                 }
                 else
                 {

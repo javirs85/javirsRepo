@@ -51,7 +51,7 @@ namespace GBCore
             else
             {
                 var Zcon = info.Connector;
-                puzzle.ZCon = Zcon;
+                puzzle.SetZcon(Zcon);
 
                 Zcon.g_CannotConnect += detailedDebug;
                 Zcon.g_NewErrorFromDevice += detailedDebug;

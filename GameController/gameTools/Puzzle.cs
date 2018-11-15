@@ -13,10 +13,8 @@ namespace gameTools
         public enum PuzzleStatus { unsolved, solved, offline };
 
         public event EventHandler<string> newDebugMessage;
-        public event EventHandler PuzzleDisconnected;
 
-        public event EventHandler StatusChanged;
-        public event EventHandler PuzzleSolved;
+        public event EventHandler<Puzzle.PuzzleStatus> StatusChanged;
         public event PropertyChangedEventHandler PropertyChanged;
 
         public int ID;
@@ -35,6 +33,7 @@ namespace gameTools
                 if (_status != value)
                 {
                     _status = value;
+                    StatusChanged?.Invoke(this, value);
                     OnPropertyChanged("Status");
                 }
             }
@@ -53,7 +52,7 @@ namespace gameTools
         public string IP;
         public bool IsOnline = false;
 
-        public BrainConnector ZCon;
+        private BrainConnector ZCon;
 
         
         public System.Windows.Input.ICommand ForceOpen { get; set; }
@@ -88,6 +87,11 @@ namespace gameTools
             return JsonConvert.DeserializeObject<Puzzle>(s);
         }
 
+        public void SetZcon(BrainConnector conn)
+        {
+            this.ZCon = conn;
+            ZCon.g_DeviceClosed += (s1, a1) => { Status = PuzzleStatus.offline; };
+        }
 
         public void Send(BrainMessage m)
         {

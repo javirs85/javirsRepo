@@ -37,7 +37,7 @@ class PuzzleMaster:
 		self.SendPresent()
 		
 	def ConnectToDefault(self):
-		self.ConnectToIP("192.168.1.33")
+		self.ConnectToIP("192.168.0.12")
 		
 	def UpdateProperty(self, propName, propValue):
 		if self.Details.get(propName) == None:
