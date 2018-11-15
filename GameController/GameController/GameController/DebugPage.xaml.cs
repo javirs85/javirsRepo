@@ -21,7 +21,7 @@ namespace GameController
             try
             {
                 GameItems.newMessageToUI += GameItems_newMessageToUI;
-            }catch (Exception ex)
+            }catch
             {
                 ;
             }

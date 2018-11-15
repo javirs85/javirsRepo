@@ -2,9 +2,20 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:controls="clr-namespace:GameController.Controls"
+               xmlns:local="clr-namespace:GameController"
              x:Class="GameController.PuzzlesPage">
+
+    <ContentView.Resources>
+        <local:GBColors/>
+    </ContentView.Resources>
+    
     <ContentPage.Content>
-        <StackLayout x:Name="puzlesContainer" BackgroundColor="Bisque">
+      <ScrollView>
+            <StackLayout x:Name="puzlesContainer" BackgroundColor="#d1dbe7">
+          <StackLayout.Resources>
+            
+          </StackLayout.Resources>
         </StackLayout>
+      </ScrollView>
     </ContentPage.Content>
 </ContentPage>

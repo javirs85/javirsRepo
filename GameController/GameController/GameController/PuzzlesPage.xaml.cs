@@ -22,10 +22,9 @@ namespace GameController
             {
                 foreach(var p in GBCore.GameItems.Puzzles)
                 {
-                    var ui = new GameController.Controls.PuzleCard();
-                    //ui.BindTo(p);
-                    var l = new Label() { Text = p.Name };
-                    puzlesContainer.Children.Add(l);
+                    var ui = new PuzzleCard();
+                    ui.BindTo(p);
+                    puzlesContainer.Children.Add(ui);
                 }
             };
         }
