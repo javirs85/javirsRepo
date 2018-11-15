@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ResourceDictionary xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="GameController.GBColors">
+    <Color x:Key="dark-primary-color">#303F9F"</Color>
+    <Color x:Key="default-primary-color">#3F51B5</Color>
+    <Color x:Key="light-primary-color">#C5CAE9</Color>
+    <Color x:Key="text-primary-color">#FFFFFF</Color>
+    <Color x:Key="accent-color">#448AFF</Color>
+    <Color x:Key="primary-text-color">#212121</Color>
+    <Color x:Key="secondary-text-color">#757575</Color>
+    <Color x:Key="divider-color">#BDBDBD</Color>
+</ResourceDictionary>
