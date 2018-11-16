@@ -68,8 +68,9 @@
     <Compile Include="Connectivity\TCPComm\TCPConnector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Puzzle.cs" />
-    <Compile Include="RelojesPuzzle.cs" />
-    <Compile Include="SimpleSensorPuzzle.cs" />
+    <Compile Include="ClocksPuzzles.cs" />
+    <Compile Include="SimpleStringPuzzle.cs" />
+    <Compile Include="SimpleNumericPuzzle.cs" />
     <Compile Include="Utils.cs" />
   </ItemGroup>
   <ItemGroup>

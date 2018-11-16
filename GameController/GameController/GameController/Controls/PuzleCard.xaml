@@ -23,7 +23,8 @@
             <Grid VerticalOptions="CenterAndExpand" IsClippedToBounds="True"
                   BackgroundColor="White">
 
-                <Grid BackgroundColor="#AAb8dfb0" x:Name="SolvedCover" Opacity="0">
+                <!-- Solved Back -->
+                    <Grid BackgroundColor="#AAb8dfb0" x:Name="SolvedCover" Opacity="0">
                     <Label 
                         Text="SOLVED" FontAttributes="Bold"
                         Rotation="-90"
@@ -33,20 +34,26 @@
                         TextColor="#2e5b25"
                     />
                 </Grid>
+
+                <Grid x:Name="PuzzleViewer" IsVisible="False" Margin="0,0,40,0" >
+                    
+                </Grid>
                 
-                <StackLayout Orientation="Horizontal"
+                <!-- NAME -->
+                    <StackLayout Orientation="Horizontal"
                              Margin="5,5,45,5"
                              HorizontalOptions="End"
                              VerticalOptions="Start">
-                    <Label Text="{Binding Name}}"  />
+                    <Label Text="{Binding Name}"  />
                 </StackLayout>
+
                 
                 <!-- Buttons -->
                 <StackLayout  x:Name="ButtonsLayout"
                     BackgroundColor="#EEa4b5bd"                     
                     HorizontalOptions="EndAndExpand"
                     Orientation="Horizontal"
-                    TranslationX="80">
+                    TranslationX="85">
 
                     <Label Text="+" x:Name="crossIcon"
                            VerticalOptions="Center"
@@ -56,8 +63,20 @@
                            FontSize="30"/>
                     
                     <StackLayout WidthRequest="80">
-                        <Button Text="RESET" TextColor="White" Margin="5" BackgroundColor="{StaticResource default-primary-color}" HeightRequest="70" WidthRequest="70"/>
-                        <Button Text="SOLVE" TextColor="White" Margin="5,-5,5,5" BackgroundColor="{StaticResource default-primary-color}" HeightRequest="70" WidthRequest="70"/>
+                        <Button Text="RESET"
+                                TextColor="White"
+                                Margin="5"
+                                BackgroundColor="{StaticResource default-primary-color}"
+                                HeightRequest="70" WidthRequest="70"
+                                Command="{Binding ForceReset}"
+                                />
+                        
+                        <Button Text="SOLVE"
+                                TextColor="White" Margin="5,-5,5,5"
+                                BackgroundColor="{StaticResource default-primary-color}"
+                                HeightRequest="70" WidthRequest="70"
+                                Command="{Binding ForceSolve}"
+                                />
                     </StackLayout>
                 </StackLayout>
 

@@ -15,6 +15,12 @@ namespace GameController.Controls
     {
         private bool AreButtonShown = false;
 
+        public Grid ViewContainer
+        {
+            get { return PuzzleViewer; }
+            set { PuzzleViewer = value; }
+        }
+
         public PuzzleCard()
         {
             InitializeComponent();
@@ -43,6 +49,7 @@ namespace GameController.Controls
                 }
             );
 
+            /*
             OfflineCover.GestureRecognizers.Add(
                 new TapGestureRecognizer()
                 {
@@ -51,12 +58,14 @@ namespace GameController.Controls
                     })
                 }
                 );
+                */
         }
 
         public async void HideOfflineCover()
         {
             if (OfflineCover.IsVisible)
             {
+                PuzzleViewer.IsVisible = true;
                 await OfflineCover.FadeTo(0, 250, Easing.CubicIn);
                 OfflineCover.IsVisible = false;
             }
@@ -66,6 +75,7 @@ namespace GameController.Controls
         {
             if (OfflineCover.IsVisible == false)
             {
+                PuzzleViewer.IsVisible = false;
                 OfflineCover.IsVisible = true;
                 await OfflineCover.FadeTo(1, 250, Easing.CubicInOut);
             }
@@ -74,6 +84,11 @@ namespace GameController.Controls
         public async void ShowSolvedCover()
         {
             await SolvedCover.FadeTo(1, 250, Easing.CubicIn);
+        }
+
+        public async void HideSolvedCover()
+        {
+            await SolvedCover.FadeTo(0, 250, Easing.CubicInOut);
         }
 
         public void BindTo(Puzzle p)
@@ -87,6 +102,7 @@ namespace GameController.Controls
                     {
                         case Puzzle.PuzzleStatus.unsolved:
                             HideOfflineCover();
+                            HideSolvedCover();
                             break;
                         case Puzzle.PuzzleStatus.solved:
                             HideOfflineCover();

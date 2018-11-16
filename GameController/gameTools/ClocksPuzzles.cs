@@ -32,5 +32,15 @@ namespace gameTools
                 r1.BackgroundColor = s1.BackgroundColor = Color.Red;*/
         }
 
+        protected override void CustomUpdate(Dictionary<string, object> data)
+        {
+            throw new NotImplementedException();
+        }
+        
+
+        protected override void Update(object data)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

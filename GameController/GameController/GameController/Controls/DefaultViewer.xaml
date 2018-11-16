@@ -3,8 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="GameController.Controls.DefaultViewer">
   <ContentView.Content>
-      <StackLayout BackgroundColor="Pink">
-          <Label Text="DefaultViewer" />
+      <StackLayout >
+            <Label x:Name="Value" Text="{Binding SensedValueStr}" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" TextColor="Black" FontAttributes="Bold" Margin="5"/>
       </StackLayout>
   </ContentView.Content>
 </ContentView>

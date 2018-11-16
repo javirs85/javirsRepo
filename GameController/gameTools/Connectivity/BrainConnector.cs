@@ -23,7 +23,6 @@ namespace GBCore.Connectivity
         //   public event EventHandler<ZeusMessage> g_PatientChanged;
 
         public event EventHandler<BrainMessage> g_Present;
-        public event EventHandler<BrainMessage> g_ConfigOk;
         public event EventHandler<BrainMessage> g_DeviceClosed;
         public event EventHandler<BrainMessage> g_NewErrorFromDevice;
         public static event EventHandler<Exception> g_NewNetworkError;
@@ -34,8 +33,6 @@ namespace GBCore.Connectivity
         /// the heartbeat failed
         /// </summary>
         public event EventHandler g_softwareMissing;
-        public event EventHandler g_ShowSoftwareWindow;
-        public event EventHandler<Exception> g_CannotConnect;
 
         public int remoteID { get; set; }
         public string remoteName { get; set; }
@@ -46,18 +43,6 @@ namespace GBCore.Connectivity
         #region heartbeat
 
         private System.Timers.Timer HeartbeatTimeOut = new System.Timers.Timer(1000);
-        private bool isTimeOutConfigured = false;
-
-        public void ConfigHeartbeatTimeOut(int ms)
-        {
-            HeartbeatTimeOut.Interval = ms;
-            HeartbeatTimeOut.Elapsed += HeartbeatTimeOut_Elapsed;
-            HeartbeatTimeOut.AutoReset = false;
-            HeartbeatTimeOut.Enabled = true;
-            HeartbeatTimeOut.Start();
-
-            isTimeOutConfigured = true;
-        }
 
         public void DisableHeartbeatTimeOut()
         {
@@ -93,6 +78,7 @@ namespace GBCore.Connectivity
                 if (str == "")
                 {
                     g_DeviceClosed?.Invoke(this, null);
+                    
                     connector.Dispose();
                     return;
                 }

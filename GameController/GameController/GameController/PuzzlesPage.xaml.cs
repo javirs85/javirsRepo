@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using GameController.Controls;
-     
+using gameTools;
 
 namespace GameController
 {
@@ -23,6 +23,16 @@ namespace GameController
                 foreach(var p in GBCore.GameItems.Puzzles)
                 {
                     var ui = new PuzzleCard();
+                    if(p is SimpleNumericPuzzle)
+                    {
+                        var viewer = new DefaultViewer();
+                        ui.ViewContainer.Children.Add(viewer);
+                    }
+                    else if(p is SimpleStringPuzzle)
+                    {
+                        var viewer = new DefaultViewer();
+                        ui.ViewContainer.Children.Add(viewer);
+                    }
                     ui.BindTo(p);
                     puzlesContainer.Children.Add(ui);
                     ui.ShowOfflineCover();

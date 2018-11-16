@@ -7,7 +7,7 @@ using Xamarin.Forms;
 
 namespace gameTools
 {
-    public class Puzzle : INotifyPropertyChanged
+    public abstract class Puzzle : INotifyPropertyChanged
     {
         public enum PuzzleKinds { genericSensor, motor, temperature, button, server, Clocks }
         public enum PuzzleStatus { unsolved, solved, offline };
@@ -55,25 +55,39 @@ namespace gameTools
         private BrainConnector ZCon;
 
         
-        public System.Windows.Input.ICommand ForceOpen { get; set; }
+        public System.Windows.Input.ICommand ForceSolve { get; set; }
         public System.Windows.Input.ICommand ForceReset { get; set; }
 
         public Puzzle()
         {
-            ForceOpen = new Command(() => {
-                Debug($"{Name} clicked OPEN");
+            ForceSolve = new Command(() =>
+            {
+                try
+                {
+                    Debug($"{Name} clicked OPEN");
 
-                var m = new BrainMessage() { Order = messageKinds.forceSolve };
-                if (ZCon != null)
-                    ZCon.Send(m.Serialize());
-                else
-                    Debug(null, "TCP Client is disconnected)");
-
+                    var m = new BrainMessage() { Order = messageKinds.forceSolve };
+                    if (ZCon != null)
+                        ZCon.Send(m.Serialize());
+                    else
+                        Debug(null, "TCP Client is disconnected)");
+                }
+                catch (Exception e)
+                {
+                    Debug(e.Message);
+                }
             });
             ForceReset = new Command(() => {
-                Debug($"{Name} clicked RESET");
-                var m = new BrainMessage() { Order = messageKinds.reset };
-                ZCon.Send(m.Serialize());
+                try
+                {
+                    Debug($"{Name} clicked RESET");
+                    var m = new BrainMessage() { Order = messageKinds.reset };
+                    ZCon.Send(m.Serialize());
+                }
+                catch (Exception e)
+                {
+                    Debug(e.Message);
+                }
             });
         }
 
@@ -90,8 +104,51 @@ namespace gameTools
         public void SetZcon(BrainConnector conn)
         {
             this.ZCon = conn;
-            ZCon.g_DeviceClosed += (s1, a1) => { Status = PuzzleStatus.offline; };
+            ZCon.g_DeviceClosed += (s1, a1) => {
+                Debug("${Name} disconnected from the server");
+                Status = PuzzleStatus.offline;
+            };
+            ZCon.g_Update += UpdateFromDevice;
         }
+
+        private void UpdateFromDevice(object sender, Dictionary<string, object> receivedData)
+        {
+            if (receivedData["prop"] == null)
+            {
+                Debug("bad formated property update");
+            }
+            else if (receivedData["prop"].ToString() == "status")
+            {
+                if (receivedData["newVal"] == null) Debug("bad formated value in status update");
+                else
+                {
+                    var val = receivedData["newVal"].ToString();
+                    if (val == "solved")
+                        Status = PuzzleStatus.solved;
+                    else if (val == "unsolved")
+                        Status = PuzzleStatus.unsolved;
+                    else
+                        Debug($"Unexpected new status {val} in an update of {Name}");
+                }
+            }
+            else if (receivedData["prop"].ToString() == "sensed")
+            {
+                if (receivedData["newVal"] == null) Debug("bad formated value in sensed update");
+                else
+                    Update(receivedData["newVal"]);
+            }
+            else if (receivedData["prop"].ToString() == "custom")
+            {
+                CustomUpdate(receivedData);
+            }
+            else
+                Debug($"Unexpected property to update in {Name}");
+
+
+        }
+
+        protected abstract void CustomUpdate(Dictionary<string, object> data);
+        protected abstract void Update(object data);
 
         public void Send(BrainMessage m)
         {
@@ -100,7 +157,7 @@ namespace gameTools
 
         public static Puzzle generateDummy()
         {
-            var p = new Puzzle()
+            var p = new SimpleNumericPuzzle()
             {
                 Name = "TestPuzle",
                 ID = 22,

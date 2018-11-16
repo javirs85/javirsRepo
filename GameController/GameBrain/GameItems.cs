@@ -35,10 +35,15 @@ namespace GBCore
 
         private static void LoadAllPuzzles()
         {
-            Puzzles = new ObservableCollection<Puzzle>();
-            Puzzles.Add(new Puzzle() { ID = 1, Name = "Mapa", Kind = Puzzle.PuzzleKinds.genericSensor , Status = Puzzle.PuzzleStatus.offline});
-            Puzzles.Add(new Puzzle() { ID = 2, Name = "Relojes", Kind = Puzzle.PuzzleKinds.genericSensor, Status = Puzzle.PuzzleStatus.offline });
-            Puzzles.Add(new Puzzle() { ID = 3, Name = "Sonar", Kind = Puzzle.PuzzleKinds.genericSensor, Status = Puzzle.PuzzleStatus.offline });
+            Puzzles = new ObservableCollection<Puzzle>
+            {
+                new SimpleNumericPuzzle() { ID = 1, Name = "Mapa", Kind = Puzzle.PuzzleKinds.genericSensor, Status = Puzzle.PuzzleStatus.offline },
+                new SimpleStringPuzzle() { ID = 2, Name = "Relojes", Kind = Puzzle.PuzzleKinds.genericSensor, Status = Puzzle.PuzzleStatus.offline },
+                new ClocksPuzzles() { ID = 3, Name = "Sonar", Kind = Puzzle.PuzzleKinds.genericSensor, Status = Puzzle.PuzzleStatus.offline }
+            };
+
+            foreach (var p in Puzzles)
+                p.newDebugMessage += newMessageToUI;
 
             AllPuzzlesLoaded(null, EventArgs.Empty);
         }
@@ -52,10 +57,10 @@ namespace GBCore
             {
                 var Zcon = info.Connector;
                 puzzle.SetZcon(Zcon);
-
-                Zcon.g_CannotConnect += detailedDebug;
+                
                 Zcon.g_NewErrorFromDevice += detailedDebug;
                 Zcon.g_WrongToken += detailedDebug;
+                
 
                 puzzle.Status = Puzzle.PuzzleStatus.unsolved;
                 Debug($"{puzzle.Name} with ID {puzzle.ID} successfully connected to the system");

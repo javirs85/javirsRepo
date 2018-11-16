@@ -23,6 +23,22 @@ class Puzzle (PuzzleMaster):
 		while not self.KeepOn:
 			self.CheckMessages()
 			time.sleep(1)
+			
+	def UpdateSensedValue(self, newVal):
+		self.UpdateDetails(newVal);
+		isSolved = self.CheckIfSolved(newVal);
+
+		if isSolved:
+			self.UpdateStatus("solved")
+			self.OnSolved()
+		else:
+			print(repr(newVal)+" is not the solution")
+		
+	def CheckIfSolved(self, newVal):
+		print("not implemented")
+		
+	def OnSolved(self):
+		print("on solved not implemented")
 		
 	# def SendMessage(self, msgKind, Data):
 	

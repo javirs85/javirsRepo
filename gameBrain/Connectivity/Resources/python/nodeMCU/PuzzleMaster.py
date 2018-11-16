@@ -37,15 +37,8 @@ class PuzzleMaster:
 		self.SendPresent()
 		
 	def ConnectToDefault(self):
-		self.ConnectToIP("192.168.0.12")
+		self.ConnectToIP("192.168.1.34")
 		
-	def UpdateProperty(self, propName, propValue):
-		if self.Details.get(propName) == None:
-			print("property does not exists")
-		else:
-			self.Details[propName] = propValue;
-		
-		self.SendMessage("update", {}, self.Details)
 	
 	def SendMessage(self, msgKind, Params):
 		m = Message.Message()
@@ -61,47 +54,26 @@ class PuzzleMaster:
 		Params["myName"] = self.Name
 		self.SendMessage("Present", Params)
 		
-	def UpdateName(self, newName):
-		self.Name = newName
-		Data = {}
-		Data["myName"] = self.Name
-		self.SendMessage("update", Data)
 		
 	def UpdateStatus(self, newStatus):
 		self.Status = newStatus
 		Data = {}
-		Data["myStatus"] = self.Status
+		Data["prop"] = "status";
+		Data["newVal"] = self.Status
 		self.SendMessage("update", Data)
 		
 	def UpdateDetails(self, newDetails):
-		self.Details = newDetails
 		Data = {}
-		Data["myDetails"] = self.Details
+		Data["prop"] = "sensed";
+		Data["newVal"] = newDetails
 		self.SendMessage("update", Data)
 		
-	def SendUpdate(self):
-		Data = {}
-		Data["myName"] = self.Name
-		Data["myStatus"] = self.Status
-		Data["myKind"] = self.PuzzleKind
-		Data["myDetails"] = self.Details
-		self.SendMessage("update", Data)
 	
 	def Send(self, str):
-		print('Sending new message: '+str)
+		#print('Sending new message: '+str)
+		print ('->')
 		self.sock.send(bytes(str, "utf-8"))
 	
-	def SendTestMessage(self):
-		m = Message.Message()
-		m.msgType = "debug"
-		m.Data = {}
-		m.Data["prop1"] = "val1"
-		m.Data["prop2"] = "val2"
-		m.Status = self.Status
-		m.PuzzleKind = self.PuzzleKind
-		m.Details = self.Details		
-		str = m.Serialize()		
-		self.Send(str)
 		
 	def Disconnect(self):
 		self.sock.close()
@@ -111,22 +83,22 @@ class PuzzleMaster:
 			self.sock.setblocking(False)
 			data, address = self.sock.recvfrom(1024)
 		except BlockingIOError:
-			print("no message")
+			print("-")
 		else:
-			print(data)
+			print("<-")
 			str = data.decode("utf-8")
 			chunks = self.SplitStringIntoJSONS(str)
 			
 			for chunk in chunks :
 				msg = json.loads(chunk)
 				#4 = forceOpen
-				if msg['msgType'] == 4:
+				if msg['Order'] == 6:
 					self.DoForceSolve()
 				#3 = reset
-				elif msg['msgType'] == 3:
+				elif msg['Order'] == 7:
 					self.DoReset()
 				else:
-					print("** PuzzleMaster : Unexpected message: " + msg['msgType'])
+					print("** PuzzleMaster : Unexpected message: " + repr(msg['Order']))
 			
 
 	def SplitStringIntoJSONS(self, str):

@@ -62,7 +62,13 @@ namespace GBCore.Connectivity
             {
                 var msg = BrainMessage.fromString(deviceMessage);
 
-                if(msg.Token != NetUtils.Token.Token)
+                if(deviceMessage == "")
+                {
+                    var con = sender as TCPConnector;
+                    con.Dispose();
+                    return;
+                }
+                else if(msg.Token != NetUtils.Token.Token)
                 {
                     //this device is not for our system
                     g_NewErrorFromDevice(null, new Exception($"Bad Token. Expected {NetUtils.Token.Token} found {msg.Token}"));
@@ -80,8 +86,7 @@ namespace GBCore.Connectivity
                 else if((msg.Order == messageKinds.deviceClosed))
                 {
                     // a device was closed before teh present message was sent. We do nothing, the TCPServer layer will remove left overs.
-                    var con = sender as TCPConnector;
-                     ;
+                     return;
                 }
                 else
                 {
@@ -90,7 +95,7 @@ namespace GBCore.Connectivity
             }
             catch (Exception e2)
             {
-                throw e2;
+                g_newDebugMessage(this, e2.Message);
             }
         }
         

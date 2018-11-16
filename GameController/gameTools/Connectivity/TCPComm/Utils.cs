@@ -44,7 +44,7 @@ namespace TCPComm
 
                 return toReturn;
             }
-            catch (Exception e)
+            catch
             {
                 return null;
             }
