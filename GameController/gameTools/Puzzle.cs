@@ -9,12 +9,13 @@ namespace gameTools
 {
     public abstract class Puzzle : INotifyPropertyChanged
     {
-        public enum PuzzleKinds { genericSensor, motor, temperature, button, server, Clocks }
+        public enum PuzzleKinds { genericSensor, motor, temperature, button, server, Clocks, Map}
         public enum PuzzleStatus { unsolved, solved, offline };
 
         public event EventHandler<string> newDebugMessage;
 
         public event EventHandler<Puzzle.PuzzleStatus> StatusChanged;
+        public event EventHandler UpdateInTheUIRequired;
         public event PropertyChangedEventHandler PropertyChanged;
 
         public int ID;
@@ -144,7 +145,7 @@ namespace gameTools
             else
                 Debug($"Unexpected property to update in {Name}");
 
-
+            UpdateInTheUIRequired(this, EventArgs.Empty);
         }
 
         protected abstract void CustomUpdate(Dictionary<string, object> data);
@@ -171,16 +172,6 @@ namespace gameTools
             p.Details.Add("s2", "16:16");
 
             return p;
-        }
-
-        public virtual void GetUIElements(Grid grid)
-        {
-            throw new NotImplementedException();
-        }
-
-        public virtual void UpdateUI()
-        {
-            throw new NotImplementedException();
         }
              
 

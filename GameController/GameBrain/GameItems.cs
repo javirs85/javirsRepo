@@ -37,7 +37,7 @@ namespace GBCore
         {
             Puzzles = new ObservableCollection<Puzzle>
             {
-                new SimpleNumericPuzzle() { ID = 1, Name = "Mapa", Kind = Puzzle.PuzzleKinds.genericSensor, Status = Puzzle.PuzzleStatus.offline },
+                new MapPuzzle() { ID = 1, Name = "Mapa", Kind = Puzzle.PuzzleKinds.Map, Status = Puzzle.PuzzleStatus.offline },
                 new SimpleStringPuzzle() { ID = 2, Name = "Relojes", Kind = Puzzle.PuzzleKinds.genericSensor, Status = Puzzle.PuzzleStatus.offline },
                 new ClocksPuzzles() { ID = 3, Name = "Sonar", Kind = Puzzle.PuzzleKinds.genericSensor, Status = Puzzle.PuzzleStatus.offline }
             };

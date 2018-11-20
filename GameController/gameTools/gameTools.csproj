@@ -69,6 +69,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Puzzle.cs" />
     <Compile Include="ClocksPuzzles.cs" />
+    <Compile Include="MapPuzzle.cs" />
     <Compile Include="SimpleStringPuzzle.cs" />
     <Compile Include="SimpleNumericPuzzle.cs" />
     <Compile Include="Utils.cs" />

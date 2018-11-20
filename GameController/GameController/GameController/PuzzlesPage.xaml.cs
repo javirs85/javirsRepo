@@ -22,20 +22,29 @@ namespace GameController
             {
                 foreach(var p in GBCore.GameItems.Puzzles)
                 {
-                    var ui = new PuzzleCard();
-                    if(p is SimpleNumericPuzzle)
+                    var Card = new PuzzleCard();
+                    Card.BindTo(p);
+
+
+                    if (p is SimpleNumericPuzzle)
                     {
                         var viewer = new DefaultViewer();
-                        ui.ViewContainer.Children.Add(viewer);
+                        Card.ViewContainer.Children.Add(viewer);
                     }
-                    else if(p is SimpleStringPuzzle)
+                    else if (p is MapPuzzle)
+                    {
+                        var viewer = new MapViewer();
+                        viewer.setPuzzle(p);
+                        Card.ViewContainer.Children.Add(viewer);
+                    }
+                    else if (p is SimpleStringPuzzle)
                     {
                         var viewer = new DefaultViewer();
-                        ui.ViewContainer.Children.Add(viewer);
+                        Card.ViewContainer.Children.Add(viewer);
                     }
-                    ui.BindTo(p);
-                    puzlesContainer.Children.Add(ui);
-                    ui.ShowOfflineCover();
+                    
+                    puzlesContainer.Children.Add(Card);
+                    Card.ShowOfflineCover();
                 }
             };
         }
