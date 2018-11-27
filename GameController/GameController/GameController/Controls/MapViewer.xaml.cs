@@ -16,10 +16,18 @@ namespace GameController.Controls
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class MapViewer : ContentView
 	{
-		public MapViewer ()
+
+        List<Point> options = new List<Point>();
+        List<int> selected = new List<int>();
+        List<int> solution = null;
+
+        SKCanvasView canvas = null;
+
+
+        public MapViewer ()
 		{
 			InitializeComponent ();
-            SKCanvasView canvas = new SKCanvasView();
+            canvas = new SKCanvasView();
             canvas.PaintSurface += Canvas_PaintSurface;
             Content = canvas;
 		}
@@ -35,23 +43,48 @@ namespace GameController.Controls
             SKPaint paint = new SKPaint
             {
                 Style = SKPaintStyle.Stroke,
-                Color = Color.Red.ToSKColor(),
+                Color = SKColor.Parse("#f4f4f4"),
                 StrokeWidth = 25
             };
             paint.IsAntialias = true;
 
-            canvas.DrawCircle(info.Width / 2, info.Height / 2, 100, paint);
+            options = new List<Point>()
+            {
+                new Point(info.Width / 4, info.Height / 4),
+                new Point(info.Width / 4*3, info.Height / 4),
+                new Point(info.Width / 4, info.Height / 4*3),
+                new Point(info.Width / 4*3, info.Height / 4*3),
+            };
 
-            paint.Style = SKPaintStyle.Fill;
-            paint.Color = SKColors.Blue;
-            canvas.DrawCircle(info.Width / 3, info.Height / 3, 100, paint);
+            if (solution != null)
+            {
+                paint.Color = SKColors.Red;
+                canvas.DrawCircle((float)options[solution[0] - 1].X, (float)options[solution[0] - 1].Y, 50, paint);
 
+                paint.Color = SKColor.Parse("#eaeaea");
+                canvas.DrawCircle((float)options[solution[1] - 1].X, (float)options[solution[1] - 1].Y, 50, paint);
+
+                paint.Color = SKColor.Parse("#d6d4d4");
+                canvas.DrawCircle((float)options[solution[2] - 1].X, (float)options[solution[2] - 1].Y, 50, paint);
+
+                paint.Color = SKColor.Parse("#bcbaba");
+                canvas.DrawCircle((float)options[solution[3] - 1].X, (float)options[solution[3] - 1].Y, 50, paint);
+            }
         }
 
         internal void setPuzzle(Puzzle p)
         {
+           
             p.UpdateInTheUIRequired += (o, e) => {
-                ;
+                if (solution == null)
+                    if (p.Solution != null)
+                    {
+                        solution = p.Solution.ToCharArray().Select(x => Int32.Parse(x.ToString())).ToList();
+                    }
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    canvas.InvalidateSurface();
+                });
             };
         }
     }

@@ -60,7 +60,10 @@ namespace GBCore.Connectivity
         {
             try
             {
-                var msg = BrainMessage.fromString(deviceMessage);
+
+                var msgs = TCPComm.Utils.SplitIntoMessages(deviceMessage);
+
+                
 
                 if(deviceMessage == "")
                 {
@@ -68,7 +71,10 @@ namespace GBCore.Connectivity
                     con.Dispose();
                     return;
                 }
-                else if(msg.Token != NetUtils.Token.Token)
+
+                var msg = BrainMessage.fromString(msgs[0]);
+
+                if (msg.Token != NetUtils.Token.Token)
                 {
                     //this device is not for our system
                     g_NewErrorFromDevice(null, new Exception($"Bad Token. Expected {NetUtils.Token.Token} found {msg.Token}"));
@@ -81,7 +87,13 @@ namespace GBCore.Connectivity
                     var ZConn = new BrainConnector(con);
                     ZConn.remoteID = int.Parse(msg.Params["myID"].ToString());
                     ZConn.remoteName = msg.Params["myName"].ToString();
-                    g_newDeviceConnected(this, new ConnectionInfo() { ID = ZConn.remoteID, Name = ZConn.remoteName, Connector = ZConn });
+                    g_newDeviceConnected(this, new ConnectionInfo() {
+                        ID = ZConn.remoteID,
+                        Name = ZConn.remoteName,
+                        Connector = ZConn,
+                        Default = msg.Params["Default"]?.ToString(),
+                        Solution = msg.Params["Solution"]?.ToString()
+                    });
                 }
                 else if((msg.Order == messageKinds.deviceClosed))
                 {
@@ -104,6 +116,8 @@ namespace GBCore.Connectivity
         {
             public int ID { get; set; }
             public string Name { get; set; }
+            public string Solution { get; set; }
+            public string Default { get; set; }
             public BrainConnector Connector { get; set; }
         }
 

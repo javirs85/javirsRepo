@@ -56,13 +56,17 @@ namespace GBCore
             else
             {
                 var Zcon = info.Connector;
-                puzzle.SetZcon(Zcon);
+                
                 
                 Zcon.g_NewErrorFromDevice += detailedDebug;
                 Zcon.g_WrongToken += detailedDebug;
-                
 
+                puzzle.Default = info.Default;
+                puzzle.Solution = info.Solution;
                 puzzle.Status = Puzzle.PuzzleStatus.unsolved;
+
+                puzzle.SetZcon(Zcon);
+
                 Debug($"{puzzle.Name} with ID {puzzle.ID} successfully connected to the system");
             }
         }

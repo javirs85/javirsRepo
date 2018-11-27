@@ -86,35 +86,41 @@ namespace GBCore.Connectivity
                 var msgs = TCPComm.Utils.SplitIntoMessages(str);
                 foreach (var raw in msgs)
                 {
-                    var msg = BrainMessage.fromString(raw);
-                    if (msg.Token != NetUtils.Token.Token)
-                        g_WrongToken.Invoke(this, msg);
-                    else
+                    try
                     {
-                        switch (msg.Order)
+                        var msg = BrainMessage.fromString(raw);
+                        if (msg.Token != NetUtils.Token.Token)
+                            g_WrongToken.Invoke(this, msg);
+                        else
                         {
-                            case messageKinds.heartbeat:
-                                break;
+                            switch (msg.Order)
+                            {
+                                case messageKinds.heartbeat:
+                                    break;
 
-                            case messageKinds.present:
-                                g_Present?.Invoke(this, msg);
-                                break;
+                                case messageKinds.present:
+                                    g_Present?.Invoke(this, msg);
+                                    break;
 
-                            case messageKinds.update:
-                                g_Update(this, msg.Params);
-                                break;
+                                case messageKinds.update:
+                                    g_Update(this, msg.Params);
+                                    break;
 
-                            case messageKinds.deviceClosed:
-                                g_DeviceClosed?.Invoke(this, msg);
-                                connector.Dispose();
-                                break;
+                                case messageKinds.deviceClosed:
+                                    g_DeviceClosed?.Invoke(this, msg);
+                                    connector.Dispose();
+                                    break;
 
-                            case messageKinds.majorErrorInDevice:
-                                g_NewErrorFromDevice?.Invoke(this, msg);
-                                break;
-                            default:
-                                throw new Exception($"Unnexpected Order: [{msg.Order}] received from device [{this.remoteName}]");
+                                case messageKinds.majorErrorInDevice:
+                                    g_NewErrorFromDevice?.Invoke(this, msg);
+                                    break;
+                                default:
+                                    throw new Exception($"Unnexpected Order: [{msg.Order}] received from device [{this.remoteName}]");
+                            }
                         }
+                    }catch (Exception e)
+                    {
+                        throw e;
                     }
                 }
             };

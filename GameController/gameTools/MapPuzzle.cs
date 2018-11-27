@@ -40,7 +40,7 @@ namespace gameTools
             {
                 SensedValue = parsedValue;
             }
-                
+            UpdateUI();
         }
     }
 }

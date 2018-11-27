@@ -40,6 +40,28 @@ namespace gameTools
             }
         }
 
+        private string _Solution;
+
+        public string Solution
+        {
+            get { return _Solution; }
+            set { _Solution = value;
+                OnPropertyChanged("Solution");
+            }
+        }
+
+        private string _default;
+
+        public string Default
+        {
+            get { return _default; }
+            set { _default = value;
+                OnPropertyChanged("Default");
+            }
+        }
+
+
+
         private Dictionary<string, string> _details;
         public Dictionary<string, string> Details {
             get { return _details; }
@@ -106,10 +128,12 @@ namespace gameTools
         {
             this.ZCon = conn;
             ZCon.g_DeviceClosed += (s1, a1) => {
-                Debug("${Name} disconnected from the server");
+                Debug($"{Name} disconnected from the server");
                 Status = PuzzleStatus.offline;
             };
             ZCon.g_Update += UpdateFromDevice;
+            if(UpdateInTheUIRequired != null)
+                this.UpdateInTheUIRequired(this, EventArgs.Empty);
         }
 
         private void UpdateFromDevice(object sender, Dictionary<string, object> receivedData)
@@ -145,11 +169,17 @@ namespace gameTools
             else
                 Debug($"Unexpected property to update in {Name}");
 
-            UpdateInTheUIRequired(this, EventArgs.Empty);
+            UpdateUI();
         }
 
         protected abstract void CustomUpdate(Dictionary<string, object> data);
         protected abstract void Update(object data);
+
+        protected void UpdateUI()
+        {
+            if(UpdateInTheUIRequired!= null)
+                UpdateInTheUIRequired(this, EventArgs.Empty);
+        }
 
         public void Send(BrainMessage m)
         {

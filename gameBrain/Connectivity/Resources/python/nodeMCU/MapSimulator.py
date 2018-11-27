@@ -1,10 +1,10 @@
 import Puzzle
 
-connector = Puzzle.Puzzle('settings.json')
+connector = Puzzle.Puzzle('MapSettings.json')
 
 def ForcedSolvingAction():
 	print("im solving the puzzle")
-	connector.UpdateSensedValue('33')
+	connector.UpdateSensedValue('1324')
 	
 def CheckingAction(newVal):
 	if newVal == '33':

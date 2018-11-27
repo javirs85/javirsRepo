@@ -13,6 +13,8 @@ class PuzzleMaster:
 			self.Details = {}
 			self.PuzzleKind = "sensor"
 			self.SaveCurrentStatusAsDefault()
+			self.Solution = ""
+			self.Default = ""
 			
 		self.myIP = "0.0.0.0"
 		self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -21,12 +23,15 @@ class PuzzleMaster:
 	def __init__(self, file):
 		try:
 			self.ReadSettingsFromFile(file)
+			print(self.Solution)
 		except:
 			self.Id = 1
 			self.Name = _Name
 			self.Status = "unsolved"
 			self.Details = {}
 			self.PuzzleKind = _Kind
+			self.Solution = ""
+			self.Default = ""
 			self.SaveCurrentStatusAsDefault()
 			
 		self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -37,7 +42,7 @@ class PuzzleMaster:
 		self.SendPresent()
 		
 	def ConnectToDefault(self):
-		self.ConnectToIP("192.168.1.34")
+		self.ConnectToIP("192.168.1.33")
 		
 	
 	def SendMessage(self, msgKind, Params):
@@ -52,6 +57,8 @@ class PuzzleMaster:
 		Params = {}
 		Params["myID"] = self.Id
 		Params["myName"] = self.Name
+		Params["Default"] = self.Default
+		Params["Solution"]= self.Solution
 		self.SendMessage("Present", Params)
 		
 		
@@ -138,9 +145,9 @@ class PuzzleMaster:
 			Settings = json.load(infile)
 		self.Name = Settings["Name"]
 		self.Id = Settings["Id"]
-		self.Status = Settings["Status"]
-		self.Details = Settings["Details"]
-		self.PuzzleKind = Settings["Kind"]
+		self.Status = "unsolved"
+		self.Default = Settings["Default"]
+		self.Solution = Settings["Solution"]
 		
 		
 	def DoTesting(self):
