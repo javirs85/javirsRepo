@@ -13,9 +13,14 @@ namespace Connectivity
 
         public event EventHandler<Exception> Error;
         public event EventHandler<string> Debug;
-        public event EventHandler<string> NewMessage;
+        public event EventHandler<Tuple<string, Message>> NewMessage;
+        public event EventHandler<Tuple<string, string>> newMeasure;
+        public event EventHandler ConnectedSucessfully;
 
-        public static string ServerIP = "localhost";
+        public bool IsConnected => mqttClient.IsConnected;
+
+        //public static string ServerIP = "localhost";
+        public static string ServerIP = "192.168.43.15";
 
         private DateTime lastMessageTime;
 
@@ -31,7 +36,14 @@ namespace Connectivity
                 };
             mqttClient.Disconnected += (o, e) => Error?.Invoke(this, e.Exception);
             mqttClient.SynchronizingSubscriptionsFailed += (o, e) => Error?.Invoke(this, e.Exception);
-            mqttClient.Connected += (o, e) => Debug?.Invoke(this, "Client conencted to server");
+            mqttClient.Connected += (o, e) =>
+            {
+                ConnectedSucessfully?.Invoke(this, EventArgs.Empty);
+                Subscrive("#");
+                Debug?.Invoke(this, "Client conencted to server");
+                Message m = new Message(Message.AvailableOrders.showup);
+                Publish(m.Serialize());
+            };
             //mqttClient.ApplicationMessageProcessed += (o, e) => Debug?.Invoke(this, "applicationMEssageProcessed: "+e.Exception.Message);
             mqttClient.ApplicationMessageSkipped += (o, e) => Debug?.Invoke(this, "ApplicationMessageSkipped: " + e.ApplicationMessage);
 
@@ -41,7 +53,32 @@ namespace Connectivity
 
         private void MqttClient_ApplicationMessageReceived(object sender, MqttApplicationMessageReceivedEventArgs e)
         {
-            NewMessage?.Invoke(this, e.ClientId + " : " + e.ApplicationMessage.Topic + " : " + e.ApplicationMessage.ConvertPayloadToString());
+            var payLoadstr = e.ApplicationMessage.ConvertPayloadToString();
+            var msg = Message.FromString(payLoadstr);
+            if (msg != null)
+            {
+                NewMessage?.Invoke(this, new Tuple<string,Message >( msg.SenderID, msg ));
+            }
+            else
+            {
+                bool garbage = false;
+                var tokens = e.ApplicationMessage.Topic.Split('/');
+                if (tokens.Length != 3)
+                    garbage = true;
+                else
+                {
+                    if (tokens[0].Replace("/", "") == "puzzles" &&
+                        tokens[2].Replace("/", "") == "values")
+                    {
+                        newMeasure?.Invoke(this, new Tuple<string, string>(tokens[1], payLoadstr));
+                    }
+                    else
+                        garbage = true;
+                }
+                
+                if(garbage)
+                    Debug?.Invoke(this, e.ApplicationMessage.Topic + ", " + e.ApplicationMessage.ConvertPayloadToString());
+            }
         }
 
         public async void Subscrive(string channel)
@@ -53,6 +90,8 @@ namespace Connectivity
         {
             try
             {
+                Debug(null, $"Connecting to {ServerIP}");     
+                
                 var options = new ManagedMqttClientOptionsBuilder()
                                     .WithAutoReconnectDelay(TimeSpan.FromSeconds(5))
                                     .WithClientOptions(new MqttClientOptionsBuilder()
@@ -63,10 +102,20 @@ namespace Connectivity
                 mqttClient.StartAsync(options).Wait();
                 
             }
-            catch (Exception e)
+            catch
             {
                 Debug(this, " + Cannot connect !!!!");
             }
+        }
+
+        public void PublishRAW(string rawValue, string topic)
+        {
+            Publish(rawValue, topic);
+        }
+
+        public void Publish(Message m, string topic = "master")
+        {
+            Publish(m.Serialize(), topic);
         }
 
         public async void Publish(string msg, string topic = "master")
@@ -87,7 +136,7 @@ namespace Connectivity
                 }
                 catch (Exception e)
                 {
-                    ;
+                    Error(this, e);
                 }
 
             }

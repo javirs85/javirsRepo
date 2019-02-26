@@ -3,10 +3,82 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:oxy="http://oxyplot.org/wpf"
         xmlns:local="clr-namespace:PCController"
-        mc:Ignorable="d"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}"
+        mc:Ignorable="d" Loaded="Window_Loaded"
         Title="MainWindow" Height="450" Width="800">
+   
+    
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="40"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="400"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <ScrollViewer x:Name="debugScroller" Grid.RowSpan="2">
+            <StackPanel x:Name="DebugPanel"></StackPanel>
+        </ScrollViewer>
+
+        
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Slider x:Name="TestingSlider"   VerticalAlignment="Center" Margin="20,0" Minimum="0" Maximum="90" ValueChanged="TestingSlider_ValueChanged"/>
+            <oxy:Plot Grid.Row="1">
+                <oxy:Plot.Axes>
+                    <oxy:TimeSpanAxis Title="Time" StringFormat="g" Position="Bottom"/>
+                    <oxy:LinearAxis Title="Position" Position="Left"/>
+                </oxy:Plot.Axes>
+                <oxy:Plot.Series>
+                    <oxy:LineSeries ItemsSource="{Binding Data}"/>
+                </oxy:Plot.Series>
+            </oxy:Plot>
+            <Grid x:Name="LDRDetails" Grid.Row="2" Background="#FFEAEAEA" Margin="0,0,0,20">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="3*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.Resources>
+                    <Style TargetType="Label" x:Name="header">
+                        <Setter Property="FontFamily" Value="Roboto"/>
+                        <Setter Property="Foreground" Value="Black"/>
+                        <Setter Property="VerticalAlignment" Value="Center"/>
+                        <Setter Property="HorizontalAlignment" Value="Right"/>
+                        <Setter Property="Padding" Value="0,0,20,0"/>
+                    </Style>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="FontFamily" Value="Roboto Light"/>
+                        <Setter Property="Foreground" Value="Black"/>
+                        <Setter Property="VerticalAlignment" Value="Center"/>
+                        <Setter Property="HorizontalAlignment" Value="Left"/>
+                    </Style>
+                </Grid.Resources>
+                <Label>Status</Label>
+                <Label Grid.Row="1">Current value</Label>
+                <Label Grid.Row="2">Solution</Label>
+
+                <TextBlock Grid.Column="1" x:Name="StatusTB">Status</TextBlock>
+                <TextBlock Grid.Column="1" Grid.Row="1" x:Name="valueTB">Current value</TextBlock>
+                <TextBlock Grid.Column="1" Grid.Row="2" x:Name="solutionTB">Solution</TextBlock>
+            </Grid>
+        </Grid>
+        <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal">
+            <Button x:Name="Connect" Content="Connect" Click="Connect_Click" Padding="20,0"/>
+            <Button x:Name="discover" Content="Discover" Click="Discover_Click" Padding="20,0"/>
+            <Button x:Name="clear" Content="Clear" Click="Clear_Click"  Padding="20,0"/>
+        </StackPanel>
         
     </Grid>
 </Window>

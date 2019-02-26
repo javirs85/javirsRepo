@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:mqtt"
+             x:Class="mqtt.MainPage">
+
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80"/>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="80"/>
+        </Grid.RowDefinitions>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="40"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+            </Grid.RowDefinitions>
+            <Label x:Name="horizontalSliderLabel" HorizontalOptions="Center" VerticalOptions="Center" Grid.Row="0" Grid.Column="0"/>
+            <Slider x:Name="horizontalSlider"  Grid.Column="1" Grid.Row="0" ValueChanged="HorizontalSlider_ValueChanged" Minimum="0" Maximum="90" Value="45"/>
+            <Label x:Name="verticalSliderLabel" HorizontalOptions="Center" VerticalOptions="Center" Grid.Row="1" Grid.Column="0"/>
+            <Slider x:Name="verticalSlider"  Grid.Column="1" Grid.Row="1" ValueChanged="VerticalSlider_ValueChanged" Maximum="90" Minimum="0" Value="45"/>
+        </Grid>
+
+
+
+        <ScrollView x:Name="scrollerMain" Grid.Row="1">
+            <StackLayout x:Name="mainStack"/>
+        </ScrollView>
+
+
+
+
+        <StackLayout Orientation="Horizontal" Grid.Row="2" >
+            <Button x:Name="B1" Text="debug msg" Clicked="CreateClient_Clicked"/>
+            <Button x:Name="subscribe" Text="Subscribe" Clicked="Subscribe_Clicked"/>
+            <Button x:Name="SendMsg" Text="SHOWUP" Clicked="SendMsg_Clicked"/>
+
+        </StackLayout>
+    </Grid>
+
+
+</ContentPage>
