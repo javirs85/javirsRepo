@@ -134,5 +134,17 @@ namespace PCController
         {
             Data = new ObservableCollection<DataPoint>();
         }
+
+        private void Reset_Click(object sender, RoutedEventArgs e)
+        {
+            var game = Game.GetPuzzle("LDR");
+            game.RequestReset();
+        }
+
+        private void Solve_Click(object sender, RoutedEventArgs e)
+        {
+            var game = Game.GetPuzzle("LDR");
+            game.RequestForceSolve();
+        }
     }
 }

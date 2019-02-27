@@ -52,11 +52,16 @@ namespace Brain
                 case Message.AvailableOrders.thisIsMySolution:
                     puzzle.UpdateSolution(e.Item2.Params["mySolution"]);
                     break;
+                case Message.AvailableOrders.statusUpdate:
+                    puzzle.CurrentStatus = (Puzzle.AvailableStatus)Enum.Parse( typeof(Puzzle.AvailableStatus), e.Item2.Params["myStatus"]);
+                    break;
                 default:
                     Debug(this, $"Unexpected message {e.Item2.Order} received from the puzzle {e.Item1}");
                     break;
             }
         }
+
+        public Puzzle GetPuzzle(string ID) => Puzzles.Find(x => x.ID == ID);
 
         private void Client_newMeasure(object sender, Tuple<string, string> e)
         {
