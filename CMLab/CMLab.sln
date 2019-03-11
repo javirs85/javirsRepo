@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2036
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CMLab.Android", "CMLab\CMLab.Android\CMLab.Android.csproj", "{F574D694-26EA-4BCE-80A9-6BA05309D812}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CMLab", "CMLab\CMLab\CMLab.csproj", "{F14E25C4-7BF2-4907-A482-D842359125DF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F574D694-26EA-4BCE-80A9-6BA05309D812}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F574D694-26EA-4BCE-80A9-6BA05309D812}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F574D694-26EA-4BCE-80A9-6BA05309D812}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{F574D694-26EA-4BCE-80A9-6BA05309D812}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F574D694-26EA-4BCE-80A9-6BA05309D812}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F574D694-26EA-4BCE-80A9-6BA05309D812}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{F14E25C4-7BF2-4907-A482-D842359125DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F14E25C4-7BF2-4907-A482-D842359125DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F14E25C4-7BF2-4907-A482-D842359125DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F14E25C4-7BF2-4907-A482-D842359125DF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {360C4C64-CED7-442E-9955-3B152446142C}
+	EndGlobalSection
+EndGlobal
