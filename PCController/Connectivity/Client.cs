@@ -20,7 +20,7 @@ namespace Connectivity
         public bool IsConnected => mqttClient.IsConnected;
 
         //public static string ServerIP = "localhost";
-        public static string ServerIP = "192.168.43.96";
+        public static string ServerIP = "192.168.43.30";
 
         private DateTime lastMessageTime;
 

@@ -24,86 +24,99 @@
                 <StackPanel x:Name="DebugPanel"></StackPanel>
             </ScrollViewer>
 
+            <TabControl Grid.Column="1">
 
-            <Grid Grid.Column="1">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="40"/>
-                    <RowDefinition Height="1.5*"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                <Slider x:Name="TestingSlider"   VerticalAlignment="Center" Margin="20,0" Minimum="0" Maximum="90" ValueChanged="TestingSlider_ValueChanged"/>
-                <oxy:Plot Grid.Row="1">
-                    <oxy:Plot.Axes>
-                        <oxy:TimeSpanAxis Title="Time" StringFormat="g" Position="Bottom"/>
-                        <oxy:LinearAxis Title="Position" Position="Left"/>
-                    </oxy:Plot.Axes>
-                    <oxy:Plot.Series>
-                        <oxy:LineSeries ItemsSource="{Binding Data}"/>
-                    </oxy:Plot.Series>
-                </oxy:Plot>
-                <Button x:Name="clear" Content="Clear" Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="20" Click="Clear_Click"  Padding="20,0"/>
-                <Grid x:Name="LDRDetails" Grid.Row="2" Background="#FFEAEAEA" Margin="0,0,0,0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="3*"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition Height="40"/>
-                    </Grid.RowDefinitions>
-                    <Grid.Resources>
-                        <Style TargetType="Label" x:Name="header">
-                            <Setter Property="FontFamily" Value="Roboto"/>
-                            <Setter Property="Foreground" Value="Black"/>
-                            <Setter Property="VerticalAlignment" Value="Center"/>
-                            <Setter Property="HorizontalAlignment" Value="Right"/>
-                            <Setter Property="Padding" Value="0,0,20,0"/>
-                        </Style>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="FontFamily" Value="Roboto Light"/>
-                            <Setter Property="Foreground" Value="Black"/>
-                            <Setter Property="VerticalAlignment" Value="Center"/>
-                            <Setter Property="HorizontalAlignment" Value="Left"/>
-                        </Style>
-                    </Grid.Resources>
-                    <Label>Status</Label>
-                    <Label Grid.Row="1">Current value</Label>
-                    <Label Grid.Row="2">Solution</Label>
+                <TabItem Header="All Sensors">
+                    
+                    
+                </TabItem>
+                <TabItem Header="LDR sensor">
 
-                    <TextBlock Grid.Column="1" x:Name="StatusTB">Status</TextBlock>
-                    <TextBlock Grid.Column="1" Grid.Row="1" x:Name="valueTB">Current value</TextBlock>
-                    <StackPanel Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" Orientation="Horizontal">
-                        <TextBlock x:Name="solutionTB">Solution</TextBlock>
-                        <TextBox x:Name="inputNewSolution" MinWidth="94" Margin="55,0"/>
-                    </StackPanel>
+                    <Grid >
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="40"/>
+                            <RowDefinition Height="1.5*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Slider x:Name="TestingSlider"   VerticalAlignment="Center" Margin="20,0" Minimum="0" Maximum="90" ValueChanged="TestingSlider_ValueChanged"/>
+                        <oxy:Plot Grid.Row="1">
+                            <oxy:Plot.Axes>
+                                <oxy:TimeSpanAxis Title="Time" StringFormat="g" Position="Bottom"/>
+                                <oxy:LinearAxis Title="Position" Position="Left"/>
+                            </oxy:Plot.Axes>
+                            <oxy:Plot.Series>
+                                <oxy:LineSeries ItemsSource="{Binding Data}"/>
+                            </oxy:Plot.Series>
+                        </oxy:Plot>
+                        <Button x:Name="clear" Content="Clear" Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="20" Click="Clear_Click"  Padding="20,0"/>
+                        <Grid x:Name="LDRDetails" Grid.Row="2" Background="#FFEAEAEA" Margin="0,0,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="3*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition Height="40"/>
+                            </Grid.RowDefinitions>
+                            <Grid.Resources>
+                                <Style TargetType="Label" x:Name="header">
+                                    <Setter Property="FontFamily" Value="Roboto"/>
+                                    <Setter Property="Foreground" Value="Black"/>
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
+                                    <Setter Property="HorizontalAlignment" Value="Right"/>
+                                    <Setter Property="Padding" Value="0,0,20,0"/>
+                                </Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="FontFamily" Value="Roboto Light"/>
+                                    <Setter Property="Foreground" Value="Black"/>
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
+                                    <Setter Property="HorizontalAlignment" Value="Left"/>
+                                </Style>
+                            </Grid.Resources>
+                            <Label>Status</Label>
+                            <Label Grid.Row="1">Current value</Label>
+                            <Label Grid.Row="2">Solution</Label>
 
-                    <Grid Grid.Row="3" Grid.ColumnSpan="2"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10,0,10,10">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-                        <Button x:Name="Reset" Content="Reset" Grid.Column="0" Click="Reset_Click"/>
-                        <Button x:Name="Solve" Content="Solve" Grid.Column="1" Click="Solve_Click"/>
-                        <Button x:Name="SetNewSolution" Grid.Column="2" Click="SetNewSolution_Click">
-                            <TextBlock>
+                            <TextBlock Grid.Column="1" x:Name="StatusTB">Status</TextBlock>
+                            <TextBlock Grid.Column="1" Grid.Row="1" x:Name="valueTB">Current value</TextBlock>
+                            <StackPanel Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" Orientation="Horizontal">
+                                <TextBlock x:Name="solutionTB">Solution</TextBlock>
+                                <TextBox x:Name="inputNewSolution" MinWidth="94" Margin="55,0"/>
+                            </StackPanel>
+
+                            <Grid Grid.Row="3" Grid.ColumnSpan="2"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10,0,10,10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <Button x:Name="Reset" Content="Reset" Grid.Column="0" Click="Reset_Click"/>
+                                <Button x:Name="Solve" Content="Solve" Grid.Column="1" Click="Solve_Click"/>
+                                <Button x:Name="SetNewSolution" Grid.Column="2" Click="SetNewSolution_Click">
+                                    <TextBlock>
                                 Change
                                 <LineBreak/>Solution
-                            </TextBlock>
-                        </Button>
-                        <Button x:Name="SetYourOwnSolution" Grid.Column="3" Click="SetYourOwnSolution_Click">
-                            <TextBlock>
+                                    </TextBlock>
+                                </Button>
+                                <Button x:Name="SetYourOwnSolution" Grid.Column="3" Click="SetYourOwnSolution_Click">
+                                    <TextBlock>
                                 Update
                                 <LineBreak/>Solution
-                            </TextBlock>
-                        </Button>
+                                    </TextBlock>
+                                </Button>
+                            </Grid>
+                        </Grid>
                     </Grid>
-                </Grid>
-            </Grid>
 
+
+                </TabItem>
+                
+            </TabControl>
+            
+            
         </Grid>
     </DockPanel>
 </Window>

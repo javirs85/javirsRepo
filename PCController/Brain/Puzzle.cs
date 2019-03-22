@@ -2,13 +2,21 @@
 using System.Windows.Input;
 using System.Collections.Generic;
 using Connectivity;
+using System.IO;
+using System.Xml.Serialization;
+using static Brain.Enums;
 
 namespace Brain
 {
-    public abstract class Puzzle 
+
+    [Serializable]
+    [XmlInclude(typeof(SimpleSensorPuzzle))]
+    [XmlInclude(typeof(CodePuzzle))]
+    public class Puzzle
     {
-        public enum PuzzleKinds { Sensor }
-        public enum AvailableStatus { Untouched, Online, Solved, OFFLine, Solving}
+        public string CurrentValueStringyfied;
+        public string CurrentSolutionStringyfied;
+
 
         private Connectivity.Client Connection;
 
@@ -72,10 +80,7 @@ namespace Brain
             SatusChanged?.Invoke(this, EventArgs.Empty);
         }
 
-        public abstract void SolvedInternal();
 
-        public string CurrentValueStringyfied;
-        public string CurrentSolutionStringyfied;
 
         public event EventHandler SatusChanged;
         public event EventHandler ValueChanged;
@@ -93,7 +98,6 @@ namespace Brain
             SolutionChanged?.Invoke(this, EventArgs.Empty);
         }
 
-        public abstract void UpdateSolutionInternal(string newVal);
 
         public void SetConnector(Client client)
         {
@@ -110,6 +114,54 @@ namespace Brain
             Kind = kind;
         }
 
-        public abstract void UpdateMeasure(string measure);
+
+        public void Serialize(string path)
+        {
+            try
+            {
+                System.Xml.Serialization.XmlSerializer xml = new System.Xml.Serialization.XmlSerializer(/*this.GetType()*/typeof(Puzzle));
+                using (System.IO.StreamWriter file = new System.IO.StreamWriter(System.IO.Path.GetFullPath(path)))
+                {
+                    xml.Serialize(file, this);
+                }
+            }
+            catch (Exception e)
+            {
+                ;
+            }
+        }
+
+        public static T Deserialize<T>(string path)
+        {
+            T loaded = default(T);
+            try
+            {
+                System.Xml.Serialization.XmlSerializer deserializer = new System.Xml.Serialization.XmlSerializer(typeof(T));
+                using (StreamReader reader = new StreamReader(path))
+                {
+                    loaded = (T)deserializer.Deserialize(reader);
+                }
+            }
+            catch (Exception e)
+            {
+                ;
+            }
+            return loaded;
+        }
+
+        public virtual void SolvedInternal()
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual void UpdateSolutionInternal(string newVal)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual void UpdateMeasure(string measure)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

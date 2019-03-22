@@ -16,6 +16,7 @@ using System.Windows.Shapes;
 using Connectivity;
 using Brain;
 using OxyPlot;
+using static Brain.Enums;
 
 namespace PCController
 {
@@ -67,16 +68,16 @@ namespace PCController
             SolidColorBrush newColor = Brushes.Lavender;
             switch (p.CurrentStatus)
             {
-                case Puzzle.AvailableStatus.Online:
+                case AvailableStatus.Online:
                     newColor = Brushes.Wheat;
                     break;
-                case Puzzle.AvailableStatus.Solved:
+                case AvailableStatus.Solved:
                     newColor = Brushes.LightGreen;
                     break;
-                case Puzzle.AvailableStatus.OFFLine:
+                case AvailableStatus.OFFLine:
                     newColor = Brushes.Lavender;
                     break;
-                case Puzzle.AvailableStatus.Solving:
+                case AvailableStatus.Solving:
                     newColor = Brushes.DarkKhaki;
                     break;
                 default:

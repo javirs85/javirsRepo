@@ -1,21 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using static Brain.Enums;
 
 namespace Brain
 {
-    public class SimpleSensorPuzzle : Puzzle
+    public class CodePuzzle : Puzzle
     {
+        public string CurrentValue;
 
-        public float CurrentValue;
-        public float Solution;
+        public CodePuzzle()
+        {
+            this.Kind = PuzzleKinds.Code;
+        }
 
-        public SimpleSensorPuzzle(string ID)
+        public CodePuzzle(string ID)
         {
             this.ID = ID;
-            this.Kind = PuzzleKinds.Sensor;
+            this.Kind = PuzzleKinds.Code;
         }
-        
+
         public override void SolvedInternal()
         {
             // do nothing
@@ -23,12 +27,11 @@ namespace Brain
 
         public override void UpdateSolutionInternal(string newVal)
         {
-            float.TryParse(newVal, out Solution);
         }
 
         public override void UpdateMeasure(string measure)
         {
-            float.TryParse(measure, out CurrentValue);
+            CurrentValue = measure;
             requestUIValueUpdate();
         }
     }

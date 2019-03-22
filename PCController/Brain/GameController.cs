@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Connectivity;
+using static Brain.Enums;
 
 namespace Brain
 {
@@ -11,11 +12,11 @@ namespace Brain
         public event EventHandler<Exception> Error;
         public event EventHandler<string> Debug;
 
-        private List<Puzzle> Puzzles;
+        private PuzzleController Puzzles;
 
         public GameController()
         {
-            Puzzles = new List<Puzzle>();
+            Puzzles = new PuzzleController();
         }
 
         public void StartConnectivity()
@@ -29,7 +30,7 @@ namespace Brain
             Client.NewMessage += Client_NewMessage;
             Client.Error += Error;
             Client.ConnectedSucessfully += (o, e) => {
-                foreach (var p in Puzzles)
+                foreach (var p in Puzzles.Puzzles)
                     p.SetConnector(Client);
             };
 
@@ -39,12 +40,12 @@ namespace Brain
         private void Client_NewMessage(object sender, Tuple<string, Message> e)
         {
             Debug?.Invoke(this, "entering: "+e.Item2.Order.ToString());
-            var puzzle = Puzzles.Find(x => x.ID == e.Item1);
+            var puzzle = Puzzles.Find(e.Item1);
             switch (e.Item2.Order)
             {
                 case Message.AvailableOrders.present:
-                    if (puzzle.CurrentStatus == Puzzle.AvailableStatus.OFFLine)
-                        puzzle.CurrentStatus = Puzzle.AvailableStatus.Online;
+                    if (puzzle.CurrentStatus == AvailableStatus.OFFLine)
+                        puzzle.CurrentStatus = AvailableStatus.Online;
                     break;
                 case Message.AvailableOrders.ImSolved:
                     puzzle.Solved();
@@ -53,7 +54,7 @@ namespace Brain
                     puzzle.UpdateSolution(e.Item2.Params["mySolution"]);
                     break;
                 case Message.AvailableOrders.statusUpdate:
-                    puzzle.CurrentStatus = (Puzzle.AvailableStatus)Enum.Parse( typeof(Puzzle.AvailableStatus), e.Item2.Params["myStatus"]);
+                    puzzle.CurrentStatus = (AvailableStatus)Enum.Parse( typeof(AvailableStatus), e.Item2.Params["myStatus"]);
                     break;
                 default:
                     Debug(this, $"Unexpected message {e.Item2.Order} received from the puzzle {e.Item1}");
@@ -61,17 +62,17 @@ namespace Brain
             }
         }
 
-        public Puzzle GetPuzzle(string ID) => Puzzles.Find(x => x.ID == ID);
+        public Puzzle GetPuzzle(string ID) => Puzzles.Find(ID);
 
         private void Client_newMeasure(object sender, Tuple<string, string> e)
         {
-            var puzzle = Puzzles.Find(x => x.ID == e.Item1);
+            var puzzle = Puzzles.Find(e.Item1);
             puzzle.UpdateMeasure(e.Item2);
         }
 
         public void SendDiscoverMessage()
         {
-            foreach (var p in Puzzles) p.CurrentStatus = Puzzle.AvailableStatus.OFFLine;
+            foreach (var p in Puzzles.Puzzles) p.CurrentStatus = AvailableStatus.OFFLine;
             Message m = new Message(Message.AvailableOrders.showup);
             Client.Publish(m);
         }
