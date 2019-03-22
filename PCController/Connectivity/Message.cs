@@ -9,7 +9,7 @@ namespace Connectivity
     {
         public static event EventHandler<string> SerializationError;
 
-        public enum AvailableOrders { showup, present, forceSolve, Reset, UpdateRequested, ImSolved, UpdateYOURSolution, thisIsMySolution, statusUpdate};
+        public enum AvailableOrders { showup, present, forceSolve, Reset, UpdateRequested, ImSolved, UpdateYOURSolution, thisIsMySolution, statusUpdate, setThisNewSolution};
         public AvailableOrders Order;
 
         public string SenderID;

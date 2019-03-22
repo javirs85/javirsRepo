@@ -146,5 +146,19 @@ namespace PCController
             var game = Game.GetPuzzle("LDR");
             game.RequestForceSolve();
         }
+
+        private void SetNewSolution_Click(object sender, RoutedEventArgs e)
+        {
+            var newSolution = inputNewSolution.Text;
+            var game = Game.GetPuzzle("LDR");
+            game.SetNewSolution(newSolution);
+        }
+
+        private void SetYourOwnSolution_Click(object sender, RoutedEventArgs e)
+        {
+            var newSolution = inputNewSolution.Text;
+            var game = Game.GetPuzzle("LDR");
+            game.SetYourCurrentValueAsSolution();
+        }
     }
 }

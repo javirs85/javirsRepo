@@ -29,11 +29,11 @@ namespace Brain
 
         public void RequestForceSolve()
         {
-            Connection.Publish(new Message(Message.AvailableOrders.forceSolve), publishChannel);
+            Connection?.Publish(new Message(Message.AvailableOrders.forceSolve), publishChannel);
         }
         public void RequestReset()
         {
-            Connection.Publish(new Message(Message.AvailableOrders.Reset), publishChannel);
+            Connection?.Publish(new Message(Message.AvailableOrders.Reset), publishChannel);
         }
         public void RequestUpdate()
         {
@@ -43,10 +43,17 @@ namespace Brain
         {
             Connection.Publish(
                 new Message(
-                    Message.AvailableOrders.UpdateYOURSolution)
+                    Message.AvailableOrders.setThisNewSolution)
                         {
                             Params = new Dictionary<string, string>() { { "newSolution", newSolution } }
                         },
+                    publishChannel);
+        }
+        public void SetYourCurrentValueAsSolution()
+        {
+            Connection?.Publish(
+                new Message(
+                    Message.AvailableOrders.UpdateYOURSolution),
                     publishChannel);
         }
         public void SetCurrentAsSolution()

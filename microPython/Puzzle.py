@@ -1,3 +1,4 @@
+
 import Connectivity, time
 import Message
 
@@ -31,11 +32,8 @@ class Puzzle:
     self.con.PublishValue(self.publishingChannel, s)
     
   def SetThisSolution(self, newValue): 
-    print("+")
     self.FormatIncomingNewSolution(newValue)
-    print("++")
     serialMsg = self.messager.GenerateThisIsMySolutionMessage(self.solution)
-    print("+++")
     self.con.Publish(serialMsg)
     
 
@@ -49,7 +47,6 @@ class Puzzle:
     serialMsg = self.messager.GenerateStatusUpdateMessage(self.status)
     self.con.Publish(serialMsg)
   
-
 
 
 

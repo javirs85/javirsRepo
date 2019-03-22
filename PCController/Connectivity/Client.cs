@@ -20,7 +20,7 @@ namespace Connectivity
         public bool IsConnected => mqttClient.IsConnected;
 
         //public static string ServerIP = "localhost";
-        public static string ServerIP = "192.168.43.158";
+        public static string ServerIP = "192.168.43.96";
 
         private DateTime lastMessageTime;
 
@@ -34,7 +34,13 @@ namespace Connectivity
                     Debug(this, "NOOOO !!");
                     //Error?.Invoke(this, e.Exception);
                 };
-            mqttClient.Disconnected += (o, e) => Error?.Invoke(this, e.Exception);
+            mqttClient.Disconnected += (o, e) =>
+            {
+                if (e.ClientWasConnected)
+                    Debug?.Invoke(this, "client already connected");
+                else
+                    Error?.Invoke(this, e.Exception);
+            };
             mqttClient.SynchronizingSubscriptionsFailed += (o, e) => Error?.Invoke(this, e.Exception);
             mqttClient.Connected += (o, e) =>
             {
